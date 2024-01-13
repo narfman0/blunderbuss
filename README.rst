@@ -7,7 +7,7 @@ blunderbuss
 .. image:: https://ci.appveyor.com/api/projects/status/github/narfman0/blunderbuss?branch=main
     :target: https://ci.appveyor.com/project/narfman0/blunderbuss
 
-Ingest video data from a capture card to render a smb3 eh TAS
+space ARPG!
 
 License
 -------
