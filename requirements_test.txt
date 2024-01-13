@@ -1,0 +1,5 @@
+pyinstaller
+pyinstaller-hooks-contrib
+pytest
+pytest-cov
+wheel
