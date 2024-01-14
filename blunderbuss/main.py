@@ -7,7 +7,7 @@ from blunderbuss.map import Map
 from blunderbuss.util.logging import initialize_logging
 
 LOGGER = logging.getLogger(__name__)
-
+FRAMERATE = 1/60
 
 def main():
     pygame.init()
@@ -29,7 +29,7 @@ def main():
         display.fill((0,0,0))
         gamemap.tick(display, screen)
         pygame.display.update()
-        time.sleep(1)
+        time.sleep(FRAMERATE)
 
     pygame.quit()
 
