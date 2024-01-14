@@ -17,12 +17,20 @@ class Map:
         self.stone_img.set_colorkey((0, 0, 0))
         self.player_img = pygame.image.load("data/images/player.png").convert()
         self.player_img.set_colorkey((255, 0, 0))
+        self.enemy_img = pygame.image.load("data/images/map/stone.png").convert()
+        self.enemy_img.set_colorkey((0, 0, 0))
 
         f = open("data/map.txt")
         self.map_data = [[int(c) for c in row] for row in f.read().split("\n")]
         f.close()
 
-    def draw(self, display: pygame.Surface, screen: pygame.Surface, player: Entity):
+    def draw(
+        self,
+        display: pygame.Surface,
+        screen: pygame.Surface,
+        player: Entity,
+        enemies: [Entity],
+    ):
         for y, row in enumerate(self.map_data):
             for x, tile in enumerate(row):
                 blit_image = None
@@ -31,21 +39,23 @@ class Map:
                 elif tile == 2:
                     blit_image = self.stone_img
                 if blit_image:
-                    blit_coords = (
-                        CAMERA_OFFSET_X
-                        + x * 10
-                        - y * 10
-                        - player.x
-                        - blit_image.get_width() // 2,
-                        CAMERA_OFFSET_Y
-                        + x * 5
-                        + y * 5
-                        - player.y
-                        - blit_image.get_height() // 2,
+                    blit_coords = self.calculate_tile_screen_coordinates(
+                        x, y, player, blit_image
                     )
                     display.blit(blit_image, blit_coords)
+        for enemy in enemies:
+            self.draw_entity(enemy, player, self.enemy_img, display)
+        #self.draw_entity(player, player, self.player_img, display)
         self.draw_player(display)
         screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
+
+    def draw_entity(
+        self, entity: Entity, camera: Entity, image: pygame.Surface, display: pygame.Surface
+    ):
+        coords = self.calculate_tile_screen_coordinates(
+            entity.x / 10, entity.y / 5, camera, image
+        )
+        display.blit(image, coords)
 
     def draw_player(self, display: pygame.Surface):
         display.blit(
@@ -55,3 +65,23 @@ class Map:
                 CAMERA_OFFSET_Y - self.player_img.get_height() // 2,
             ),
         )
+
+    @classmethod
+    def calculate_tile_screen_coordinates(
+        cls, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
+    ):
+        x = (
+            CAMERA_OFFSET_X
+            + tile_x * 10
+            - tile_y * 10
+            - camera.x
+            - image.get_width() // 2
+        )
+        y = (
+            CAMERA_OFFSET_Y
+            + tile_x * 5
+            + tile_y * 5
+            - camera.y
+            - image.get_height() // 2
+        )
+        return (x, y)

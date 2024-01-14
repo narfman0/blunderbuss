@@ -20,6 +20,7 @@ def main():
     running = True
     gamemap = Map()
     player = Entity()
+    enemies = [Entity()]
 
     while running:
         for event in pygame.event.get():
@@ -44,7 +45,7 @@ def main():
         ) * SPEED
 
         display.fill((0, 0, 0))
-        gamemap.draw(display, screen, player)
+        gamemap.draw(display, screen, player, enemies)
         pygame.display.update()
         time.sleep(FRAMERATE)
 
