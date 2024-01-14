@@ -14,7 +14,7 @@ class Map:
         self.map_data = [[int(c) for c in row] for row in f.read().split('\n')]
         f.close()
 
-    def tick(self, display, screen):
+    def draw(self, display, screen):
             for y, row in enumerate(self.map_data):
                 for x, tile in enumerate(row):
                     blit_coords = (150 + x * 10 - y * 10, 100 + x * 5 + y * 5)

@@ -27,7 +27,7 @@ def main():
                 running = False
 
         display.fill((0,0,0))
-        gamemap.tick(display, screen)
+        gamemap.draw(display, screen)
         pygame.display.update()
         time.sleep(FRAMERATE)
 
