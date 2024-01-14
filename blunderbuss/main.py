@@ -30,8 +30,18 @@ def main():
                 running = False
 
         keys = pygame.key.get_pressed()
-        player.x += (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * SPEED
-        player.y += (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * SPEED
+        player.x += (
+            keys[pygame.K_RIGHT]
+            + keys[pygame.K_d]
+            - keys[pygame.K_LEFT]
+            - keys[pygame.K_a]
+        ) * SPEED
+        player.y += (
+            keys[pygame.K_DOWN]
+            + keys[pygame.K_s]
+            - keys[pygame.K_UP]
+            - keys[pygame.K_w]
+        ) * SPEED
 
         display.fill((0, 0, 0))
         gamemap.draw(display, screen, player)

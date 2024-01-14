@@ -8,6 +8,7 @@ from blunderbuss.settings import *
 CAMERA_OFFSET_X = (WIDTH // SURFACE_SCALAR) // 2
 CAMERA_OFFSET_Y = (HEIGHT // SURFACE_SCALAR) // 2
 
+
 class Map:
     def __init__(self):
         self.grass_img = pygame.image.load("data/images/map/grass.png").convert()
