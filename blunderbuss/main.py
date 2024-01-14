@@ -8,12 +8,15 @@ from blunderbuss.util.logging import initialize_logging
 
 LOGGER = logging.getLogger(__name__)
 FRAMERATE = 1/60
+WIDTH = 1024
+HEIGHT = 768
+SURFACE_SCALAR = 3
 
 def main():
     pygame.init()
     pygame.display.set_caption('blunderbuss')
-    screen = pygame.display.set_mode((900, 900),0,32)
-    display = pygame.Surface((300, 300))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT),0,32)
+    display = pygame.Surface((WIDTH // SURFACE_SCALAR, HEIGHT // SURFACE_SCALAR))
     initialize_logging()
     running = True
     gamemap = Map()
