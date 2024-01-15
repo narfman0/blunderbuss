@@ -30,18 +30,19 @@ def main():
                 running = False
 
         keys = pygame.key.get_pressed()
-        driver.player.x += (
+        move_player_x = (
             keys[pygame.K_RIGHT]
             + keys[pygame.K_d]
             - keys[pygame.K_LEFT]
             - keys[pygame.K_a]
-        ) * SPEED
-        driver.player.y += (
+        )
+        move_player_y = (
             keys[pygame.K_DOWN]
             + keys[pygame.K_s]
             - keys[pygame.K_UP]
             - keys[pygame.K_w]
-        ) * SPEED
+        )
+        driver.move_player(move_player_x, move_player_y)
 
         display.fill((0, 0, 0))
         levelui.draw(display, screen, driver)

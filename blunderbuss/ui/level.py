@@ -45,7 +45,11 @@ class LevelUI:
         screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
 
     def draw_entity(
-        self, entity: Entity, camera: Entity, image: pygame.Surface, display: pygame.Surface
+        self,
+        entity: Entity,
+        camera: Entity,
+        image: pygame.Surface,
+        display: pygame.Surface,
     ):
         coords = self.calculate_tile_screen_coordinates(
             entity.x / 10, entity.y / 5, camera, image
