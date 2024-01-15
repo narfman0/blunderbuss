@@ -2,6 +2,7 @@ import pygame
 
 from pygame.locals import *
 
+from blunderbuss.game.level import Level
 from blunderbuss.models import Entity
 from blunderbuss.settings import *
 
@@ -19,10 +20,7 @@ class Map:
         self.player_img.set_colorkey((255, 0, 0))
         self.enemy_img = pygame.image.load("data/images/map/stone.png").convert()
         self.enemy_img.set_colorkey((0, 0, 0))
-
-        f = open("data/map.txt")
-        self.map_data = [[int(c) for c in row] for row in f.read().split("\n")]
-        f.close()
+        self.level = Level()
 
     def draw(
         self,
@@ -31,7 +29,7 @@ class Map:
         player: Entity,
         enemies: [Entity],
     ):
-        for y, row in enumerate(self.map_data):
+        for y, row in enumerate(self.level.tile_data):
             for x, tile in enumerate(row):
                 blit_image = None
                 if tile == 1:
