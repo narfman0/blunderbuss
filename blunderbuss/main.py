@@ -4,7 +4,7 @@ import time
 import pygame
 
 from blunderbuss.map import Map
-from blunderbuss.models import Entity
+from blunderbuss.game.models import Entity
 from blunderbuss.settings import *
 from blunderbuss.util.logging import initialize_logging
 

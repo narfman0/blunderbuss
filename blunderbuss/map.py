@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import *
 
 from blunderbuss.game.level import Level
-from blunderbuss.models import Entity
+from blunderbuss.game.models import Entity
 from blunderbuss.settings import *
 
 CAMERA_OFFSET_X = (WIDTH // SURFACE_SCALAR) // 2
