@@ -2,7 +2,7 @@ import pygame
 
 from pygame.locals import *
 
-from blunderbuss.game.level import Level
+from blunderbuss.game.driver import Driver
 from blunderbuss.game.models import Entity
 from blunderbuss.settings import *
 
@@ -10,7 +10,7 @@ CAMERA_OFFSET_X = (WIDTH // SURFACE_SCALAR) // 2
 CAMERA_OFFSET_Y = (HEIGHT // SURFACE_SCALAR) // 2
 
 
-class Map:
+class LevelUI:
     def __init__(self):
         self.grass_img = pygame.image.load("data/images/map/grass.png").convert()
         self.grass_img.set_colorkey((0, 0, 0))
@@ -20,16 +20,14 @@ class Map:
         self.player_img.set_colorkey((255, 0, 0))
         self.enemy_img = pygame.image.load("data/images/map/stone.png").convert()
         self.enemy_img.set_colorkey((0, 0, 0))
-        self.level = Level()
 
     def draw(
         self,
         display: pygame.Surface,
         screen: pygame.Surface,
-        player: Entity,
-        enemies: [Entity],
+        driver: Driver,
     ):
-        for y, row in enumerate(self.level.tile_data):
+        for y, row in enumerate(driver.level.tile_data):
             for x, tile in enumerate(row):
                 blit_image = None
                 if tile == 1:
@@ -38,12 +36,11 @@ class Map:
                     blit_image = self.stone_img
                 if blit_image:
                     blit_coords = self.calculate_tile_screen_coordinates(
-                        x, y, player, blit_image
+                        x, y, driver.player, blit_image
                     )
                     display.blit(blit_image, blit_coords)
-        for enemy in enemies:
-            self.draw_entity(enemy, player, self.enemy_img, display)
-        #self.draw_entity(player, player, self.player_img, display)
+        for enemy in driver.enemies:
+            self.draw_entity(enemy, driver.player, self.enemy_img, display)
         self.draw_player(display)
         screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
 

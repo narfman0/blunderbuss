@@ -3,8 +3,8 @@ import time
 
 import pygame
 
-from blunderbuss.map import Map
-from blunderbuss.game.models import Entity
+from blunderbuss.game.driver import Driver
+from blunderbuss.ui.level import LevelUI
 from blunderbuss.settings import *
 from blunderbuss.util.logging import initialize_logging
 
@@ -18,9 +18,8 @@ def main():
     display = pygame.Surface((WIDTH // SURFACE_SCALAR, HEIGHT // SURFACE_SCALAR))
     initialize_logging()
     running = True
-    gamemap = Map()
-    player = Entity()
-    enemies = [Entity()]
+    driver = Driver()
+    levelui = LevelUI()
 
     while running:
         for event in pygame.event.get():
@@ -31,13 +30,13 @@ def main():
                 running = False
 
         keys = pygame.key.get_pressed()
-        player.x += (
+        driver.player.x += (
             keys[pygame.K_RIGHT]
             + keys[pygame.K_d]
             - keys[pygame.K_LEFT]
             - keys[pygame.K_a]
         ) * SPEED
-        player.y += (
+        driver.player.y += (
             keys[pygame.K_DOWN]
             + keys[pygame.K_s]
             - keys[pygame.K_UP]
@@ -45,7 +44,7 @@ def main():
         ) * SPEED
 
         display.fill((0, 0, 0))
-        gamemap.draw(display, screen, player, enemies)
+        levelui.draw(display, screen, driver)
         pygame.display.update()
         time.sleep(FRAMERATE)
 
