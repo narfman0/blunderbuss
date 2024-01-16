@@ -1,12 +1,12 @@
-from blunderbuss.game.level import Level
+from blunderbuss.game.map import Map
 from blunderbuss.game.models import Entity
 
-SPEED = 1.5
+SPEED = 5
 
 
 class Driver:
     def __init__(self):
-        self.level = Level()
+        self.map = Map("level1")
         self.player = Entity()
         self.enemies = [Entity()]
 

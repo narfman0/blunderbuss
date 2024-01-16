@@ -8,17 +8,14 @@ from blunderbuss.settings import *
 
 CAMERA_OFFSET_X = (WIDTH // SURFACE_SCALAR) // 2
 CAMERA_OFFSET_Y = (HEIGHT // SURFACE_SCALAR) // 2
-
+TILE_X_SCALAR = 256
+TILE_Y_SCALAR = 128
 
 class LevelUI:
     def __init__(self):
-        self.grass_img = pygame.image.load("data/images/map/grass.png").convert()
-        self.grass_img.set_colorkey((0, 0, 0))
-        self.stone_img = pygame.image.load("data/images/map/stone.png").convert()
-        self.stone_img.set_colorkey((0, 0, 0))
         self.player_img = pygame.image.load("data/images/player.png").convert()
         self.player_img.set_colorkey((255, 0, 0))
-        self.enemy_img = pygame.image.load("data/images/map/stone.png").convert()
+        self.enemy_img = pygame.image.load("data/images/player.png").convert()
         self.enemy_img.set_colorkey((0, 0, 0))
 
     def draw(
@@ -27,20 +24,19 @@ class LevelUI:
         screen: pygame.Surface,
         driver: Driver,
     ):
-        for y, row in enumerate(driver.level.tile_data):
-            for x, tile in enumerate(row):
-                blit_image = None
-                if tile == 1:
-                    blit_image = self.grass_img
-                elif tile == 2:
-                    blit_image = self.stone_img
-                if blit_image:
-                    blit_coords = self.calculate_tile_screen_coordinates(
-                        x, y, driver.player, blit_image
-                    )
-                    display.blit(blit_image, blit_coords)
-        for enemy in driver.enemies:
-            self.draw_entity(enemy, driver.player, self.enemy_img, display)
+        tile_x_begin = 0
+        tile_x_end = driver.map.tmxdata.width
+        tile_y_begin = 0
+        tile_y_end = driver.map.tmxdata.height
+        for layer in range(driver.map.get_tile_layer_count()):
+            for x in range(tile_x_begin, tile_x_end):
+                for y in range(tile_y_begin, tile_y_end):
+                    blit_image = driver.map.get_tile_image(x, y, layer)
+                    if blit_image:
+                        blit_coords = self.calculate_tile_screen_coordinates(
+                            x, y, driver.player, blit_image
+                        )
+                        display.blit(blit_image, blit_coords)
         self.draw_player(display)
         screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
 
@@ -52,7 +48,7 @@ class LevelUI:
         display: pygame.Surface,
     ):
         coords = self.calculate_tile_screen_coordinates(
-            entity.x / 10, entity.y / 5, camera, image
+            entity.x / TILE_X_SCALAR, entity.y / TILE_Y_SCALAR, camera, image
         )
         display.blit(image, coords)
 
@@ -71,15 +67,15 @@ class LevelUI:
     ):
         x = (
             CAMERA_OFFSET_X
-            + tile_x * 10
-            - tile_y * 10
+            + (tile_x * TILE_X_SCALAR)//2
+            - (tile_y * TILE_X_SCALAR)//2
             - camera.x
             - image.get_width() // 2
         )
         y = (
             CAMERA_OFFSET_Y
-            + tile_x * 5
-            + tile_y * 5
+            + (tile_x * TILE_Y_SCALAR)//2
+            + (tile_y * TILE_Y_SCALAR)//2
             - camera.y
             - image.get_height() // 2
         )
