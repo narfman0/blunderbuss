@@ -4,11 +4,40 @@ import time
 import pygame
 
 from blunderbuss.game.driver import Driver
+from blunderbuss.game.models import Direction
 from blunderbuss.ui.level import LevelUI
 from blunderbuss.settings import *
 from blunderbuss.util.logging import initialize_logging
 
 LOGGER = logging.getLogger(__name__)
+
+
+def read_player_direction():
+    keys = pygame.key.get_pressed()
+    right = keys[pygame.K_RIGHT] or keys[pygame.K_d]
+    left = keys[pygame.K_LEFT] or keys[pygame.K_a]
+    up = keys[pygame.K_UP] or keys[pygame.K_w]
+    down = keys[pygame.K_DOWN] or keys[pygame.K_s]
+    direction = None
+    if down:
+        if right:
+            direction = Direction.SE
+        elif left:
+            direction = Direction.SW
+        else:
+            direction = Direction.S
+    elif up:
+        if right:
+            direction = Direction.NE
+        elif left:
+            direction = Direction.NW
+        else:
+            direction = Direction.N
+    elif left:
+        direction = Direction.W
+    elif right:
+        direction = Direction.E
+    return direction
 
 
 def main():
@@ -28,21 +57,7 @@ def main():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
-
-        keys = pygame.key.get_pressed()
-        move_player_x = (
-            keys[pygame.K_RIGHT]
-            + keys[pygame.K_d]
-            - keys[pygame.K_LEFT]
-            - keys[pygame.K_a]
-        )
-        move_player_y = (
-            keys[pygame.K_DOWN]
-            + keys[pygame.K_s]
-            - keys[pygame.K_UP]
-            - keys[pygame.K_w]
-        )
-        driver.move_player(move_player_x, move_player_y)
+        driver.move_player(read_player_direction())
 
         display.fill((0, 0, 0))
         levelui.draw(display, screen, driver)

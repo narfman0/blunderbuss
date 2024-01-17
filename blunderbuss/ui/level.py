@@ -11,6 +11,7 @@ CAMERA_OFFSET_Y = (HEIGHT // SURFACE_SCALAR) // 2
 TILE_X_SCALAR = 256
 TILE_Y_SCALAR = 128
 
+
 class LevelUI:
     def __init__(self):
         self.player_img = pygame.image.load("data/images/player.png").convert()
@@ -40,18 +41,6 @@ class LevelUI:
         self.draw_player(display)
         screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
 
-    def draw_entity(
-        self,
-        entity: Entity,
-        camera: Entity,
-        image: pygame.Surface,
-        display: pygame.Surface,
-    ):
-        coords = self.calculate_tile_screen_coordinates(
-            entity.x / TILE_X_SCALAR, entity.y / TILE_Y_SCALAR, camera, image
-        )
-        display.blit(image, coords)
-
     def draw_player(self, display: pygame.Surface):
         display.blit(
             self.player_img,
@@ -67,16 +56,16 @@ class LevelUI:
     ):
         x = (
             CAMERA_OFFSET_X
-            + (tile_x * TILE_X_SCALAR)//2
-            - (tile_y * TILE_X_SCALAR)//2
-            - camera.x
+            + (tile_x * TILE_X_SCALAR) // 2
+            - (tile_y * TILE_X_SCALAR) // 2
+            - camera.position.x
             - image.get_width() // 2
         )
         y = (
             CAMERA_OFFSET_Y
-            + (tile_x * TILE_Y_SCALAR)//2
-            + (tile_y * TILE_Y_SCALAR)//2
-            - camera.y
+            + (tile_x * TILE_Y_SCALAR) // 2
+            + (tile_y * TILE_Y_SCALAR) // 2
+            - camera.position.y
             - image.get_height() // 2
         )
         return (x, y)

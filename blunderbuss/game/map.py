@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 import pytmx
 
+
 @dataclass
 class TransitionDetails:
     destination_area: str

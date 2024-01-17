@@ -13,6 +13,7 @@ Need:
 
 * Animations
 * Crisp movement
+* Collisions
 * Enemies
 * Fighting
 * Final boss
@@ -21,8 +22,9 @@ Want:
 
 * Levels
 * Music/sfx
-* Leveling
+* Cutscenes
 * Better AI
+* Leveling
 
 License
 -------
