@@ -10,7 +10,6 @@ class Driver:
     def __init__(self):
         self.map = Map("level1")
         self.player = Character()
-        self.enemies = [Character()]
 
     def move_player(self, direction: Direction):
         if direction:
