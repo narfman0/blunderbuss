@@ -9,8 +9,8 @@ from blunderbuss.game.models import Direction, Entity
 from blunderbuss.settings import *
 
 LOGGER = logging.getLogger(__name__)
-CAMERA_OFFSET_X = (WIDTH // SURFACE_SCALAR) // 2
-CAMERA_OFFSET_Y = (HEIGHT // SURFACE_SCALAR) // 2
+CAMERA_OFFSET_X = WIDTH // 2
+CAMERA_OFFSET_Y = HEIGHT // 2
 TILE_X_SCALAR = 256
 TILE_Y_SCALAR = 128
 

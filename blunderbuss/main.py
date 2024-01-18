@@ -45,8 +45,7 @@ def main():
     initialize_logging()
     pygame.init()
     pygame.display.set_caption("blunderbuss")
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
-    display = pygame.Surface((WIDTH // SURFACE_SCALAR, HEIGHT // SURFACE_SCALAR))
+    surface = pygame.display.set_mode((WIDTH, HEIGHT))
     running = True
     clock = pygame.time.Clock()
 
@@ -64,9 +63,8 @@ def main():
                 running = False
 
         screen_manager.current.update(dt)
-        display.fill((0, 0, 0))
-        screen_manager.current.draw(display)
-        screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
+        surface.fill((0, 0, 0))
+        screen_manager.current.draw(surface)
         pygame.display.update()
 
     pygame.quit()
