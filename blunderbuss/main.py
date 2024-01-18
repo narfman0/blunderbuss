@@ -3,9 +3,10 @@ import time
 
 import pygame
 
-from blunderbuss.game.driver import Driver
+from blunderbuss.game.world import World
 from blunderbuss.game.models import Direction
-from blunderbuss.ui.level import LevelUI
+from blunderbuss.ui.screen import ScreenManager
+from blunderbuss.ui.level_screen import LevelScreen
 from blunderbuss.settings import *
 from blunderbuss.util.logging import initialize_logging
 
@@ -41,28 +42,32 @@ def read_player_direction():
 
 
 def main():
+    initialize_logging()
     pygame.init()
     pygame.display.set_caption("blunderbuss")
     screen = pygame.display.set_mode((WIDTH, HEIGHT), 0, 32)
     display = pygame.Surface((WIDTH // SURFACE_SCALAR, HEIGHT // SURFACE_SCALAR))
-    initialize_logging()
     running = True
-    driver = Driver()
-    levelui = LevelUI()
+    clock = pygame.time.Clock()
+
+    world = World()
+    screen_manager = ScreenManager()
+    screen_manager.push(LevelScreen(screen_manager, world))
 
     while running:
+        dt = clock.tick(60) / 1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
-        driver.move_player(read_player_direction())
 
+        screen_manager.current.update(dt)
         display.fill((0, 0, 0))
-        levelui.draw(display, screen, driver)
+        screen_manager.current.draw(display)
+        screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
         pygame.display.update()
-        time.sleep(FRAMERATE)
 
     pygame.quit()
 
