@@ -1,0 +1,17 @@
+idle:
+  NE:
+    - Male_0_Idle0.png 
+  E:
+    - Male_1_Idle0.png 
+  SE:
+    - Male_2_Idle0.png 
+  S:
+    - Male_3_Idle0.png 
+  SW:
+    - Male_4_Idle0.png 
+  W:
+    - Male_5_Idle0.png 
+  NW:
+    - Male_6_Idle0.png 
+  N:
+    - Male_7_Idle0.png

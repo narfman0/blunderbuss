@@ -19,10 +19,8 @@ class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
-        self.player_img = pygame.image.load("data/images/player.png").convert()
-        self.player_img.set_colorkey((255, 0, 0))
-        self.enemy_img = pygame.image.load("data/images/player.png").convert()
-        self.enemy_img.set_colorkey((0, 0, 0))
+        self.player_img = pygame.image.load("data/images/characters/kenney_male/Male_3_Idle0.png").convert()
+        self.player_img.set_colorkey((0, 255, 0))
 
     def update(self, dt: float):
         player_move_direction = self.read_player_move_direction()
