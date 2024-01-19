@@ -2,7 +2,7 @@ import logging
 
 import pygame
 
-from blunderbuss.game.math import cartesian_to_isometric
+from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.screen import Screen, ScreenManager
 from blunderbuss.game.world import World
