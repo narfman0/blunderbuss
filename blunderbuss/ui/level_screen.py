@@ -21,12 +21,20 @@ class LevelScreen(Screen):
         self.screen_manager = screen_manager
         self.world = world
         self.player_sprite = CharacterSprite("kenney_male")
+        self.last_player_move_direction = None
 
     def update(self, dt: float):
         player_move_direction = self.read_player_move_direction()
         self.world.move_player(dt, player_move_direction)
         if player_move_direction:
-            self.player_sprite.move(player_move_direction)
+            if player_move_direction != self.last_player_move_direction:
+                self.player_sprite.move(player_move_direction)
+            self.player_sprite.active_animation_name = "run"
+        else:
+            self.player_sprite.active_animation_name = "idle"
+        self.last_player_move_direction = player_move_direction
+            
+
         self.player_sprite.update()
 
     def read_player_move_direction(self):
