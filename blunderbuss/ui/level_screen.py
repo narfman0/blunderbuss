@@ -21,6 +21,8 @@ class LevelScreen(Screen):
         self.screen_manager = screen_manager
         self.world = world
         self.player_sprite = CharacterSprite("kenney_male")
+        self.player_sprite.set_position(WIDTH // 2, HEIGHT // 2)
+        self.sprites = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
 
     def update(self, dt: float):
@@ -33,9 +35,7 @@ class LevelScreen(Screen):
         else:
             self.player_sprite.active_animation_name = "idle"
         self.last_player_move_direction = player_move_direction
-            
-
-        self.player_sprite.update()
+        self.sprites.update()
 
     def read_player_move_direction(self):
         keys = pygame.key.get_pressed()
@@ -81,16 +81,7 @@ class LevelScreen(Screen):
                             x, y, self.world.player, blit_image
                         )
                         surface.blit(blit_image, blit_coords)
-        self.draw_player(surface)
-
-    def draw_player(self, surface: pygame.Surface):
-        surface.blit(
-            self.player_sprite.image,
-            (
-                CAMERA_OFFSET_X - self.player_sprite.image.get_width() // 2,
-                CAMERA_OFFSET_Y - self.player_sprite.image.get_height() // 2,
-            ),
-        )
+        self.sprites.draw(surface)
 
     @classmethod
     def calculate_tile_screen_coordinates(
