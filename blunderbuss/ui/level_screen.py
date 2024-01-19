@@ -3,6 +3,7 @@ import logging
 import pygame
 
 
+from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.screen import Screen, ScreenManager
 from blunderbuss.game.world import World
 from blunderbuss.game.models import Direction, Entity
@@ -19,12 +20,14 @@ class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
-        self.player_img = pygame.image.load("data/images/characters/kenney_male/Male_3_Idle0.png").convert()
-        self.player_img.set_colorkey((0, 255, 0))
+        self.player_sprite = CharacterSprite("kenney_male")
 
     def update(self, dt: float):
         player_move_direction = self.read_player_move_direction()
         self.world.move_player(dt, player_move_direction)
+        if player_move_direction:
+            self.player_sprite.move(player_move_direction)
+        self.player_sprite.update()
 
     def read_player_move_direction(self):
         keys = pygame.key.get_pressed()
@@ -74,10 +77,10 @@ class LevelScreen(Screen):
 
     def draw_player(self, surface: pygame.Surface):
         surface.blit(
-            self.player_img,
+            self.player_sprite.image,
             (
-                CAMERA_OFFSET_X - self.player_img.get_width() // 2,
-                CAMERA_OFFSET_Y - self.player_img.get_height() // 2,
+                CAMERA_OFFSET_X - self.player_sprite.image.get_width() // 2,
+                CAMERA_OFFSET_Y - self.player_sprite.image.get_height() // 2,
             ),
         )
 
