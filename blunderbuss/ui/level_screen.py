@@ -1,7 +1,7 @@
 import logging
 
 import pygame
-
+from pygame.math import Vector2
 
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.screen import Screen, ScreenManager
@@ -102,3 +102,12 @@ class LevelScreen(Screen):
             - image.get_height() // 2
         )
         return (x, y)
+
+    @classmethod
+    def cartesian_to_isometric(cls, cartesian: Vector2) -> Vector2:
+        return Vector2(cartesian.x - cartesian.y, (cartesian.x + cartesian.y) // 2)
+
+    @classmethod
+    def isometric_to_cartesian(cls, isometric: Vector2) -> Vector2:
+        cartesian_x = (isometric.x + isometric.y * 2) // 2
+        return Vector2(cartesian_x, cartesian_x + isometric.x)
