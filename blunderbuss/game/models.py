@@ -27,6 +27,18 @@ class Direction(Enum):
             Direction.NW: Vector2(-1, -1),
         }[self].normalize()
 
+    def to_isometric(self):
+        return {
+            Direction.N: Direction.NE,
+            Direction.NE: Direction.E,
+            Direction.E: Direction.SE,
+            Direction.SE: Direction.S,
+            Direction.S: Direction.SW,
+            Direction.SW: Direction.W,
+            Direction.W: Direction.NW,
+            Direction.NW: Direction.N,
+        }[self]
+
 
 @dataclass
 class Entity:

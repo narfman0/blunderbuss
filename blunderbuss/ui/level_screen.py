@@ -30,7 +30,7 @@ class LevelScreen(Screen):
         self.world.move_player(dt, player_move_direction)
         if player_move_direction:
             if player_move_direction != self.last_player_move_direction:
-                self.player_sprite.move(player_move_direction)
+                self.player_sprite.move(player_move_direction.to_isometric())
             self.player_sprite.active_animation_name = "run"
         else:
             self.player_sprite.active_animation_name = "idle"
@@ -46,22 +46,22 @@ class LevelScreen(Screen):
         direction = None
         if down:
             if right:
-                direction = Direction.SE
+                direction = Direction.E
             elif left:
-                direction = Direction.SW
-            else:
                 direction = Direction.S
+            else:
+                direction = Direction.SE
         elif up:
             if right:
-                direction = Direction.NE
-            elif left:
-                direction = Direction.NW
-            else:
                 direction = Direction.N
+            elif left:
+                direction = Direction.W
+            else:
+                direction = Direction.NW
         elif left:
-            direction = Direction.W
+            direction = Direction.SW
         elif right:
-            direction = Direction.E
+            direction = Direction.NE
         return direction
 
     def draw(

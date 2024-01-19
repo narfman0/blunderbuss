@@ -1,10 +1,9 @@
 from pygame.math import Vector2
 
-from blunderbuss.game.math import cartesian_to_isometric, isometric_to_cartesian
 from blunderbuss.game.map import Map
 from blunderbuss.game.models import Character, Direction
 
-SPEED = 200
+SPEED = 500
 TILE_X_SCALAR = 256
 TILE_Y_SCALAR = 128
 
@@ -20,7 +19,6 @@ class World:
         if direction:
             self.player.direction = direction
             dpos = direction.to_vector() * SPEED * dt
-            #TODO dpos = cartesian_to_isometric(dpos)
             self.player.position += dpos
 
     @classmethod
