@@ -1,8 +1,8 @@
 import logging
 
 import pygame
-from pygame.math import Vector2
 
+from blunderbuss.game.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.screen import Screen, ScreenManager
 from blunderbuss.game.world import World
@@ -87,27 +87,19 @@ class LevelScreen(Screen):
     def calculate_tile_screen_coordinates(
         cls, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
     ):
+        camera_lookat = cartesian_to_isometric(camera.position)
         x = (
             CAMERA_OFFSET_X
             + (tile_x * TILE_X_SCALAR) // 2
             - (tile_y * TILE_X_SCALAR) // 2
-            - camera.position.x
+            - camera_lookat.x
             - image.get_width() // 2
         )
         y = (
             CAMERA_OFFSET_Y
             + (tile_x * TILE_Y_SCALAR) // 2
             + (tile_y * TILE_Y_SCALAR) // 2
-            - camera.position.y
+            - camera_lookat.y
             - image.get_height() // 2
         )
         return (x, y)
-
-    @classmethod
-    def cartesian_to_isometric(cls, cartesian: Vector2) -> Vector2:
-        return Vector2(cartesian.x - cartesian.y, (cartesian.x + cartesian.y) // 2)
-
-    @classmethod
-    def isometric_to_cartesian(cls, isometric: Vector2) -> Vector2:
-        cartesian_x = (isometric.x + isometric.y * 2) // 2
-        return Vector2(cartesian_x, cartesian_x + isometric.x)

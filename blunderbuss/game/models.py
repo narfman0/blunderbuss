@@ -15,6 +15,7 @@ class Direction(Enum):
     NW = 8
 
     def to_vector(self) -> Vector2:
+        # lrucacheable!
         return {
             Direction.N: Vector2(0, -1),
             Direction.NE: Vector2(1, -1),
