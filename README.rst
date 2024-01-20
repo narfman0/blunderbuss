@@ -11,7 +11,6 @@ TODO
 
 Need:
 
-* Animations
 * Crisp movement
 * Collisions
 * Enemies
