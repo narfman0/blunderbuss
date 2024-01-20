@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.10.1" name="kenney_dungeon" tilewidth="256" tileheight="512" tilecount="288" columns="0">
+<tileset version="1.10" tiledversion="1.10.2" name="kenney_dungeon" tilewidth="256" tileheight="512" tilecount="288" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="256" height="512" source="kenney_dungeon_images/barrel_E.png"/>
@@ -495,15 +495,35 @@
  </tile>
  <tile id="164">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallCorner_E.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0.82282" y="450.906">
+    <polygon points="0,0 129.183,60.8887 161.273,41.141 158.804,-54.3061 130.828,-72.4082"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="165">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallCorner_N.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="447.614">
+    <polygon points="0,0 126.714,63.3572 255.074,-0.82282 227.098,-19.7477 125.069,23.039 25.5074,-23.8618"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="166">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallCorner_S.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.82282" y="450.083">
+    <polygon points="0,0 30.4444,14.8108 127.537,-32.9128 226.276,14.8108 255.897,-4.1141 129.183,-73.231"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="167">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallCorner_W.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="2" x="255.897" y="446.791">
+    <polygon points="0,0 -129.183,-71.5854 -164.564,-51.0149 -162.918,49.3692 -129.183,65.8256"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="168">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallDoor_E.png"/>
