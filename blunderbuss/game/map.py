@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 
+from pygame.math import Vector2
 import pytmx
+
+from blunderbuss.util.math import point_in_polygon, cartesian_to_isometric
 
 
 @dataclass
@@ -25,11 +28,30 @@ class Map:
         return len(list(self.tmxdata.visible_tile_layers))
 
     def collides(self, x: float, y: float):
-        colliders_present = False
         for layer in range(self.get_tile_layer_count()):
             tile_props = self.tmxdata.get_tile_properties(int(x), int(y), layer) or {}
-            colliders_present |= "colliders" in tile_props
-        return colliders_present
+            colliders: list = tile_props.get("colliders")
+            if colliders:
+                return True
+                # TODO phase 2 collisions
+                # for collider in colliders:
+                #     vert_x, vert_y = self.points_to_vertxy(collider.points)
+                #     # need to convert world coordinates to tile coordinates or vice versa
+                #     test_x = (x - int(x)) * self.tmxdata.tilewidth
+                #     test_y = (y - int(y)) * self.tmxdata.tileheight
+                #     test_xy = cartesian_to_isometric(Vector2(test_x, test_y))
+                #     if point_in_polygon(vert_x, vert_y, test_xy.x, test_xy.y):
+                #         return True
+        return False
+
+    @classmethod
+    def points_to_vertxy(cls, points: list) -> tuple[list[float], list[float]]:
+        vertx = []
+        verty = []
+        for point in points:
+            vertx.append(point.x)
+            verty.append(point.y)
+        return vertx, verty
 
     @property
     def width(self):
