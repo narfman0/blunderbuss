@@ -375,27 +375,67 @@
  </tile>
  <tile id="124">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWall_E.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.5" y="448">
+    <polygon points="0,0 33,15.5 159,-50 132,-64.5"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="125">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWall_N.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="447.5">
+    <polygon points="0,0 128,63.5 159,48.5 127,28 25,-21.5"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="126">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWall_S.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="95.5" y="399.5">
+    <polygon points="0,0 128,65.5 160,49 128.5,27.5 23,-24"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="127">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWall_W.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="94.5" y="494">
+    <polygon points="0,0 32,16 161,-47.5 132,-62.5"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="128">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallAged_E.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.5" y="448">
+    <polygon points="0,0 31,14 160,-48.5 130.5,-64.5"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="129">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallAged_N.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.5" y="448">
+    <polygon points="0,0 126,62 161,46.5 23,-18.5"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="130">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallAged_S.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="94.5" y="400">
+    <polygon points="0,0 129,64.5 160.5,47.5 25.5,-17"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="131">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallAged_W.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="95.5" y="496">
+    <polygon points="0,0 33,15.5 159,-49 132,-63"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="132">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallAgedLeft_E.png"/>
@@ -492,6 +532,11 @@
  </tile>
  <tile id="163">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallColumnIn_W.png"/>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="94" y="496">
+    <polygon points="0,0 34,13 159,-49 127,-66"/>
+   </object>
+  </objectgroup>
  </tile>
  <tile id="164">
   <image width="256" height="512" source="kenney_dungeon_images/stoneWallCorner_E.png"/>

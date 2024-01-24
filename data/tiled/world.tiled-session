@@ -1,5 +1,5 @@
 {
-    "activeFile": "level1.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,11 +13,11 @@
             "scaleInDock": 1
         },
         "level1.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 4164,
-                "y": 2977
+                "x": 4418,
+                "y": 3213.5
             }
         }
     },
@@ -30,12 +30,11 @@
     "map.tileWidth": 32,
     "map.width": 100,
     "openFiles": [
-        "level1.tmx"
     ],
     "project": "world.tiled-project",
     "recentFiles": [
-        "level1.tmx",
-        "kenney_dungeon.tsx"
+        "kenney_dungeon.tsx",
+        "level1.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

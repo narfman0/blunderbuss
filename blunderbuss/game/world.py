@@ -18,3 +18,5 @@ class World:
             self.player.direction = direction
             dpos = direction.to_vector() * SPEED * dt
             self.player.position += dpos
+            if self.map.has_colliders(tile_x=int(self.player.position.x), tile_y=int(self.player.position.y)):
+                self.player.position -= dpos
