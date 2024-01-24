@@ -11,9 +11,10 @@ def isometric_to_cartesian(isometric: Vector2) -> Vector2:
 
 
 def point_in_polygon(
-    nvert: int, vertx: list[float], verty: list[float], testx: float, testy: float
-):
+    vertx: list[float], verty: list[float], testx: float, testy: float
+) -> bool:
     """Adapted from https://wrfranklin.org/Research/Short_Notes/pnpoly.html"""
+    nvert = len(vertx)
     c = 0
     j = nvert - 1
     for i in range(nvert):
@@ -24,4 +25,4 @@ def point_in_polygon(
         ):
             c = not c
         j = i
-    return c
+    return c != 0
