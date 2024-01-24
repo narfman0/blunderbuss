@@ -15,7 +15,8 @@ CAMERA_OFFSET_X = WIDTH // 2
 CAMERA_OFFSET_Y = HEIGHT // 2
 TILE_X_SCALAR = 256
 TILE_Y_SCALAR = 128
-TILE_DRAW_DISTANCE = 20
+TILE_DRAW_X_DISTANCE = 2 * WIDTH // TILE_X_SCALAR
+TILE_DRAW_Y_DISTANCE = 2 * HEIGHT // TILE_Y_SCALAR
 
 
 class LevelScreen(Screen):
@@ -67,15 +68,15 @@ class LevelScreen(Screen):
         return direction
 
     def draw(self, surface: pygame.Surface):
-        tile_x_begin = max(0, int(self.world.player.position.x) - TILE_DRAW_DISTANCE)
+        tile_x_begin = max(0, int(self.world.player.position.x) - TILE_DRAW_X_DISTANCE)
         tile_x_end = min(
             self.world.map.tmxdata.width,
-            int(self.world.player.position.x) + TILE_DRAW_DISTANCE,
+            int(self.world.player.position.x) + TILE_DRAW_X_DISTANCE,
         )
-        tile_y_begin = max(0, int(self.world.player.position.x) - TILE_DRAW_DISTANCE)
+        tile_y_begin = max(0, int(self.world.player.position.y) - TILE_DRAW_Y_DISTANCE)
         tile_y_end = min(
             self.world.map.tmxdata.height,
-            int(self.world.player.position.y) + TILE_DRAW_DISTANCE,
+            int(self.world.player.position.y) + TILE_DRAW_Y_DISTANCE,
         )
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
