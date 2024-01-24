@@ -24,7 +24,9 @@ class LevelScreen(Screen):
         self.screen_manager = screen_manager
         self.world = world
         self.player_sprite = CharacterSprite("kenney_male")
-        self.player_sprite.set_position(WIDTH // 2, HEIGHT // 2)
+        self.player_sprite.set_position(
+            WIDTH // 2, HEIGHT // 2 - self.player_sprite.image.get_height() // 4
+        )
         self.sprites = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
 

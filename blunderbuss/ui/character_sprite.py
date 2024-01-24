@@ -70,5 +70,5 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.rect.top = y + self.offset[1] - height // 2
 
     @property
-    def active_images(self):
+    def active_images(self) -> list[pygame.Surface]:
         return self.images[self.active_animation_name][self.active_direction]
