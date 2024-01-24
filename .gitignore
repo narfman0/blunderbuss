@@ -95,7 +95,6 @@ config.ini
 output/
 .vscode/
 blunderbuss.zip
-taspart.fm2
 bin/
 *_config.*
-data/autosplitter/*.png
+*.tiled-session
