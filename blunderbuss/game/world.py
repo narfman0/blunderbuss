@@ -3,7 +3,7 @@ from pygame.math import Vector2
 from blunderbuss.game.map import Map
 from blunderbuss.game.models import Character, Direction
 
-SPEED = 2
+SPEED = 5
 
 
 class World:
