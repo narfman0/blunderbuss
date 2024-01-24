@@ -23,11 +23,11 @@ class Map:
 
     def get_tile_layer_count(self):
         return len(list(self.tmxdata.visible_tile_layers))
-    
-    def has_colliders(self, tile_x: int, tile_y: int):
+
+    def collides(self, x: float, y: float):
         colliders_present = False
         for layer in range(self.get_tile_layer_count()):
-            tile_props = self.tmxdata.get_tile_properties(tile_x, tile_y, layer) or {}
+            tile_props = self.tmxdata.get_tile_properties(int(x), int(y), layer) or {}
             colliders_present |= "colliders" in tile_props
         return colliders_present
 
