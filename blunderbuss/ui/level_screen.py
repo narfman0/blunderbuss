@@ -1,6 +1,7 @@
 import logging
 
 import pygame
+from pygame.math import Vector2
 
 from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
@@ -14,12 +15,16 @@ CAMERA_OFFSET_X = WIDTH // 2
 CAMERA_OFFSET_Y = HEIGHT // 2
 TILE_X_SCALAR = 256
 TILE_Y_SCALAR = 128
+TILE_DRAW_DISTANCE = 10
 
 
 class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
+        self.red_square_image = pygame.image.load(
+            "data/images/characters/redsquare.png"
+        ).convert_alpha()
         self.player_sprite = CharacterSprite("kenney_male")
         self.player_sprite.set_position(WIDTH // 2, HEIGHT // 2)
         self.sprites = pygame.sprite.Group(self.player_sprite)
@@ -64,14 +69,11 @@ class LevelScreen(Screen):
             direction = Direction.NE
         return direction
 
-    def draw(
-        self,
-        surface: pygame.Surface,
-    ):
-        tile_x_begin = 0
-        tile_x_end = self.world.map.tmxdata.width
-        tile_y_begin = 0
-        tile_y_end = self.world.map.tmxdata.height
+    def draw(self, surface: pygame.Surface):
+        tile_x_begin = max(0, int(self.world.player.position.x) - TILE_DRAW_DISTANCE)
+        tile_x_end = min(self.world.map.tmxdata.width, int(self.world.player.position.x) + TILE_DRAW_DISTANCE)
+        tile_y_begin = max(0, int(self.world.player.position.x) - TILE_DRAW_DISTANCE)
+        tile_y_end = min(self.world.map.tmxdata.height, int(self.world.player.position.y) + TILE_DRAW_DISTANCE)
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
                 for y in range(tile_y_begin, tile_y_end):
@@ -81,13 +83,20 @@ class LevelScreen(Screen):
                             x, y, self.world.player, blit_image
                         )
                         surface.blit(blit_image, blit_coords)
+        # red_square_x = WIDTH // 2 - self.red_square_image.get_width() // 2
+        # red_square_y = HEIGHT // 2 - self.red_square_image.get_height() // 2
+        # surface.blit(self.red_square_image, (red_square_x, red_square_y))
         self.sprites.draw(surface)
 
     @classmethod
     def calculate_tile_screen_coordinates(
         cls, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
     ):
-        camera_lookat = cartesian_to_isometric(camera.position)
+        camera_lookat = cartesian_to_isometric(
+            Vector2(
+                camera.position.x * TILE_X_SCALAR, camera.position.y * TILE_X_SCALAR
+            )
+        )
         x = (
             CAMERA_OFFSET_X
             + (tile_x * TILE_X_SCALAR) // 2

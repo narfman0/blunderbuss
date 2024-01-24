@@ -7,7 +7,7 @@ from blunderbuss.game.models import Direction
 class CharacterSprite(pygame.sprite.Sprite):
     SUBFRAMES_PER_FRAME = 1
 
-    def __init__(self, sprite_name, scale=0.75, offset=(0, 0)):
+    def __init__(self, sprite_name, scale=1, offset=(0, 0)):
         super(CharacterSprite, self).__init__()
         self.sprite_name = sprite_name
         self.offset = offset
