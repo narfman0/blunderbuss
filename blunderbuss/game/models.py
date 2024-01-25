@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 from pygame import Vector2
+import pymunk
 
 
 class Direction(Enum):
@@ -42,7 +43,12 @@ class Direction(Enum):
 
 @dataclass
 class Entity:
-    position: Vector2 = field(default_factory=Vector2)
+    poly: pymunk.Poly = None
+    body: pymunk.Body = field(default_factory=pymunk.Body)
+
+    @property
+    def position(self):
+        return self.body.position
 
 
 @dataclass

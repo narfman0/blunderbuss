@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 
 from pygame.math import Vector2
+import pymunk
 import pytmx
 
-from blunderbuss.util.math import point_in_polygon, cartesian_to_isometric
+from blunderbuss.util.math import cartesian_to_isometric
 
 
 @dataclass
@@ -27,31 +28,29 @@ class Map:
     def get_tile_layer_count(self):
         return len(list(self.tmxdata.visible_tile_layers))
 
-    def collides(self, x: float, y: float):
+    def add_map_geometry_to_space(self, space: pymunk.Space):
         for layer in range(self.get_tile_layer_count()):
-            tile_props = self.tmxdata.get_tile_properties(int(x), int(y), layer) or {}
-            colliders: list = tile_props.get("colliders")
-            if colliders:
-                return True
-                # TODO phase 2 collisions
-                # for collider in colliders:
-                #     vert_x, vert_y = self.points_to_vertxy(collider.points)
-                #     # need to convert world coordinates to tile coordinates or vice versa
-                #     test_x = (x - int(x)) * self.tmxdata.tilewidth
-                #     test_y = (y - int(y)) * self.tmxdata.tileheight
-                #     test_xy = cartesian_to_isometric(Vector2(test_x, test_y))
-                #     if point_in_polygon(vert_x, vert_y, test_xy.x, test_xy.y):
-                #         return True
+            for y in range(self.height):
+                for x in range(self.width):
+                    tile_props = self.tmxdata.get_tile_properties(x, y, layer) or {}
+                    colliders: list = tile_props.get("colliders", [])
+                    if colliders:
+                        for collider in colliders:
+                            # TODO build pymunk stuff here from iso points
+                            # iso_points = list(self.points_to_world(collider.points))
+                            body = pymunk.Body(body_type=pymunk.Body.STATIC)
+                            body.position = (0.5 + x, 0.5 + y)
+                            poly = pymunk.Poly.create_box(body, size=(1, 1))
+                            poly.mass = 10
+                            space.add(body, poly)
         return False
 
-    @classmethod
-    def points_to_vertxy(cls, points: list) -> tuple[list[float], list[float]]:
-        vertx = []
-        verty = []
+    def points_to_world(self, points: list):
         for point in points:
-            vertx.append(point.x)
-            verty.append(point.y)
-        return vertx, verty
+            iso = cartesian_to_isometric(Vector2(point.x, point.y))
+            iso.x /= 128
+            iso.y /= 128
+            yield iso
 
     @property
     def width(self):

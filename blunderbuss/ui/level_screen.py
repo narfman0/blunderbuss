@@ -33,6 +33,7 @@ class LevelScreen(Screen):
     def update(self, dt: float):
         player_move_direction = self.read_player_move_direction()
         self.world.move_player(dt, player_move_direction)
+        self.world.update(dt)
         if player_move_direction:
             if player_move_direction != self.last_player_move_direction:
                 self.player_sprite.move(player_move_direction.to_isometric())
@@ -95,8 +96,8 @@ class LevelScreen(Screen):
     def calculate_tile_screen_coordinates(
         cls, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
     ):
-        cartesian_x = (tile_x - camera.position.x) * TILE_X_SCALAR // 2
-        cartesian_y = (tile_y - camera.position.y) * TILE_X_SCALAR // 2
+        cartesian_x = (tile_x - camera.body.position.x) * TILE_X_SCALAR // 2
+        cartesian_y = (tile_y - camera.body.position.y) * TILE_X_SCALAR // 2
         isometric_coords = cartesian_to_isometric(Vector2(cartesian_x, cartesian_y))
         x = isometric_coords.x + CAMERA_OFFSET_X - image.get_width() // 2
         y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
