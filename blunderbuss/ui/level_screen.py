@@ -19,7 +19,7 @@ class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
-        self.player_sprite = CharacterSprite("kenney_male")
+        self.player_sprite = CharacterSprite("samurai")
         self.player_sprite.set_position(
             WIDTH // 2, HEIGHT // 2 - self.player_sprite.image.get_height() // 4
         )
