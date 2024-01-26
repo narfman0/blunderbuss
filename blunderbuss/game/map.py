@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from functools import lru_cache
 
 from pygame.math import Vector2
 import pymunk
@@ -23,6 +24,7 @@ class Map:
     def get_start_tile(self):
         return map(int, self.tmxdata.properties.get("StartXY").split(","))
 
+    @lru_cache(maxsize=1000000)
     def get_tile_image(self, tile_x: int, tile_y: int, layer: int):
         return self.tmxdata.get_tile_image(tile_x, tile_y, layer)
 
