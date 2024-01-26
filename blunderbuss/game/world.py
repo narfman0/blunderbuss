@@ -12,7 +12,7 @@ NPC_MASS = 10
 class World:
     def __init__(self):
         self.space = pymunk.Space()
-        self.map = Map("level2")
+        self.map = Map("level1")
         tile_x, tile_y = self.map.get_start_tile()
         self.player = Character()
         self.player.body.position = (0.5 + tile_x, 0.5 + tile_y)

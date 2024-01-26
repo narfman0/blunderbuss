@@ -6,6 +6,7 @@ import pytmx
 
 from blunderbuss.util.math import cartesian_to_isometric
 
+USE_COMPLEX_COLLIDERS = False
 
 @dataclass
 class TransitionDetails:
@@ -36,16 +37,25 @@ class Map:
                     colliders: list = tile_props.get("colliders", [])
                     if colliders:
                         for collider in colliders:
-                            # TODO build pymunk stuff here from iso points
-                            # iso_points = list(self.points_to_world(collider.points))
                             body = pymunk.Body(body_type=pymunk.Body.STATIC)
                             body.position = (0.5 + x, 0.5 + y)
-                            poly = pymunk.Poly.create_box(body, size=(1, 1))
-                            poly.mass = 10
-                            space.add(body, poly)
+                            if USE_COMPLEX_COLLIDERS:
+                                points = list(self.points_to_world_linked(collider.points))
+                                segments = []
+                                a = len(points)-1
+                                for b in range(len(points)):
+                                    apt = points[a]
+                                    bpt = points[b]
+                                    segments.append(pymunk.Segment(body, (apt.x, apt.y), (bpt.x, bpt.y), 0.01))
+                                    a = b
+                                space.add(body, *segments)
+                            else:
+                                poly = pymunk.Poly.create_box(body, size=(1, 1))
+                                poly.mass = 10
+                                space.add(body, poly)
         return False
 
-    def points_to_world(self, points: list):
+    def points_to_world_linked(self, points: list):
         for point in points:
             iso = cartesian_to_isometric(Vector2(point.x, point.y))
             iso.x /= 128
