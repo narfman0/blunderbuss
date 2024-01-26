@@ -13,10 +13,6 @@ from blunderbuss.settings import *
 LOGGER = logging.getLogger(__name__)
 CAMERA_OFFSET_X = WIDTH // 2
 CAMERA_OFFSET_Y = HEIGHT // 2
-TILE_X_SCALAR = 256
-TILE_Y_SCALAR = 128
-TILE_DRAW_X_DISTANCE = 2 * WIDTH // TILE_X_SCALAR
-TILE_DRAW_Y_DISTANCE = 2 * HEIGHT // TILE_Y_SCALAR
 
 
 class LevelScreen(Screen):
@@ -29,6 +25,9 @@ class LevelScreen(Screen):
         )
         self.sprites = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
+        
+        self.tile_x_draw_distance = 2 * WIDTH // self.world.map.tmxdata.tilewidth
+        self.tile_y_draw_distance = 2 * HEIGHT // self.world.map.tmxdata.tileheight
 
     def update(self, dt: float):
         player_move_direction = self.read_player_move_direction()
@@ -71,15 +70,15 @@ class LevelScreen(Screen):
         return direction
 
     def draw(self, surface: pygame.Surface):
-        tile_x_begin = max(0, int(self.world.player.position.x) - TILE_DRAW_X_DISTANCE)
+        tile_x_begin = max(0, int(self.world.player.position.x) - self.tile_x_draw_distance)
         tile_x_end = min(
             self.world.map.tmxdata.width,
-            int(self.world.player.position.x) + TILE_DRAW_X_DISTANCE,
+            int(self.world.player.position.x) + self.tile_x_draw_distance,
         )
-        tile_y_begin = max(0, int(self.world.player.position.y) - TILE_DRAW_Y_DISTANCE)
+        tile_y_begin = max(0, int(self.world.player.position.y) - self.tile_y_draw_distance)
         tile_y_end = min(
             self.world.map.tmxdata.height,
-            int(self.world.player.position.y) + TILE_DRAW_Y_DISTANCE,
+            int(self.world.player.position.y) + self.tile_y_draw_distance,
         )
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
@@ -92,12 +91,11 @@ class LevelScreen(Screen):
                         surface.blit(blit_image, blit_coords)
         self.sprites.draw(surface)
 
-    @classmethod
     def calculate_tile_screen_coordinates(
-        cls, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
+        self, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
     ):
-        cartesian_x = (tile_x - camera.body.position.x) * TILE_X_SCALAR // 2
-        cartesian_y = (tile_y - camera.body.position.y) * TILE_X_SCALAR // 2
+        cartesian_x = (tile_x - camera.body.position.x) * self.world.map.tmxdata.tilewidth // 2
+        cartesian_y = (tile_y - camera.body.position.y) * self.world.map.tmxdata.tilewidth // 2
         isometric_coords = cartesian_to_isometric(Vector2(cartesian_x, cartesian_y))
         x = isometric_coords.x + CAMERA_OFFSET_X - image.get_width() // 2
         y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
