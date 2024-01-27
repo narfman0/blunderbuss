@@ -1,14 +1,16 @@
 import pymunk
 
+from blunderbuss.game.models.level import Level
 from blunderbuss.game.map import Map
 from blunderbuss.game.models.character import Character
 from blunderbuss.game.models.direction import Direction
 
 
 class World:
-    def __init__(self):
+    def __init__(self, level_name="1"):
         self.space = pymunk.Space()
-        self.map = Map("level1")
+        self.level = Level.from_yaml_file(f"data/levels/{level_name}.yml")
+        self.map = Map(self.level.tmx_path)
         tile_x, tile_y = self.map.get_start_tile()
         self.player = Character(position=(0.5 + tile_x, 0.5 + tile_y))
         self.space.add(self.player.body, self.player.poly)
