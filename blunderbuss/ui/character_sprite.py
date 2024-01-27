@@ -17,20 +17,33 @@ class CharacterSprite(pygame.sprite.Sprite):
         with open(f"data/images/characters/{sprite_name}/animations.yml") as f:
             animations_yml = yaml.safe_load(f)
 
+        path_to_nonflipped_image: dict[str, pygame.Surface] = {}
+        path_to_flipped_image: dict[str, pygame.Surface] = {}
         self.images: dict[dict[list[pygame.Surface]]] = {}
         for animation_name, direction_list_path_map in animations_yml.items():
             self.images[animation_name] = {}
-            for direction_str, animation_list_path in direction_list_path_map.items():
+            for direction_str, animation_struct in direction_list_path_map.items():
                 direction = Direction[direction_str]
                 animation_direction_images = []
-                for image_path in animation_list_path:
+                for image_path in animation_struct["images"]:
                     path = f"data/images/characters/{sprite_name}/{image_path}"
-                    image = pygame.image.load(path).convert_alpha()
-                    if scale != 1:
-                        width, height = image.get_size()
-                        image = pygame.transform.scale(
-                            image, (int(width * scale), int(height * scale))
-                        )
+                    flipped = animation_struct.get("flipped")
+                    if flipped:
+                        path_image_map = path_to_flipped_image
+                    else:
+                        path_image_map = path_to_nonflipped_image
+                    if path in path_image_map:
+                        image = path_image_map[path]
+                    else:
+                        image = pygame.image.load(path).convert_alpha()
+                        if scale != 1:
+                            width, height = image.get_size()
+                            image = pygame.transform.scale(
+                                image, (int(width * scale), int(height * scale))
+                            )
+                        if flipped:
+                            image = pygame.transform.flip(image, flip_x=True, flip_y=False)
+                        path_image_map[path] = image
                     animation_direction_images.append(image)
                 self.images[animation_name][direction] = animation_direction_images
 
