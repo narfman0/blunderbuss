@@ -6,7 +6,6 @@ from blunderbuss.game.models import Character, Direction
 RUN_FORCE = 25000
 RUNNING_STOP_THRESHOLD = 2
 MAX_VELOCITY = 5
-NPC_MASS = 10
 
 
 class World:
@@ -14,10 +13,7 @@ class World:
         self.space = pymunk.Space()
         self.map = Map("level1")
         tile_x, tile_y = self.map.get_start_tile()
-        self.player = Character()
-        self.player.body.position = (0.5 + tile_x, 0.5 + tile_y)
-        self.player.poly = pymunk.Circle(self.player.body, 1)
-        self.player.poly.mass = NPC_MASS
+        self.player = Character(position=(0.5 + tile_x, 0.5 + tile_y))
         self.space.add(self.player.body, self.player.poly)
         self.map.add_map_geometry_to_space(self.space)
 

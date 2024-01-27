@@ -4,6 +4,7 @@ from enum import Enum
 from pygame import Vector2
 import pymunk
 
+NPC_MASS = 10
 
 class Direction(Enum):
     N = 1
@@ -46,7 +47,13 @@ class Direction(Enum):
 class Character:
     direction: Direction = Direction.S
     poly: pymunk.Poly = None
-    body: pymunk.Body = field(default_factory=pymunk.Body)
+    body: pymunk.Body = None
+
+    def __init__(self, position: tuple[float, float]):
+        self.body = pymunk.Body()
+        self.body.position = position
+        self.poly = pymunk.Circle(self.body, 1)
+        self.poly.mass = NPC_MASS
 
     @property
     def position(self):
