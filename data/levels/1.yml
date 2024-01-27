@@ -1,5 +1,5 @@
 tmx_path: level1
 enemies:
-- x: 17
-  y: 10
+- x: 13
+  y: 13
   character_type: shadow_guardian

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from uuid import UUID, uuid4 as generate_uuid
 
 import pymunk
 
@@ -15,6 +16,7 @@ MAX_VELOCITY = 5
 
 @dataclass
 class Character:
+    uuid: UUID
     facing_direction: Direction = Direction.S
     input_direction: Direction = None
     poly: pymunk.Poly = None
@@ -26,6 +28,7 @@ class Character:
 
     def __init__(self, position: tuple[float, float], character_type: str):
         self.character_type = character_type
+        self.uuid = generate_uuid()
         self.body = pymunk.Body()
         self.body.position = position
         self.poly = pymunk.Circle(self.body, 0.5)
