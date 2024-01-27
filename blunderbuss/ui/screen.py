@@ -1,3 +1,4 @@
+from pygame.event import Event
 from pygame.surface import Surface
 
 
@@ -8,7 +9,7 @@ class Screen:
     def init(self):
         pass
 
-    def update(self, dt: float):
+    def update(self, dt: float, events: list[Event]):
         pass
 
     def draw(self, surface: Surface):

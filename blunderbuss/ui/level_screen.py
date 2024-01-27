@@ -1,6 +1,7 @@
 import logging
 
 import pygame
+from pygame.event import Event
 from pygame.math import Vector2
 
 from blunderbuss.util.math import cartesian_to_isometric
@@ -35,8 +36,8 @@ class LevelScreen(Screen):
             2 * SCREEN_HEIGHT // self.world.map.tmxdata.tileheight
         )
 
-    def update(self, dt: float):
-        if self.read_input_player_dashing():
+    def update(self, dt: float, events: list[Event]):
+        if self.read_input_player_dashing(events):
             if not self.world.player.dashing:
                 self.world.player.dash()
         player_move_direction = self.read_input_player_move_direction()
@@ -129,6 +130,9 @@ class LevelScreen(Screen):
             direction = Direction.NE
         return direction
 
-    def read_input_player_dashing(self):
-        keys = pygame.key.get_pressed()
-        return keys[pygame.K_SPACE]
+    def read_input_player_dashing(self, events: list[Event]) -> bool:
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    return True
+        return False
