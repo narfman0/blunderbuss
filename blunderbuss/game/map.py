@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from functools import lru_cache
 
 from pygame.math import Vector2
@@ -8,13 +7,6 @@ import pytmx
 from blunderbuss.util.math import cartesian_to_isometric
 
 USE_COMPLEX_COLLIDERS = False
-
-
-@dataclass
-class TransitionDetails:
-    destination_area: str
-    destination_x: int
-    destination_y: int
 
 
 class Map:
