@@ -18,16 +18,17 @@ SCREEN_WIDTH = WIDTH // SCREEN_SCALE
 SCREEN_HEIGHT = HEIGHT // SCREEN_SCALE
 CAMERA_OFFSET_X = SCREEN_WIDTH // 2
 CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
+CHARACTER_SPRITE = "samurai"
 
 
 class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
-        self.player_sprite = CharacterSprite("samurai")
+        self.player_sprite = CharacterSprite(CHARACTER_SPRITE)
         self.player_sprite.set_position(
             SCREEN_WIDTH // 2,
-            SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 4,
+            SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 16,
         )
         self.player_sprite_group = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None

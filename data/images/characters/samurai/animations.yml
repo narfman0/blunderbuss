@@ -1,98 +1,90 @@
 idle:
   NE:
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   E:
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   SE:
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   S:
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   SW:
     flipped: True
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   W:
     flipped: True
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   NW:
     flipped: True
     images:
-    - samurai_idle.png 
+    - samurai18.png 
   N:
     flipped: True
     images:
-    - samurai_idle.png
+    - samurai18.png
 run:
   NE:
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   E:
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   SE:
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   S:
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   SW:
     flipped: True
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   W:
     flipped: True
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   NW:
     flipped: True
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
   N:
     flipped: True
     images:
-    - samurai_run1.png 
-    - samurai_run2.png 
-    - samurai_run3.png 
-    - samurai_run4.png 
-    - samurai_run5.png 
-    - samurai_run6.png 
+    - samurai2.png 
+    - samurai3.png 
+    - samurai4.png 
+    - samurai5.png 
+    - samurai6.png 
