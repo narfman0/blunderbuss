@@ -7,7 +7,7 @@ from blunderbuss.game.models import Direction
 class CharacterSprite(pygame.sprite.Sprite):
     SUBFRAMES_PER_FRAME = 1
 
-    def __init__(self, sprite_name, scale=1, offset=(0, 0)):
+    def __init__(self, sprite_name, scale: float = 1, offset=(0, 0)):
         super(CharacterSprite, self).__init__()
         self.sprite_name = sprite_name
         self.offset = offset
@@ -42,7 +42,9 @@ class CharacterSprite(pygame.sprite.Sprite):
                                 image, (int(width * scale), int(height * scale))
                             )
                         if flipped:
-                            image = pygame.transform.flip(image, flip_x=True, flip_y=False)
+                            image = pygame.transform.flip(
+                                image, flip_x=True, flip_y=False
+                            )
                         path_image_map[path] = image
                     animation_direction_images.append(image)
                 self.images[animation_name][direction] = animation_direction_images
