@@ -6,6 +6,7 @@ import pymunk
 
 NPC_MASS = 10
 
+
 class Direction(Enum):
     N = 1
     NE = 2
@@ -40,7 +41,6 @@ class Direction(Enum):
             Direction.W: Direction.NW,
             Direction.NW: Direction.N,
         }[self]
-
 
 
 @dataclass

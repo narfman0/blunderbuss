@@ -42,33 +42,6 @@ class LevelScreen(Screen):
         self.last_player_move_direction = player_move_direction
         self.sprites.update()
 
-    def read_player_move_direction(self):
-        keys = pygame.key.get_pressed()
-        right = keys[pygame.K_RIGHT] or keys[pygame.K_d]
-        left = keys[pygame.K_LEFT] or keys[pygame.K_a]
-        up = keys[pygame.K_UP] or keys[pygame.K_w]
-        down = keys[pygame.K_DOWN] or keys[pygame.K_s]
-        direction = None
-        if down:
-            if right:
-                direction = Direction.E
-            elif left:
-                direction = Direction.S
-            else:
-                direction = Direction.SE
-        elif up:
-            if right:
-                direction = Direction.N
-            elif left:
-                direction = Direction.W
-            else:
-                direction = Direction.NW
-        elif left:
-            direction = Direction.SW
-        elif right:
-            direction = Direction.NE
-        return direction
-
     def draw(self, surface: pygame.Surface):
         tile_x_begin = max(
             0, int(self.world.player.position.x) - self.tile_x_draw_distance
@@ -115,3 +88,30 @@ class LevelScreen(Screen):
         x = isometric_coords.x + CAMERA_OFFSET_X - image.get_width() // 2
         y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
         return (x + xoffset, y + yoffset)
+
+    def read_player_move_direction(self):
+        keys = pygame.key.get_pressed()
+        right = keys[pygame.K_RIGHT] or keys[pygame.K_d]
+        left = keys[pygame.K_LEFT] or keys[pygame.K_a]
+        up = keys[pygame.K_UP] or keys[pygame.K_w]
+        down = keys[pygame.K_DOWN] or keys[pygame.K_s]
+        direction = None
+        if down:
+            if right:
+                direction = Direction.E
+            elif left:
+                direction = Direction.S
+            else:
+                direction = Direction.SE
+        elif up:
+            if right:
+                direction = Direction.N
+            elif left:
+                direction = Direction.W
+            else:
+                direction = Direction.NW
+        elif left:
+            direction = Direction.SW
+        elif right:
+            direction = Direction.NE
+        return direction
