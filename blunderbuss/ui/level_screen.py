@@ -27,7 +27,7 @@ class LevelScreen(Screen):
             SCREEN_WIDTH // 2,
             SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 4,
         )
-        self.sprites = pygame.sprite.Group(self.player_sprite)
+        self.player_sprite_group = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
 
         self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tmxdata.tilewidth
@@ -46,22 +46,24 @@ class LevelScreen(Screen):
         else:
             self.player_sprite.active_animation_name = "idle"
         self.last_player_move_direction = player_move_direction
-        self.sprites.update()
+        self.player_sprite_group.update()
 
     def draw(self, dest_surface: pygame.Surface):
+        player_tile_x = int(self.world.player.position.x)
+        player_tile_y = int(self.world.player.position.y)
         tile_x_begin = max(
-            0, int(self.world.player.position.x) - self.tile_x_draw_distance
+            0, player_tile_x - self.tile_x_draw_distance
         )
         tile_x_end = min(
             self.world.map.tmxdata.width,
-            int(self.world.player.position.x) + self.tile_x_draw_distance,
+            player_tile_x + self.tile_x_draw_distance,
         )
         tile_y_begin = max(
-            0, int(self.world.player.position.y) - self.tile_y_draw_distance
+            0, player_tile_y - self.tile_y_draw_distance
         )
         tile_y_end = min(
             self.world.map.tmxdata.height,
-            int(self.world.player.position.y) + self.tile_y_draw_distance,
+            player_tile_y + self.tile_y_draw_distance,
         )
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for layer in range(self.world.map.get_tile_layer_count()):
@@ -73,7 +75,8 @@ class LevelScreen(Screen):
                             x, y, self.world.player, layer, blit_image
                         )
                         surface.blit(blit_image, blit_coords)
-        self.sprites.draw(surface)
+                    if player_tile_y == y and player_tile_x == x and self.world.map.tmxdata.layers[layer].name == "1f":
+                        self.player_sprite_group.draw(surface)
         dest_surface.blit(pygame.transform.scale2x(surface), dest=(0, 0))
 
     def calculate_tile_screen_coordinates(
