@@ -11,7 +11,7 @@ from blunderbuss.game.models import Direction, Character
 from blunderbuss.settings import *
 
 LOGGER = logging.getLogger(__name__)
-SCREEN_SCALE = 2
+SCREEN_SCALE = 4
 SCREEN_WIDTH = WIDTH // SCREEN_SCALE
 SCREEN_HEIGHT = HEIGHT // SCREEN_SCALE
 CAMERA_OFFSET_X = SCREEN_WIDTH // 2
@@ -77,7 +77,7 @@ class LevelScreen(Screen):
                         surface.blit(blit_image, blit_coords)
                     if player_tile_y == y and player_tile_x == x and self.world.map.tmxdata.layers[layer].name == "1f":
                         self.player_sprite_group.draw(surface)
-        dest_surface.blit(pygame.transform.scale2x(surface), dest=(0, 0))
+        pygame.transform.scale_by(surface, dest_surface=dest_surface, factor=SCREEN_SCALE)
 
     def calculate_tile_screen_coordinates(
         self,
