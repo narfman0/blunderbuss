@@ -12,7 +12,6 @@ TODO
 Need:
 
 * Crisp movement
-* Collisions
 * Enemies
 * Fighting
 * Final boss
