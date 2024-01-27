@@ -4,7 +4,6 @@ from blunderbuss.game.map import Map
 from blunderbuss.game.models import Character, Direction
 
 
-
 class World:
     def __init__(self):
         self.space = pymunk.Space()

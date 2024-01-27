@@ -12,6 +12,7 @@ RUN_FORCE = 25000
 RUNNING_STOP_THRESHOLD = 2
 MAX_VELOCITY = 5
 
+
 class Direction(Enum):
     N = 1
     NE = 2
