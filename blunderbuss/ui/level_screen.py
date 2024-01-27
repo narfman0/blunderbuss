@@ -11,23 +11,29 @@ from blunderbuss.game.models import Direction, Character
 from blunderbuss.settings import *
 
 LOGGER = logging.getLogger(__name__)
-CAMERA_OFFSET_X = WIDTH // 2
-CAMERA_OFFSET_Y = HEIGHT // 2
+SCREEN_SCALE = 2
+SCREEN_WIDTH = WIDTH // SCREEN_SCALE
+SCREEN_HEIGHT = HEIGHT // SCREEN_SCALE
+CAMERA_OFFSET_X = SCREEN_WIDTH // 2
+CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
 
 
 class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
-        self.player_sprite = CharacterSprite("samurai", scale=2)
+        self.player_sprite = CharacterSprite("samurai")
         self.player_sprite.set_position(
-            WIDTH // 2, HEIGHT // 2 - self.player_sprite.image.get_height() // 4
+            SCREEN_WIDTH // 2,
+            SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 4,
         )
         self.sprites = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
 
-        self.tile_x_draw_distance = 2 * WIDTH // self.world.map.tmxdata.tilewidth
-        self.tile_y_draw_distance = 2 * HEIGHT // self.world.map.tmxdata.tileheight
+        self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tmxdata.tilewidth
+        self.tile_y_draw_distance = (
+            2 * SCREEN_HEIGHT // self.world.map.tmxdata.tileheight
+        )
 
     def update(self, dt: float):
         player_move_direction = self.read_player_move_direction()
@@ -42,7 +48,7 @@ class LevelScreen(Screen):
         self.last_player_move_direction = player_move_direction
         self.sprites.update()
 
-    def draw(self, surface: pygame.Surface):
+    def draw(self, dest_surface: pygame.Surface):
         tile_x_begin = max(
             0, int(self.world.player.position.x) - self.tile_x_draw_distance
         )
@@ -57,6 +63,7 @@ class LevelScreen(Screen):
             self.world.map.tmxdata.height,
             int(self.world.player.position.y) + self.tile_y_draw_distance,
         )
+        surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
                 for y in range(tile_y_begin, tile_y_end):
@@ -67,6 +74,7 @@ class LevelScreen(Screen):
                         )
                         surface.blit(blit_image, blit_coords)
         self.sprites.draw(surface)
+        dest_surface.blit(pygame.transform.scale2x(surface), dest=(0, 0))
 
     def calculate_tile_screen_coordinates(
         self,
