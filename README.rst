@@ -11,7 +11,6 @@ TODO
 
 Need:
 
-* Crisp movement
 * Enemies
 * Fighting
 * Final boss
