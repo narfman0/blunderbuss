@@ -1,13 +1,12 @@
 import logging
-import time
 
 import pygame
 
+from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world import World
-from blunderbuss.game.models import Direction
+from blunderbuss.settings import *
 from blunderbuss.ui.screen import ScreenManager
 from blunderbuss.ui.level_screen import LevelScreen
-from blunderbuss.settings import *
 from blunderbuss.util.logging import initialize_logging
 
 LOGGER = logging.getLogger(__name__)

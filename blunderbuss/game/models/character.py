@@ -12,6 +12,7 @@ RUN_FORCE = 25000
 RUNNING_STOP_THRESHOLD = 2
 MAX_VELOCITY = 5
 
+
 @dataclass
 class Character:
     facing_direction: Direction = Direction.S

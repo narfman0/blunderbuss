@@ -20,23 +20,23 @@ class TransitionDetails:
 class Map:
     def __init__(self, area: str):
         self.area = area
-        self.tmxdata = pytmx.load_pygame(f"data/tiled/{area}.tmx")
+        self._tmxdata = pytmx.load_pygame(f"data/tiled/{area}.tmx")
 
     def get_start_tile(self):
-        return map(int, self.tmxdata.properties.get("StartXY").split(","))
+        return map(int, self._tmxdata.properties.get("StartXY").split(","))
 
     @lru_cache(maxsize=None)
     def get_tile_image(self, tile_x: int, tile_y: int, layer: int):
-        return self.tmxdata.get_tile_image(tile_x, tile_y, layer)
+        return self._tmxdata.get_tile_image(tile_x, tile_y, layer)
 
     def get_tile_layer_count(self):
-        return len(list(self.tmxdata.visible_tile_layers))
+        return len(list(self._tmxdata.visible_tile_layers))
 
     def add_map_geometry_to_space(self, space: pymunk.Space):
         for layer in range(self.get_tile_layer_count()):
             for y in range(self.height):
                 for x in range(self.width):
-                    tile_props = self.tmxdata.get_tile_properties(x, y, layer) or {}
+                    tile_props = self._tmxdata.get_tile_properties(x, y, layer) or {}
                     colliders: list = tile_props.get("colliders", [])
                     if colliders:
                         for collider in colliders:
@@ -71,10 +71,24 @@ class Map:
             iso.y /= 128
             yield iso
 
+    def get_layer_name(self, layer: int) -> str:
+        return self._tmxdata.layers[layer].name
+
+    def get_layer_offsets(self, layer: int) -> tuple[int, int]:
+        return self._tmxdata.layers[layer].offsetx, self._tmxdata.layers[layer].offsety
+
     @property
     def width(self):
-        return self.tmxdata.width
+        return self._tmxdata.width
 
     @property
     def height(self):
-        return self.tmxdata.height
+        return self._tmxdata.height
+
+    @property
+    def tile_height(self):
+        return self._tmxdata.tileheight
+
+    @property
+    def tile_width(self):
+        return self._tmxdata.tilewidth

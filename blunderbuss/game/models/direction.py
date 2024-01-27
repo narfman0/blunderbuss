@@ -2,6 +2,7 @@ from enum import Enum
 
 from pygame import Vector2
 
+
 class Direction(Enum):
     N = 1
     NE = 2

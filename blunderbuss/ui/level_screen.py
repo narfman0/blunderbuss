@@ -32,10 +32,8 @@ class LevelScreen(Screen):
         self.player_sprite_group = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
 
-        self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tmxdata.tilewidth
-        self.tile_y_draw_distance = (
-            2 * SCREEN_HEIGHT // self.world.map.tmxdata.tileheight
-        )
+        self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tile_width
+        self.tile_y_draw_distance = 2 * SCREEN_HEIGHT // self.world.map.tile_height
 
     def update(self, dt: float, events: list[Event]):
         if self.read_input_player_dashing(events):
@@ -57,12 +55,12 @@ class LevelScreen(Screen):
         player_tile_y = int(self.world.player.position.y)
         tile_x_begin = max(0, player_tile_x - self.tile_x_draw_distance)
         tile_x_end = min(
-            self.world.map.tmxdata.width,
+            self.world.map.width,
             player_tile_x + self.tile_x_draw_distance,
         )
         tile_y_begin = max(0, player_tile_y - self.tile_y_draw_distance)
         tile_y_end = min(
-            self.world.map.tmxdata.height,
+            self.world.map.height,
             player_tile_y + self.tile_y_draw_distance,
         )
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -78,7 +76,7 @@ class LevelScreen(Screen):
                     if (
                         player_tile_y == y
                         and player_tile_x == x
-                        and self.world.map.tmxdata.layers[layer].name == "1f"
+                        and self.world.map.get_layer_name(layer) == "1f"
                     ):
                         self.player_sprite_group.draw(surface)
         pygame.transform.scale_by(
@@ -93,18 +91,13 @@ class LevelScreen(Screen):
         layer: int,
         image: pygame.Surface,
     ):
-        xoffset = self.world.map.tmxdata.layers[layer].offsetx
-        yoffset = self.world.map.tmxdata.layers[layer].offsety
-        cartesian_x = (
-            (tile_x - camera.body.position.x) * self.world.map.tmxdata.tilewidth // 2
-        )
-        cartesian_y = (
-            (tile_y - camera.body.position.y) * self.world.map.tmxdata.tilewidth // 2
-        )
+        x_offset, y_offset = self.world.map.get_layer_offsets(layer)
+        cartesian_x = (tile_x - camera.body.position.x) * self.world.map.tile_width // 2
+        cartesian_y = (tile_y - camera.body.position.y) * self.world.map.tile_width // 2
         isometric_coords = cartesian_to_isometric(Vector2(cartesian_x, cartesian_y))
         x = isometric_coords.x + CAMERA_OFFSET_X - image.get_width() // 2
         y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
-        return (x + xoffset, y + yoffset)
+        return (x + x_offset, y + y_offset)
 
     def read_input_player_move_direction(self):
         keys = pygame.key.get_pressed()

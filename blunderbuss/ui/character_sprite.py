@@ -1,7 +1,7 @@
 import pygame
 import yaml
 
-from blunderbuss.game.models import Direction
+from blunderbuss.game.models.direction import Direction
 
 
 class CharacterSprite(pygame.sprite.Sprite):
