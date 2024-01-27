@@ -36,9 +36,11 @@ class LevelScreen(Screen):
         )
 
     def update(self, dt: float):
-        player_move_direction = self.read_player_move_direction()
-        self.world.move_player(dt, player_move_direction)
-        self.world.update(dt)
+        if self.read_input_player_dashing():
+            if not self.world.player.dashing:
+                self.world.player.dash()
+        player_move_direction = self.read_input_player_move_direction()
+        self.world.update(dt, player_move_direction)
         if player_move_direction:
             if player_move_direction != self.last_player_move_direction:
                 self.player_sprite.move(player_move_direction.to_isometric())
@@ -100,7 +102,7 @@ class LevelScreen(Screen):
         y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
         return (x + xoffset, y + yoffset)
 
-    def read_player_move_direction(self):
+    def read_input_player_move_direction(self):
         keys = pygame.key.get_pressed()
         right = keys[pygame.K_RIGHT] or keys[pygame.K_d]
         left = keys[pygame.K_LEFT] or keys[pygame.K_a]
@@ -126,3 +128,7 @@ class LevelScreen(Screen):
         elif right:
             direction = Direction.NE
         return direction
+
+    def read_input_player_dashing(self):
+        keys = pygame.key.get_pressed()
+        return keys[pygame.K_SPACE]

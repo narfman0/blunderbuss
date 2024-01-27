@@ -4,8 +4,11 @@ from enum import Enum
 from pygame import Vector2
 import pymunk
 
-NPC_MASS = 10
-
+CHARACTER_MASS = 10
+DASH_DURATION = 2.0
+RUN_FORCE = 25000
+RUNNING_STOP_THRESHOLD = 2
+MAX_VELOCITY = 5
 
 class Direction(Enum):
     N = 1
@@ -45,15 +48,44 @@ class Direction(Enum):
 
 @dataclass
 class Character:
-    direction: Direction = Direction.S
+    facing_direction: Direction = Direction.S
+    input_direction: Direction = None
     poly: pymunk.Poly = None
     body: pymunk.Body = None
+    dashing: bool = False
+    dash_time_remaining: float = 0
 
     def __init__(self, position: tuple[float, float]):
         self.body = pymunk.Body()
         self.body.position = position
         self.poly = pymunk.Circle(self.body, 0.5)
-        self.poly.mass = NPC_MASS
+        self.poly.mass = CHARACTER_MASS
+
+    def update(self, dt: float):
+        if self.dashing:
+            self.dash_time_remaining -= dt
+            if self.dash_time_remaining <= 0:
+                self.dashing = 0
+                self.dash_time_remaining = 0
+        if self.input_direction:
+            self.facing_direction = self.input_direction
+            dpos = self.input_direction.to_vector() * RUN_FORCE * dt
+            self.body.apply_force_at_local_point(force=(dpos.x, dpos.y))
+            if self.body.velocity.length > MAX_VELOCITY:
+                self.body.velocity = self.body.velocity.scale_to_length(
+                    MAX_VELOCITY
+                )
+        else:
+            if self.body.velocity.get_length_sqrd() > RUNNING_STOP_THRESHOLD:
+                self.body.velocity = self.body.velocity.scale_to_length(
+                    0.7 * self.body.velocity.length
+                )
+            else:
+                self.body.velocity = (0, 0)
+
+    def dash(self):
+        self.dashing = True
+        self.dash_time_remaining = DASH_DURATION
 
     @property
     def position(self):
