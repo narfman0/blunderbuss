@@ -27,12 +27,16 @@ class World:
             dpos = direction.to_vector() * RUN_FORCE * dt
             self.player.body.apply_force_at_local_point(force=(dpos.x, dpos.y))
             if self.player.body.velocity.length > MAX_VELOCITY:
-                self.player.body.velocity = self.player.body.velocity.scale_to_length(MAX_VELOCITY)
+                self.player.body.velocity = self.player.body.velocity.scale_to_length(
+                    MAX_VELOCITY
+                )
         else:
             if self.player.body.velocity.get_length_sqrd() > RUNNING_STOP_THRESHOLD:
-                self.player.body.velocity = self.player.body.velocity.scale_to_length(0.7*self.player.body.velocity.length)
+                self.player.body.velocity = self.player.body.velocity.scale_to_length(
+                    0.7 * self.player.body.velocity.length
+                )
             else:
-                self.player.body.velocity = (0,0)
+                self.player.body.velocity = (0, 0)
 
     def update(self, dt: float):
         self.space.step(dt)

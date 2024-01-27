@@ -9,6 +9,7 @@ from blunderbuss.util.math import cartesian_to_isometric
 
 USE_COMPLEX_COLLIDERS = False
 
+
 @dataclass
 class TransitionDetails:
     destination_area: str
@@ -24,7 +25,7 @@ class Map:
     def get_start_tile(self):
         return map(int, self.tmxdata.properties.get("StartXY").split(","))
 
-    @lru_cache(maxsize=1000000)
+    @lru_cache(maxsize=None)
     def get_tile_image(self, tile_x: int, tile_y: int, layer: int):
         return self.tmxdata.get_tile_image(tile_x, tile_y, layer)
 
@@ -42,13 +43,19 @@ class Map:
                             body = pymunk.Body(body_type=pymunk.Body.STATIC)
                             body.position = (0.5 + x, 0.5 + y)
                             if USE_COMPLEX_COLLIDERS:
-                                points = list(self.points_to_world_linked(collider.points))
+                                points = list(
+                                    self.points_to_world_linked(collider.points)
+                                )
                                 segments = []
-                                a = len(points)-1
+                                a = len(points) - 1
                                 for b in range(len(points)):
                                     apt = points[a]
                                     bpt = points[b]
-                                    segments.append(pymunk.Segment(body, (apt.x, apt.y), (bpt.x, bpt.y), 0.01))
+                                    segments.append(
+                                        pymunk.Segment(
+                                            body, (apt.x, apt.y), (bpt.x, bpt.y), 0.01
+                                        )
+                                    )
                                     a = b
                                 space.add(body, *segments)
                             else:

@@ -25,7 +25,7 @@ class LevelScreen(Screen):
         )
         self.sprites = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
-        
+
         self.tile_x_draw_distance = 2 * WIDTH // self.world.map.tmxdata.tilewidth
         self.tile_y_draw_distance = 2 * HEIGHT // self.world.map.tmxdata.tileheight
 
@@ -70,12 +70,16 @@ class LevelScreen(Screen):
         return direction
 
     def draw(self, surface: pygame.Surface):
-        tile_x_begin = max(0, int(self.world.player.position.x) - self.tile_x_draw_distance)
+        tile_x_begin = max(
+            0, int(self.world.player.position.x) - self.tile_x_draw_distance
+        )
         tile_x_end = min(
             self.world.map.tmxdata.width,
             int(self.world.player.position.x) + self.tile_x_draw_distance,
         )
-        tile_y_begin = max(0, int(self.world.player.position.y) - self.tile_y_draw_distance)
+        tile_y_begin = max(
+            0, int(self.world.player.position.y) - self.tile_y_draw_distance
+        )
         tile_y_end = min(
             self.world.map.tmxdata.height,
             int(self.world.player.position.y) + self.tile_y_draw_distance,
@@ -86,17 +90,28 @@ class LevelScreen(Screen):
                     blit_image = self.world.map.get_tile_image(x, y, layer)
                     if blit_image:
                         blit_coords = self.calculate_tile_screen_coordinates(
-                            x, y, self.world.player, blit_image
+                            x, y, self.world.player, layer, blit_image
                         )
                         surface.blit(blit_image, blit_coords)
         self.sprites.draw(surface)
 
     def calculate_tile_screen_coordinates(
-        self, tile_x: int, tile_y: int, camera: Entity, image: pygame.Surface
+        self,
+        tile_x: int,
+        tile_y: int,
+        camera: Entity,
+        layer: int,
+        image: pygame.Surface,
     ):
-        cartesian_x = (tile_x - camera.body.position.x) * self.world.map.tmxdata.tilewidth // 2
-        cartesian_y = (tile_y - camera.body.position.y) * self.world.map.tmxdata.tilewidth // 2
+        xoffset = self.world.map.tmxdata.layers[layer].offsetx
+        yoffset = self.world.map.tmxdata.layers[layer].offsety
+        cartesian_x = (
+            (tile_x - camera.body.position.x) * self.world.map.tmxdata.tilewidth // 2
+        )
+        cartesian_y = (
+            (tile_y - camera.body.position.y) * self.world.map.tmxdata.tilewidth // 2
+        )
         isometric_coords = cartesian_to_isometric(Vector2(cartesian_x, cartesian_y))
         x = isometric_coords.x + CAMERA_OFFSET_X - image.get_width() // 2
         y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
-        return (x, y)
+        return (x + xoffset, y + yoffset)
