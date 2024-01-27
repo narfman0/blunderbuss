@@ -41,16 +41,13 @@ class Direction(Enum):
         }[self]
 
 
+
 @dataclass
-class Entity:
+class Character:
+    direction: Direction = Direction.S
     poly: pymunk.Poly = None
     body: pymunk.Body = field(default_factory=pymunk.Body)
 
     @property
     def position(self):
         return self.body.position
-
-
-@dataclass
-class Character(Entity):
-    direction: Direction = Direction.S

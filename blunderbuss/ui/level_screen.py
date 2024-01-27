@@ -7,7 +7,7 @@ from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.screen import Screen, ScreenManager
 from blunderbuss.game.world import World
-from blunderbuss.game.models import Direction, Entity
+from blunderbuss.game.models import Direction, Character
 from blunderbuss.settings import *
 
 LOGGER = logging.getLogger(__name__)
@@ -99,7 +99,7 @@ class LevelScreen(Screen):
         self,
         tile_x: int,
         tile_y: int,
-        camera: Entity,
+        camera: Character,
         layer: int,
         image: pygame.Surface,
     ):
