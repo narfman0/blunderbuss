@@ -22,8 +22,10 @@ class Character:
     dashing: bool = False
     dash_time_remaining: float = 0
     dash_cooldown_remaining: float = 0
+    character_type: str = None
 
-    def __init__(self, position: tuple[float, float]):
+    def __init__(self, position: tuple[float, float], character_type: str):
+        self.character_type = character_type
         self.body = pymunk.Body()
         self.body.position = position
         self.poly = pymunk.Circle(self.body, 0.5)
