@@ -1,7 +1,8 @@
 import pymunk
 
 from blunderbuss.game.map import Map
-from blunderbuss.game.models import Character, Direction
+from blunderbuss.game.models.character import Character
+from blunderbuss.game.models.direction import Direction
 
 
 class World:

@@ -7,8 +7,9 @@ from pygame.math import Vector2
 from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.screen import Screen, ScreenManager
+from blunderbuss.game.models.character import Character
+from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world import World
-from blunderbuss.game.models import Direction, Character
 from blunderbuss.settings import *
 
 LOGGER = logging.getLogger(__name__)
