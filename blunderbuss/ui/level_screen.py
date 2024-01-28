@@ -39,23 +39,17 @@ class LevelScreen(Screen):
             SCREEN_WIDTH // 2 - self.player_sprite.image.get_width() // 2,
             SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 2,
         )
-        self.character_structs = [
-            CharacterStruct(
+        self.player_struct = CharacterStruct(
                 self.world.player,
                 self.player_sprite,
                 pygame.sprite.Group(self.player_sprite),
                 None,
             )
+        self.character_structs = [
+            self.player_struct
         ]
-        self.last_player_move_direction = None
-        self.enemy_uuid_to_sprite_map: dict[UUID, CharacterSprite] = {}
-        self.enemy_uuid_to_enemy_map: dict[UUID, Character] = {}
-        self.enemy_uuid_to_last_movement_direction_map: dict[UUID, Direction] = {}
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
-            self.enemy_uuid_to_sprite_map[enemy.uuid] = sprite
-            self.enemy_uuid_to_enemy_map[enemy.uuid] = enemy
-            self.enemy_uuid_to_last_movement_direction_map[enemy.uuid] = None
             self.character_structs.append(CharacterStruct(enemy, sprite, pygame.sprite.Group(sprite), None))
 
         self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tile_width
@@ -69,35 +63,30 @@ class LevelScreen(Screen):
         self.world.update(dt, player_move_direction)
 
         if player_move_direction:
-            if player_move_direction != self.last_player_move_direction:
+            if player_move_direction != self.player_struct.last_movement_direction:
                 self.player_sprite.move(player_move_direction.to_isometric())
             self.player_sprite.active_animation_name = "run"
         else:
             self.player_sprite.active_animation_name = "idle"
-        self.last_player_move_direction = player_move_direction
+        self.player_struct.last_movement_direction = player_move_direction
 
-        for (
-            enemy_uuid,
-            last_direction,
-        ) in self.enemy_uuid_to_last_movement_direction_map.items():
-            enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
-            sprite = self.enemy_uuid_to_sprite_map[enemy_uuid]
+        for character_struct in self.character_structs:
+            enemy = character_struct.character
+            if enemy is self.world.player:
+                continue
+            sprite = character_struct.sprite
             if enemy.facing_direction:
-                if enemy.facing_direction != last_direction:
+                if enemy.facing_direction != character_struct.last_movement_direction:
                     sprite.move(enemy.facing_direction.to_isometric())
                 sprite.active_animation_name = "run"
             else:
                 sprite.active_animation_name = "idle"
-            self.enemy_uuid_to_last_movement_direction_map[
-                enemy_uuid
-            ] = enemy.facing_direction
-
-        for enemy_uuid, sprite in self.enemy_uuid_to_sprite_map.items():
-            enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
+            character_struct.last_movement_direction = enemy.facing_direction
             x, y = self.calculate_draw_coordinates(
                 enemy.position.x, enemy.position.y, None, sprite.image
             )
             sprite.set_position(x, y)
+
         for character_struct in self.character_structs:
             character_struct.sprite_group.update()
 
