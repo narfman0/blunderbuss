@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 from uuid import UUID
 
 import pygame
@@ -21,6 +22,14 @@ CAMERA_OFFSET_X = SCREEN_WIDTH // 2
 CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
 
 
+@dataclass
+class CharacterStruct:
+    character: Character
+    sprite: CharacterSprite
+    sprite_group: pygame.sprite.Group
+    last_movement_direction: Direction
+
+
 class LevelScreen(Screen):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
@@ -30,18 +39,24 @@ class LevelScreen(Screen):
             SCREEN_WIDTH // 2 - self.player_sprite.image.get_width() // 2,
             SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 2,
         )
-        self.player_sprite_group = pygame.sprite.Group(self.player_sprite)
+        self.character_structs = [
+            CharacterStruct(
+                self.world.player,
+                self.player_sprite,
+                pygame.sprite.Group(self.player_sprite),
+                None,
+            )
+        ]
         self.last_player_move_direction = None
         self.enemy_uuid_to_sprite_map: dict[UUID, CharacterSprite] = {}
         self.enemy_uuid_to_enemy_map: dict[UUID, Character] = {}
         self.enemy_uuid_to_last_movement_direction_map: dict[UUID, Direction] = {}
-        self.enemy_sprite_group = pygame.sprite.Group()
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
             self.enemy_uuid_to_sprite_map[enemy.uuid] = sprite
             self.enemy_uuid_to_enemy_map[enemy.uuid] = enemy
             self.enemy_uuid_to_last_movement_direction_map[enemy.uuid] = None
-            self.enemy_sprite_group.add(sprite)
+            self.character_structs.append(CharacterStruct(enemy, sprite, pygame.sprite.Group(sprite), None))
 
         self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tile_width
         self.tile_y_draw_distance = 2 * SCREEN_HEIGHT // self.world.map.tile_height
@@ -61,7 +76,10 @@ class LevelScreen(Screen):
             self.player_sprite.active_animation_name = "idle"
         self.last_player_move_direction = player_move_direction
 
-        for enemy_uuid, last_direction in self.enemy_uuid_to_last_movement_direction_map.items():
+        for (
+            enemy_uuid,
+            last_direction,
+        ) in self.enemy_uuid_to_last_movement_direction_map.items():
             enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
             sprite = self.enemy_uuid_to_sprite_map[enemy_uuid]
             if enemy.facing_direction:
@@ -70,9 +88,18 @@ class LevelScreen(Screen):
                 sprite.active_animation_name = "run"
             else:
                 sprite.active_animation_name = "idle"
-            self.enemy_uuid_to_last_movement_direction_map[enemy_uuid] = enemy.facing_direction
-        self.player_sprite_group.update()
-        self.enemy_sprite_group.update()
+            self.enemy_uuid_to_last_movement_direction_map[
+                enemy_uuid
+            ] = enemy.facing_direction
+
+        for enemy_uuid, sprite in self.enemy_uuid_to_sprite_map.items():
+            enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
+            x, y = self.calculate_draw_coordinates(
+                enemy.position.x, enemy.position.y, None, sprite.image
+            )
+            sprite.set_position(x, y)
+        for character_struct in self.character_structs:
+            character_struct.sprite_group.update()
 
     def draw(self, dest_surface: pygame.Surface):
         player_tile_x = int(self.world.player.position.x)
@@ -97,19 +124,12 @@ class LevelScreen(Screen):
                             x, y, layer, blit_image
                         )
                         surface.blit(blit_image, blit_coords)
-                    if (
-                        player_tile_y == y
-                        and player_tile_x == x
-                        and self.world.map.get_layer_name(layer) == "1f"
-                    ):
-                        self.player_sprite_group.draw(surface)
-        for enemy_uuid, sprite in self.enemy_uuid_to_sprite_map.items():
-            enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
-            x, y = self.calculate_draw_coordinates(
-                enemy.position.x, enemy.position.y, None, sprite.image
-            )
-            sprite.set_position(x, y)
-            self.enemy_sprite_group.draw(surface)
+                    if self.world.map.get_layer_name(layer) == "1f":
+                        for character_struct in self.character_structs:
+                            char_tile_y = int(character_struct.character.position.y)
+                            char_tile_x = int(character_struct.character.position.x)
+                            if char_tile_y == y and char_tile_x == x:
+                                character_struct.sprite_group.draw(surface)
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
