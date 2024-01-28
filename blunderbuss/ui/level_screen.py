@@ -61,29 +61,20 @@ class LevelScreen(Screen):
                 self.world.player.dash()
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction)
-
-        if player_move_direction:
-            if player_move_direction != self.player_struct.last_movement_direction:
-                self.player_sprite.move(player_move_direction.to_isometric())
-            self.player_sprite.active_animation_name = "run"
-        else:
-            self.player_sprite.active_animation_name = "idle"
-        self.player_struct.last_movement_direction = player_move_direction
-
+        self.world.player.facing_direction = player_move_direction
+ 
         for character_struct in self.character_structs:
-            enemy = character_struct.character
-            if enemy is self.world.player:
-                continue
+            character = character_struct.character
             sprite = character_struct.sprite
-            if enemy.facing_direction:
-                if enemy.facing_direction != character_struct.last_movement_direction:
-                    sprite.move(enemy.facing_direction.to_isometric())
+            if character.facing_direction:
+                if character.facing_direction != character_struct.last_movement_direction:
+                    sprite.move(character.facing_direction.to_isometric())
                 sprite.active_animation_name = "run"
             else:
                 sprite.active_animation_name = "idle"
-            character_struct.last_movement_direction = enemy.facing_direction
+            character_struct.last_movement_direction = character.facing_direction
             x, y = self.calculate_draw_coordinates(
-                enemy.position.x, enemy.position.y, None, sprite.image
+                character.position.x, character.position.y, None, sprite.image
             )
             sprite.set_position(x, y)
 
