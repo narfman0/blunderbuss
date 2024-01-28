@@ -78,7 +78,7 @@ class LevelScreen(Screen):
                 for y in range(tile_y_begin, tile_y_end):
                     blit_image = self.world.map.get_tile_image(x, y, layer)
                     if blit_image:
-                        blit_coords = self.calculate_tile_screen_coordinates(
+                        blit_coords = self.calculate_draw_coordinates(
                             x, y, layer, blit_image
                         )
                         surface.blit(blit_image, blit_coords)
@@ -90,25 +90,27 @@ class LevelScreen(Screen):
                         self.player_sprite_group.draw(surface)
         for enemy_uuid, sprite in self.enemy_uuid_to_sprite_map.items():
             enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
-            x, y = self.calculate_tile_screen_coordinates(
-                enemy.position.x, enemy.position.y, layer, sprite.image
+            x, y = self.calculate_draw_coordinates(
+                enemy.position.x, enemy.position.y, None, sprite.image
             )
             # sprite.set_position(x, y) # TODO ideally we'd set&draw the sprite directly?
-            #self.enemy_sprite_group.draw(surface)
-            surface.blit(sprite.image, (x, y + 32))
+            # self.enemy_sprite_group.draw(surface)
+            surface.blit(sprite.image, (x, y))
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
 
-    def calculate_tile_screen_coordinates(
+    def calculate_draw_coordinates(
         self,
         x: float,
         y: float,
-        layer: int,
+        layer: int | None,
         image: pygame.Surface,
     ):
         camera_pos = self.world.player.body.position
-        x_offset, y_offset = self.world.map.get_layer_offsets(layer)
+        x_offset, y_offset = (
+            self.world.map.get_layer_offsets(layer) if layer is not None else (0, 0)
+        )
         cartesian_x = (x - camera_pos.x) * self.world.map.tile_width // 2
         cartesian_y = (y - camera_pos.y) * self.world.map.tile_width // 2
         isometric_coords = cartesian_to_isometric(Vector2(cartesian_x, cartesian_y))
