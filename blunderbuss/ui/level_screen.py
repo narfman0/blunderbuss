@@ -34,11 +34,13 @@ class LevelScreen(Screen):
         self.last_player_move_direction = None
         self.enemy_uuid_to_sprite_map: dict[UUID, CharacterSprite] = {}
         self.enemy_uuid_to_enemy_map: dict[UUID, Character] = {}
+        self.enemy_uuid_to_last_movement_direction_map: dict[UUID, Direction] = {}
         self.enemy_sprite_group = pygame.sprite.Group()
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
             self.enemy_uuid_to_sprite_map[enemy.uuid] = sprite
             self.enemy_uuid_to_enemy_map[enemy.uuid] = enemy
+            self.enemy_uuid_to_last_movement_direction_map[enemy.uuid] = None
             self.enemy_sprite_group.add(sprite)
 
         self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tile_width
@@ -50,6 +52,7 @@ class LevelScreen(Screen):
                 self.world.player.dash()
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction)
+
         if player_move_direction:
             if player_move_direction != self.last_player_move_direction:
                 self.player_sprite.move(player_move_direction.to_isometric())
@@ -57,6 +60,17 @@ class LevelScreen(Screen):
         else:
             self.player_sprite.active_animation_name = "idle"
         self.last_player_move_direction = player_move_direction
+
+        for enemy_uuid, last_direction in self.enemy_uuid_to_last_movement_direction_map.items():
+            enemy = self.enemy_uuid_to_enemy_map[enemy_uuid]
+            sprite = self.enemy_uuid_to_sprite_map[enemy_uuid]
+            if enemy.facing_direction:
+                if enemy.facing_direction != last_direction:
+                    sprite.move(enemy.facing_direction.to_isometric())
+                sprite.active_animation_name = "run"
+            else:
+                sprite.active_animation_name = "idle"
+            self.enemy_uuid_to_last_movement_direction_map[enemy_uuid] = enemy.facing_direction
         self.player_sprite_group.update()
         self.enemy_sprite_group.update()
 
