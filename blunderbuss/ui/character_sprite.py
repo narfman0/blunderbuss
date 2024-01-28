@@ -79,9 +79,8 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.image = self.active_images[self.index]
 
     def set_position(self, x, y):
-        width, height = self.image.get_size()
-        self.rect.left = x + self.offset[0] - width // 2
-        self.rect.top = y + self.offset[1] - height // 2
+        self.rect.left = x + self.offset[0]
+        self.rect.top = y + self.offset[1]
 
     @property
     def active_images(self) -> list[pygame.Surface]:

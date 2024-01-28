@@ -1,4 +1,5 @@
 import logging
+from uuid import UUID
 
 import pygame
 from pygame.event import Event
@@ -26,13 +27,13 @@ class LevelScreen(Screen):
         self.world = world
         self.player_sprite = CharacterSprite(world.player.character_type)
         self.player_sprite.set_position(
-            SCREEN_WIDTH // 2,
-            SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 16,
+            SCREEN_WIDTH // 2 - self.player_sprite.image.get_width() // 2,
+            SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 2,
         )
         self.player_sprite_group = pygame.sprite.Group(self.player_sprite)
         self.last_player_move_direction = None
-        self.enemy_uuid_to_sprite_map = {}
-        self.enemy_uuid_to_enemy_map = {}
+        self.enemy_uuid_to_sprite_map: dict[UUID, CharacterSprite] = {}
+        self.enemy_uuid_to_enemy_map: dict[UUID, Character] = {}
         self.enemy_sprite_group = pygame.sprite.Group()
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
@@ -93,9 +94,8 @@ class LevelScreen(Screen):
             x, y = self.calculate_draw_coordinates(
                 enemy.position.x, enemy.position.y, None, sprite.image
             )
-            # sprite.set_position(x, y) # TODO ideally we'd set&draw the sprite directly?
-            # self.enemy_sprite_group.draw(surface)
-            surface.blit(sprite.image, (x, y))
+            sprite.set_position(x, y)
+            self.enemy_sprite_group.draw(surface)
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
