@@ -23,12 +23,12 @@ class World:
         # initialize enemies
         self.enemies: list[Character] = []
         for level_enemy in self.level.enemies:
-            self.enemies.append(
-                Character(
-                    position=(0.5 + level_enemy.x, 0.5 + level_enemy.y),
-                    character_type=level_enemy.character_type,
-                )
+            enemy = Character(
+                position=(0.5 + level_enemy.x, 0.5 + level_enemy.y),
+                character_type=level_enemy.character_type,
             )
+            self.enemies.append(enemy)
+            self.space.add(enemy.body, enemy.poly)
 
     def update(self, dt: float, player_movement_direction: Direction):
         self.player.input_direction = player_movement_direction
