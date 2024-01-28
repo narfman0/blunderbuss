@@ -33,10 +33,12 @@ class LevelScreen(Screen):
         self.last_player_move_direction = None
         self.enemy_uuid_to_sprite_map = {}
         self.enemy_uuid_to_enemy_map = {}
+        self.enemy_sprite_group = pygame.sprite.Group()
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
             self.enemy_uuid_to_sprite_map[enemy.uuid] = sprite
             self.enemy_uuid_to_enemy_map[enemy.uuid] = enemy
+            self.enemy_sprite_group.add(sprite)
 
         self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tile_width
         self.tile_y_draw_distance = 2 * SCREEN_HEIGHT // self.world.map.tile_height
@@ -55,8 +57,7 @@ class LevelScreen(Screen):
             self.player_sprite.active_animation_name = "idle"
         self.last_player_move_direction = player_move_direction
         self.player_sprite_group.update()
-        for character_sprite in self.enemy_uuid_to_sprite_map.values():
-            character_sprite.update()
+        self.enemy_sprite_group.update()
 
     def draw(self, dest_surface: pygame.Surface):
         player_tile_x = int(self.world.player.position.x)
@@ -92,7 +93,8 @@ class LevelScreen(Screen):
             x, y = self.calculate_tile_screen_coordinates(
                 enemy.position.x, enemy.position.y, layer, sprite.image
             )
-            # sprite.set_position(x, y) # ideally we'd set&draw the sprite directly?
+            # sprite.set_position(x, y) # TODO ideally we'd set&draw the sprite directly?
+            #self.enemy_sprite_group.draw(surface)
             surface.blit(sprite.image, (x, y + 32))
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
