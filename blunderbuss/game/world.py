@@ -2,7 +2,7 @@ import pymunk
 
 from blunderbuss.game.models.level import Level
 from blunderbuss.game.map import Map
-from blunderbuss.game.models.character import Character
+from blunderbuss.game.models.character import Character, NPC
 from blunderbuss.game.models.direction import Direction
 
 
@@ -21,9 +21,9 @@ class World:
         self.space.add(self.player.body, self.player.poly)
 
         # initialize enemies
-        self.enemies: list[Character] = []
+        self.enemies: list[NPC] = []
         for level_enemy in self.level.enemies:
-            enemy = Character(
+            enemy = NPC(
                 position=(0.5 + level_enemy.x, 0.5 + level_enemy.y),
                 character_type=level_enemy.character_type,
             )
@@ -31,8 +31,9 @@ class World:
             self.space.add(enemy.body, enemy.poly)
 
     def update(self, dt: float, player_movement_direction: Direction):
-        self.player.input_direction = player_movement_direction
+        self.player.movement_direction = player_movement_direction
         self.player.update(dt)
         for enemy in self.enemies:
+            enemy.ai(dt, self.player)
             enemy.update(dt)
         self.space.step(dt)

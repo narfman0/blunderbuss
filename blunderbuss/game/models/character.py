@@ -18,7 +18,7 @@ MAX_VELOCITY = 5
 class Character:
     uuid: UUID
     facing_direction: Direction = Direction.S
-    input_direction: Direction = None
+    movement_direction: Direction = None
     poly: pymunk.Poly = None
     body: pymunk.Body = None
     dashing: bool = False
@@ -45,10 +45,10 @@ class Character:
             self.dash_cooldown_remaining -= dt
             if self.dash_cooldown_remaining <= 0:
                 self.dash_cooldown_remaining = 0
-        if self.input_direction:
-            self.facing_direction = self.input_direction
+        if self.movement_direction:
+            self.facing_direction = self.movement_direction
             dash_scalar = DASH_SCALAR if self.dashing else 1.0
-            dpos = self.input_direction.to_vector() * RUN_FORCE * dash_scalar * dt
+            dpos = self.movement_direction.to_vector() * RUN_FORCE * dash_scalar * dt
             self.body.apply_force_at_local_point(force=(dpos.x, dpos.y))
             if self.body.velocity.length > MAX_VELOCITY * dash_scalar:
                 self.body.velocity = self.body.velocity.scale_to_length(
@@ -70,3 +70,8 @@ class Character:
     @property
     def position(self):
         return self.body.position
+
+
+class NPC(Character):
+    def ai(self, dt: float, player: Character):
+        self.movement_direction = Direction.direction_to(self.position, player.position)

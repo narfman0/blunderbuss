@@ -1,4 +1,5 @@
 from enum import Enum
+from math import atan2, pi
 
 from pygame import Vector2
 
@@ -37,3 +38,28 @@ class Direction(Enum):
             Direction.W: Direction.NW,
             Direction.NW: Direction.N,
         }[self]
+
+    @classmethod
+    def direction_to(cls, origin: Vector2, target: Vector2):
+        """Get direction to position b from position a"""
+        angle = atan2(target.y - origin.y, target.x - origin.x)
+        angle += pi/8 # this makes things a bit more concise
+        if angle >= 0:
+            if angle < pi / 4:
+                result = Direction.E
+            elif angle < pi / 2:
+                result = Direction.SE
+            elif angle < 3 * pi / 4:
+                result = Direction.S
+            else:
+                result = Direction.SW
+        else:
+            if angle > -pi / 4:
+                result = Direction.NE
+            elif angle > -pi / 2:
+                result = Direction.N
+            elif angle > -3 * pi / 4:
+                result = Direction.NW
+            else:
+                result = Direction.W
+        return result
