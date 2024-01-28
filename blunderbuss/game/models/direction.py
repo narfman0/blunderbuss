@@ -43,7 +43,7 @@ class Direction(Enum):
     def direction_to(cls, origin: Vector2, target: Vector2):
         """Get direction to position b from position a"""
         angle = atan2(target.y - origin.y, target.x - origin.x)
-        angle += pi/8 # this makes things a bit more concise
+        angle += pi / 8  # this makes things a bit more concise
         if angle >= 0:
             if angle < pi / 4:
                 result = Direction.E

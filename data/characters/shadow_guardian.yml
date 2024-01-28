@@ -1,0 +1,7 @@
+mass: 10
+dash_cooldown: 0.25
+dash_duration: 0.25
+dash_scalar: 3
+run_force: 5000
+running_stop_threshold: 1
+max_velocity: 1
