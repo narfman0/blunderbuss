@@ -67,12 +67,11 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.index = 0
 
     def update(self):
-        if self.moving:
-            if self.subframe == CharacterSprite.SUBFRAMES_PER_FRAME:
-                self.index += 1
-                self.subframe = 0
-            else:
-                self.subframe += 1
+        if self.subframe == CharacterSprite.SUBFRAMES_PER_FRAME:
+            self.index += 1
+            self.subframe = 0
+        else:
+            self.subframe += 1
 
         if self.index >= len(self.active_images):
             self.index = 0
