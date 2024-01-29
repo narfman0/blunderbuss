@@ -63,13 +63,20 @@ class Map:
             iso.y /= 128
             yield iso
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=32)
     def get_layer_name(self, layer: int) -> str:
         return self._tmxdata.layers[layer].name
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=32)
     def get_layer_offsets(self, layer: int) -> tuple[int, int]:
         return self._tmxdata.layers[layer].offsetx, self._tmxdata.layers[layer].offsety
+
+    @lru_cache(maxsize=1)
+    def get_1f_layer_id(self) -> int:
+        for layer in self._tmxdata.layers:
+            if layer.name == "1f":
+                return layer.id
+        return None
 
     @property
     def width(self):

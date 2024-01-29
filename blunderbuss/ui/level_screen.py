@@ -1,6 +1,5 @@
 import logging
 from dataclasses import dataclass
-from uuid import UUID
 
 import pygame
 from pygame.event import Event
@@ -8,6 +7,7 @@ from pygame.math import Vector2
 
 from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
+from blunderbuss.ui.renderables import *
 from blunderbuss.ui.screen import Screen, ScreenManager
 from blunderbuss.game.models.character import Character
 from blunderbuss.game.models.direction import Direction
@@ -40,17 +40,17 @@ class LevelScreen(Screen):
             SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 2,
         )
         self.player_struct = CharacterStruct(
-                self.world.player,
-                self.player_sprite,
-                pygame.sprite.Group(self.player_sprite),
-                None,
-            )
-        self.character_structs = [
-            self.player_struct
-        ]
+            self.world.player,
+            self.player_sprite,
+            pygame.sprite.Group(self.player_sprite),
+            None,
+        )
+        self.character_structs = [self.player_struct]
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
-            self.character_structs.append(CharacterStruct(enemy, sprite, pygame.sprite.Group(sprite), None))
+            self.character_structs.append(
+                CharacterStruct(enemy, sprite, pygame.sprite.Group(sprite), None)
+            )
 
         self.tile_x_draw_distance = 2 * SCREEN_WIDTH // self.world.map.tile_width
         self.tile_y_draw_distance = 2 * SCREEN_HEIGHT // self.world.map.tile_height
@@ -62,12 +62,15 @@ class LevelScreen(Screen):
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction)
         self.world.player.facing_direction = player_move_direction
- 
+
         for character_struct in self.character_structs:
             character = character_struct.character
             sprite = character_struct.sprite
             if character.facing_direction:
-                if character.facing_direction != character_struct.last_movement_direction:
+                if (
+                    character.facing_direction
+                    != character_struct.last_movement_direction
+                ):
                     sprite.move(character.facing_direction.to_isometric())
                 sprite.active_animation_name = "run"
             else:
@@ -94,22 +97,30 @@ class LevelScreen(Screen):
             self.world.map.height,
             player_tile_y + self.tile_y_draw_distance,
         )
+        renderables = create_renderable_list()
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
                 for y in range(tile_y_begin, tile_y_end):
                     blit_image = self.world.map.get_tile_image(x, y, layer)
                     if blit_image:
-                        blit_coords = self.calculate_draw_coordinates(
+                        blit_x, blit_y = self.calculate_draw_coordinates(
                             x, y, layer, blit_image
                         )
-                        surface.blit(blit_image, blit_coords)
-                    if self.world.map.get_layer_name(layer) == "1f":
-                        for character_struct in self.character_structs:
-                            char_tile_y = int(character_struct.character.position.y)
-                            char_tile_x = int(character_struct.character.position.x)
-                            if char_tile_y == y and char_tile_x == x:
-                                character_struct.sprite_group.draw(surface)
+                        bottom_y = blit_y + blit_image.get_height()
+                        renderable = BlittableRenderable(
+                            renderables_generate_key(layer, bottom_y),
+                            blit_image,
+                            (blit_x, blit_y),
+                        )
+                        renderables.add(renderable)
+        for character_struct in self.character_structs:
+            img_height = character_struct.sprite.image.get_height()
+            bottom_y = character_struct.sprite.rect.top + img_height
+            key = renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y)
+            renderables.add(SpriteRenderable(key, character_struct.sprite_group))
+        for renderable in renderables:
+            renderable.draw(surface)
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
