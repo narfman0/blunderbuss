@@ -9,6 +9,7 @@ idle:
     images:
     - samurai18.png 
   S:
+    flipped: True
     images:
     - samurai18.png 
   SW:
@@ -24,7 +25,6 @@ idle:
     images:
     - samurai18.png 
   N:
-    flipped: True
     images:
     - samurai18.png
 run:
@@ -50,6 +50,7 @@ run:
     - samurai5.png 
     - samurai6.png 
   S:
+    flipped: True
     images:
     - samurai2.png 
     - samurai3.png 
@@ -81,7 +82,6 @@ run:
     - samurai5.png 
     - samurai6.png 
   N:
-    flipped: True
     images:
     - samurai2.png 
     - samurai3.png 

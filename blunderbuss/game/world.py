@@ -4,6 +4,7 @@ from blunderbuss.game.models.level import Level
 from blunderbuss.game.map import Map
 from blunderbuss.game.models.character import Character, NPC
 from blunderbuss.game.models.direction import Direction
+from blunderbuss.game.world_callback import WorldCallback
 
 
 class World:
@@ -30,10 +31,10 @@ class World:
             self.enemies.append(enemy)
             self.space.add(enemy.body, enemy.poly)
 
-    def update(self, dt: float, player_movement_direction: Direction):
+    def update(self, dt: float, player_movement_direction: Direction, world_callback: WorldCallback):
         self.player.movement_direction = player_movement_direction
         self.player.update(dt)
         for enemy in self.enemies:
-            enemy.ai(dt, self.player)
+            enemy.ai(dt, self.player, world_callback)
             enemy.update(dt)
         self.space.step(dt)

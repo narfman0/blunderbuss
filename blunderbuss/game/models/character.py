@@ -5,6 +5,7 @@ import pymunk
 from dataclass_wizard import YAMLWizard
 
 from blunderbuss.game.models.direction import Direction
+from blunderbuss.game.world_callback import WorldCallback
 
 
 @dataclass
@@ -88,14 +89,14 @@ class Character(CharacterProperties):
 
 
 class NPC(Character):
-    def ai(self, dt: float, player: Character):
+    def ai(self, dt: float, player: Character, world_callback: WorldCallback):
         self.movement_direction = Direction.direction_to(self.position, player.position)
         if self.attacking:
             self.attack_time_remaining -= dt
             if self.attack_time_remaining <= 0:
                 self.attacking = False
-                print("Attack completed")
-        if player.position.get_distance(self.position) < self.fast_attack_distance and not self.attacking:
+        if player.position.get_dist_sqrd(self.position) < self.fast_attack_distance**2 and not self.attacking:
             self.attack_time_remaining = self.fast_attack_duration
             self.attacking = True
-            print("Attack started")
+            self.facing_direction = self.movement_direction
+            world_callback.ai_fast_attack_callback(self)

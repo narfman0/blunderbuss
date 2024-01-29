@@ -9,9 +9,10 @@ from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.renderables import *
 from blunderbuss.ui.screen import Screen, ScreenManager
-from blunderbuss.game.models.character import Character
+from blunderbuss.game.models.character import Character, NPC
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world import World
+from blunderbuss.game.world_callback import WorldCallback
 from blunderbuss.settings import *
 
 LOGGER = logging.getLogger(__name__)
@@ -30,7 +31,7 @@ class CharacterStruct:
     last_movement_direction: Direction
 
 
-class LevelScreen(Screen):
+class LevelScreen(Screen, WorldCallback):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
@@ -60,21 +61,22 @@ class LevelScreen(Screen):
             if not self.world.player.dashing:
                 self.world.player.dash()
         player_move_direction = self.read_input_player_move_direction()
-        self.world.update(dt, player_move_direction)
+        self.world.update(dt, player_move_direction, self)
         self.world.player.facing_direction = player_move_direction
 
         for character_struct in self.character_structs:
             character = character_struct.character
             sprite = character_struct.sprite
-            if character.facing_direction:
-                if (
-                    character.facing_direction
-                    != character_struct.last_movement_direction
-                ):
-                    sprite.move(character.facing_direction.to_isometric())
-                sprite.active_animation_name = "run"
-            else:
-                sprite.active_animation_name = "idle"
+            if not character.attacking:
+                if character.facing_direction:
+                    if (
+                        character.facing_direction
+                        != character_struct.last_movement_direction
+                    ):
+                        sprite.move(character.facing_direction.to_isometric())
+                    sprite.active_animation_name = "run"
+                else:
+                    sprite.active_animation_name = "idle"
             character_struct.last_movement_direction = character.facing_direction
             x, y = self.calculate_draw_coordinates(
                 character.position.x, character.position.y, None, sprite.image
@@ -83,6 +85,12 @@ class LevelScreen(Screen):
 
         for character_struct in self.character_structs:
             character_struct.sprite_group.update()
+
+    def ai_fast_attack_callback(self, npc: NPC):
+        for character_struct in self.character_structs:
+            if character_struct.character == npc:
+                character_struct.sprite.active_animation_name = "attack"
+                character_struct.sprite.move(npc.facing_direction)
 
     def draw(self, dest_surface: pygame.Surface):
         player_tile_x = int(self.world.player.position.x)
