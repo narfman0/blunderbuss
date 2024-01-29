@@ -16,6 +16,7 @@ class CharacterProperties(YAMLWizard):
     run_force: float = None
     running_stop_threshold: float = None
     max_velocity: float = None
+    radius: float = None
 
 
 @dataclass
@@ -39,7 +40,7 @@ class Character(CharacterProperties):
         self.__dict__.update(character_properties.__dict__)
         self.body = pymunk.Body()
         self.body.position = position
-        self.poly = pymunk.Circle(self.body, 0.5)
+        self.poly = pymunk.Circle(self.body, self.radius)
         self.poly.mass = self.mass
 
     def update(self, dt: float):
