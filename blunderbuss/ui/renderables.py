@@ -29,11 +29,14 @@ class SpriteRenderable(Renderable):
     def draw(self, surface: Surface):
         self.sprite_group.draw(surface)
 
+
 def renderables_key(a: Renderable):
     return a.key
 
+
 def renderables_generate_key(layer: int, bottom_y: float):
     return (layer << 16) + int(bottom_y)
+
 
 def create_renderable_list():
     return SortedKeyList(key=renderables_key)
