@@ -17,6 +17,8 @@ class CharacterProperties(YAMLWizard):
     running_stop_threshold: float = None
     max_velocity: float = None
     radius: float = None
+    fast_attack_duration: float = None
+    fast_attack_distance: float = None
 
 
 @dataclass
@@ -29,6 +31,8 @@ class Character(CharacterProperties):
     dashing: bool = False
     dash_time_remaining: float = 0
     dash_cooldown_remaining: float = 0
+    attacking: bool = False
+    attack_time_remaining: float = 0
     character_type: str = None
 
     def __init__(self, position: tuple[float, float], character_type: str):
@@ -79,10 +83,19 @@ class Character(CharacterProperties):
             self.dash_time_remaining = self.dash_duration
 
     @property
-    def position(self):
+    def position(self) -> pymunk.Vec2d:
         return self.body.position
 
 
 class NPC(Character):
     def ai(self, dt: float, player: Character):
         self.movement_direction = Direction.direction_to(self.position, player.position)
+        if self.attacking:
+            self.attack_time_remaining -= dt
+            if self.attack_time_remaining <= 0:
+                self.attacking = False
+                print("Attack completed")
+        if player.position.get_distance(self.position) < self.fast_attack_distance and not self.attacking:
+            self.attack_time_remaining = self.fast_attack_duration
+            self.attacking = True
+            print("Attack started")

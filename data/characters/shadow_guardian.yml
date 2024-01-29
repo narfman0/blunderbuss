@@ -6,3 +6,5 @@ run_force: 5000
 running_stop_threshold: 1
 max_velocity: 1
 radius: 1.0
+fast_attack_distance: 3.0
+fast_attack_duration: 1.0
