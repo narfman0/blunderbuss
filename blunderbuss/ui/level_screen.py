@@ -97,12 +97,6 @@ class LevelScreen(Screen, WorldCallback):
         for character_struct in self.character_structs:
             character_struct.sprite_group.update()
 
-    def ai_fast_attack_callback(self, npc: NPC):
-        for character_struct in self.character_structs:
-            if character_struct.character == npc:
-                character_struct.sprite.active_animation_name = "attack"
-                character_struct.sprite.move(npc.facing_direction)
-
     def draw(self, dest_surface: pygame.Surface):
         player_tile_x = int(self.world.player.position.x)
         player_tile_y = int(self.world.player.position.y)
@@ -143,6 +137,12 @@ class LevelScreen(Screen, WorldCallback):
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
+
+    def ai_fast_attack_callback(self, npc: NPC):
+        for character_struct in self.character_structs:
+            if character_struct.character == npc:
+                character_struct.sprite.active_animation_name = "attack"
+                character_struct.sprite.move(npc.facing_direction)
 
     def calculate_draw_coordinates(
         self,
