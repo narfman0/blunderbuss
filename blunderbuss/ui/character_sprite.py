@@ -2,10 +2,11 @@ import pygame
 import yaml
 
 from blunderbuss.game.models.direction import Direction
+from blunderbuss.settings import FPS
 
 
 class CharacterSprite(pygame.sprite.Sprite):
-    SUBFRAMES_PER_FRAME = 5
+    SUBFRAMES_PER_FRAME = FPS // 10
 
     def __init__(self, sprite_name, scale: float = 1, offset=(0, 0)):
         super(CharacterSprite, self).__init__()

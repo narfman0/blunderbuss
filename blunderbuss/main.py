@@ -53,7 +53,7 @@ def main():
     screen_manager.push(LevelScreen(screen_manager, world))
 
     while running:
-        dt = clock.tick(60) / 1000.0
+        dt = clock.tick(FPS) / 1000.0
         events = []
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (
