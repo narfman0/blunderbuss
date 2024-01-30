@@ -1,5 +1,6 @@
 import logging
 from dataclasses import dataclass
+from enum import Enum
 
 import pygame
 from pygame.event import Event
@@ -21,6 +22,11 @@ SCREEN_WIDTH = WIDTH // SCREEN_SCALE
 SCREEN_HEIGHT = HEIGHT // SCREEN_SCALE
 CAMERA_OFFSET_X = SCREEN_WIDTH // 2
 CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
+
+
+class ActionEnum(Enum):
+    DASH = 1
+    FAST_ATTACK = 2
 
 
 @dataclass
@@ -57,9 +63,14 @@ class LevelScreen(Screen, WorldCallback):
         self.tile_y_draw_distance = 2 * SCREEN_HEIGHT // self.world.map.tile_height
 
     def update(self, dt: float, events: list[Event]):
-        if self.read_input_player_dashing(events):
+        player_actions = self.read_input_player_actions(events)
+        if ActionEnum.DASH in player_actions:
             if not self.world.player.dashing:
                 self.world.player.dash()
+        if ActionEnum.FAST_ATTACK in player_actions:
+            if not self.world.player.attacking:
+                self.world.player.attack()
+                self.player_sprite.active_animation_name = "attack"
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
         self.world.player.facing_direction = player_move_direction
@@ -178,9 +189,13 @@ class LevelScreen(Screen, WorldCallback):
             direction = Direction.NE
         return direction
 
-    def read_input_player_dashing(self, events: list[Event]) -> bool:
+    def read_input_player_actions(self, events: list[Event]) -> list[ActionEnum]:
+        actions = []
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    return True
-        return False
+                    actions.append(ActionEnum.DASH)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    actions.append(ActionEnum.FAST_ATTACK)
+        return actions

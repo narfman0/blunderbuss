@@ -59,6 +59,12 @@ class Character(CharacterProperties):
             self.dash_cooldown_remaining -= dt
             if self.dash_cooldown_remaining <= 0:
                 self.dash_cooldown_remaining = 0
+
+        if self.attacking:
+            self.attack_time_remaining -= dt
+            if self.attack_time_remaining <= 0:
+                self.attacking = False
+
         if self.movement_direction:
             self.facing_direction = self.movement_direction
             dash_scalar = self.dash_scalar if self.dashing else 1.0
@@ -78,6 +84,12 @@ class Character(CharacterProperties):
             else:
                 self.body.velocity = (0, 0)
 
+    def attack(self):
+        if not self.attacking:
+            self.attacking = True
+            self.attack_time_remaining = self.fast_attack_duration
+            self.facing_direction = self.movement_direction
+
     def dash(self):
         if not self.dashing and self.dash_cooldown_remaining <= 0:
             self.dashing = True
@@ -91,12 +103,10 @@ class Character(CharacterProperties):
 class NPC(Character):
     def ai(self, dt: float, player: Character, world_callback: WorldCallback):
         self.movement_direction = Direction.direction_to(self.position, player.position)
-        if self.attacking:
-            self.attack_time_remaining -= dt
-            if self.attack_time_remaining <= 0:
-                self.attacking = False
-        if player.position.get_dist_sqrd(self.position) < self.fast_attack_distance**2 and not self.attacking:
-            self.attack_time_remaining = self.fast_attack_duration
-            self.attacking = True
-            self.facing_direction = self.movement_direction
+        if (
+            player.position.get_dist_sqrd(self.position)
+            < self.fast_attack_distance**2
+            and not self.attacking
+        ):
+            self.attack()
             world_callback.ai_fast_attack_callback(self)

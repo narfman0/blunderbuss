@@ -31,7 +31,12 @@ class World:
             self.enemies.append(enemy)
             self.space.add(enemy.body, enemy.poly)
 
-    def update(self, dt: float, player_movement_direction: Direction, world_callback: WorldCallback):
+    def update(
+        self,
+        dt: float,
+        player_movement_direction: Direction,
+        world_callback: WorldCallback,
+    ):
         self.player.movement_direction = player_movement_direction
         self.player.update(dt)
         for enemy in self.enemies:

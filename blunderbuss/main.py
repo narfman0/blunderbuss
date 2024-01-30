@@ -54,17 +54,16 @@ def main():
 
     while running:
         dt = clock.tick(60) / 1000.0
-        key_events = []
+        events = []
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or (
+                event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE
+            ):
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-            if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                key_events.append(event)
+            else:
+                events.append(event)
 
-        screen_manager.current.update(dt, key_events)
+        screen_manager.current.update(dt, events)
         surface.fill((0, 0, 0))
         screen_manager.current.draw(surface)
         pygame.display.update()

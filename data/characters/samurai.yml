@@ -7,4 +7,4 @@ running_stop_threshold: 2
 max_velocity: 5
 radius: 0.5
 fast_attack_distance: 1.5
-fast_attack_duration: 0.5
+fast_attack_duration: 1.2
