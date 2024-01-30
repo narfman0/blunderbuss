@@ -40,7 +40,7 @@ class Character(CharacterProperties):
         self.character_type = character_type
         self.uuid = generate_uuid()
         character_properties = CharacterProperties.from_yaml_file(
-            f"data/characters/{character_type}.yml"
+            f"data/characters/{character_type}/character.yml"
         )
         self.__dict__.update(character_properties.__dict__)
         self.body = pymunk.Body()

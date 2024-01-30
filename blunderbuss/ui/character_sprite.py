@@ -14,7 +14,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.active_animation_name = "idle"
         self.active_direction = Direction.S
 
-        with open(f"data/images/characters/{sprite_name}/animations.yml") as f:
+        with open(f"data/characters/{sprite_name}/animations.yml") as f:
             animations_yml = yaml.safe_load(f)
 
         path_to_nonflipped_image: dict[str, pygame.Surface] = {}
@@ -26,7 +26,7 @@ class CharacterSprite(pygame.sprite.Sprite):
                 direction = Direction[direction_str]
                 animation_direction_images = []
                 for image_path in animation_struct["images"]:
-                    path = f"data/images/characters/{sprite_name}/{image_path}"
+                    path = f"data/characters/{sprite_name}/images/{image_path}"
                     flipped = animation_struct.get("flipped")
                     if flipped:
                         path_image_map = path_to_flipped_image
