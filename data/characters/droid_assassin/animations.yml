@@ -1,359 +1,359 @@
 idle:
   NE:
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   E:
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   SE:
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   S:
     flipped: True
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   SW:
     flipped: True
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   W:
     flipped: True
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   NW:
     flipped: True
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
   N:
     images:
-    - Idle1.png 
-    - Idle2.png 
-    - Idle3.png 
-    - Idle4.png 
-    - Idle5.png 
-    - Idle6.png 
-    - Idle7.png 
-    - Idle8.png 
-    - Idle9.png 
-    - Idle10.png 
+    - droid_assassin1.png 
+    - droid_assassin2.png 
+    - droid_assassin3.png 
+    - droid_assassin4.png 
+    - droid_assassin5.png 
+    - droid_assassin6.png 
+    - droid_assassin7.png 
+    - droid_assassin8.png 
+    - droid_assassin9.png 
+    - droid_assassin10.png 
 run:
   NE:
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png
   E:
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
   SE:
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
   S:
     flipped: True
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
   SW:
     flipped: True
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
   W:
     flipped: True
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
   NW:
     flipped: True
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
   N:
     images:
-    - Run1.png 
-    - Run2.png 
-    - Run3.png 
-    - Run4.png 
-    - Run5.png 
-    - Run6.png 
-    - Run7.png 
-    - Run8.png 
+    - droid_assassin30.png 
+    - droid_assassin31.png
+    - droid_assassin32.png
+    - droid_assassin33.png
+    - droid_assassin34.png
+    - droid_assassin35.png
+    - droid_assassin36.png
+    - droid_assassin37.png 
 attack:
   NE:
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   E:
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   SE:
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   S:
     flipped: True
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   SW:
     flipped: True
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   W:
     flipped: True
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   NW:
     flipped: True
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
   N:
     images:
-    - attack 1.png
-    - attack 2.png
-    - attack 3.png
-    - attack 4.png
-    - attack 5.png
-    - attack 6.png
-    - attack 7.png
-    - attack 8.png
-    - attack 9.png
-    - attack 10.png
-    - attack 11.png
-    - attack 12.png
-    - attack 13.png
-    - attack 14.png
-    - attack 15.png
-    - attack 16.png
-    - attack 17.png
-    - attack 18.png
-    - attack 19.png
+    - droid_assassin11.png
+    - droid_assassin12.png
+    - droid_assassin13.png
+    - droid_assassin14.png
+    - droid_assassin15.png
+    - droid_assassin16.png
+    - droid_assassin17.png
+    - droid_assassin18.png
+    - droid_assassin19.png
+    - droid_assassin20.png
+    - droid_assassin21.png
+    - droid_assassin22.png
+    - droid_assassin23.png
+    - droid_assassin24.png
+    - droid_assassin25.png
+    - droid_assassin26.png
+    - droid_assassin27.png
+    - droid_assassin28.png
+    - droid_assassin29.png
