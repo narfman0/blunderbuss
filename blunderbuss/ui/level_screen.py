@@ -201,6 +201,8 @@ class LevelScreen(Screen, WorldCallback):
                     actions.append(ActionEnum.DASH)
                 elif event.key == pygame.K_e or event.key == pygame.K_q:
                     actions.append(ActionEnum.CHARACTER_SWAP)
+                elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
+                    actions.append(ActionEnum.FAST_ATTACK)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     actions.append(ActionEnum.FAST_ATTACK)
