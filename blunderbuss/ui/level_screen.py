@@ -27,6 +27,7 @@ CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
 class ActionEnum(Enum):
     DASH = 1
     FAST_ATTACK = 2
+    CHARACTER_SWAP = 3
 
 
 @dataclass
@@ -41,17 +42,13 @@ class LevelScreen(Screen, WorldCallback):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
-        self.player_sprite = CharacterSprite(world.player.character_type)
-        self.player_sprite.set_position(
-            SCREEN_WIDTH // 2 - self.player_sprite.image.get_width() // 2,
-            SCREEN_HEIGHT // 2 - self.player_sprite.image.get_height() // 2,
-        )
         self.player_struct = CharacterStruct(
             self.world.player,
-            self.player_sprite,
-            pygame.sprite.Group(self.player_sprite),
+            None,
+            pygame.sprite.Group(),
             None,
         )
+        self.update_player_sprite()
         self.character_structs = [self.player_struct]
         for enemy in self.world.enemies:
             sprite = CharacterSprite(enemy.character_type)
@@ -67,12 +64,19 @@ class LevelScreen(Screen, WorldCallback):
         if ActionEnum.DASH in player_actions:
             if not self.world.player.dashing:
                 self.world.player.dash()
+        if ActionEnum.CHARACTER_SWAP in player_actions:
+            if not self.world.player.swapping:
+                self.world.player.swap()
+                self.update_player_sprite()
         if ActionEnum.FAST_ATTACK in player_actions:
             if not self.world.player.attacking:
                 self.world.player.attack()
-                self.player_sprite.active_animation_name = "attack"
+                self.player_struct.sprite.active_animation_name = "attack"
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
+        if self.world.player.character_type != self.player_struct.sprite.sprite_name:
+            # ideally we could pass a callback here but :shrugs:
+            self.update_player_sprite()
         self.world.player.facing_direction = player_move_direction
 
         for character_struct in self.character_structs:
@@ -195,7 +199,19 @@ class LevelScreen(Screen, WorldCallback):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     actions.append(ActionEnum.DASH)
+                elif event.key == pygame.K_e or event.key == pygame.K_q:
+                    actions.append(ActionEnum.CHARACTER_SWAP)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     actions.append(ActionEnum.FAST_ATTACK)
         return actions
+
+    def update_player_sprite(self):
+        sprite = CharacterSprite(self.world.player.character_type)
+        sprite.set_position(
+            SCREEN_WIDTH // 2 - sprite.image.get_width() // 2,
+            SCREEN_HEIGHT // 2 - sprite.image.get_height() // 2,
+        )
+        self.player_struct.sprite = sprite
+        self.player_struct.sprite_group.empty()
+        self.player_struct.sprite_group.add(sprite)

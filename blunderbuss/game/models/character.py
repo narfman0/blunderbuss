@@ -7,6 +7,8 @@ from dataclass_wizard import YAMLWizard
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
 
+SWAP_DURATION = 0.1
+
 
 @dataclass
 class CharacterProperties(YAMLWizard):
@@ -39,10 +41,7 @@ class Character(CharacterProperties):
     def __init__(self, position: tuple[float, float], character_type: str):
         self.character_type = character_type
         self.uuid = generate_uuid()
-        character_properties = CharacterProperties.from_yaml_file(
-            f"data/characters/{character_type}/character.yml"
-        )
-        self.__dict__.update(character_properties.__dict__)
+        self.apply_character_properties()
         self.body = pymunk.Body()
         self.body.position = position
         self.poly = pymunk.Circle(self.body, self.radius)
@@ -95,9 +94,43 @@ class Character(CharacterProperties):
             self.dashing = True
             self.dash_time_remaining = self.dash_duration
 
+    def apply_character_properties(self):
+        path = f"data/characters/{self.character_type}/character.yml"
+        character_properties = CharacterProperties.from_yaml_file(path)
+        self.__dict__.update(character_properties.__dict__)
+
     @property
     def position(self) -> pymunk.Vec2d:
         return self.body.position
+
+
+class Player(Character):
+    swapping: bool = False
+    swap_time_remaining: float = 0
+    swap_character_type: str = None
+
+    def update(self, dt: float):
+        super().update(dt)
+        if self.swapping:
+            self.swap_time_remaining -= dt
+            if self.swap_time_remaining <= 0:
+                self.swap_time_remaining = 0
+                self.swapping = False
+                self.character_type = self.swap_character_type
+                self.swap_character_type = None
+                self.apply_character_properties()
+
+    def swap(self):
+        if self.swapping:
+            return
+        if self.character_type == "samurai":
+            self.swap_character_type = "droid_assassin"
+        elif self.character_type == "droid_assassin":
+            self.swap_character_type = "samurai"
+        else:
+            print(f"Unknown character type {self.character_type}")
+        self.swap_time_remaining = SWAP_DURATION
+        self.swapping = True
 
 
 class NPC(Character):

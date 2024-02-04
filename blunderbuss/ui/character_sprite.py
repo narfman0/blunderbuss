@@ -10,6 +10,9 @@ class CharacterSprite(pygame.sprite.Sprite):
 
     def __init__(self, sprite_name, scale: float = 1, offset=(0, 0)):
         super(CharacterSprite, self).__init__()
+        self.index = 0
+        self.moving = False
+        self.subframe = 0
         self.sprite_name = sprite_name
         self.offset = offset
         self.active_animation_name = "idle"
@@ -49,10 +52,6 @@ class CharacterSprite(pygame.sprite.Sprite):
                         path_image_map[path] = image
                     animation_direction_images.append(image)
                 self.images[animation_name][direction] = animation_direction_images
-
-        self.index = 0
-        self.moving = False
-        self.subframe = 0
 
         self.image = self.active_images[self.index]
         width, height = self.image.get_size()

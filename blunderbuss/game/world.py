@@ -2,7 +2,7 @@ import pymunk
 
 from blunderbuss.game.models.level import Level
 from blunderbuss.game.map import Map
-from blunderbuss.game.models.character import Character, NPC
+from blunderbuss.game.models.character import Character, NPC, Player
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
 
@@ -16,7 +16,7 @@ class World:
 
         # initialize player
         tile_x, tile_y = self.map.get_start_tile()
-        self.player = Character(
+        self.player = Player(
             position=(0.5 + tile_x, 0.5 + tile_y), character_type="samurai"
         )
         self.space.add(self.player.body, self.player.poly)
