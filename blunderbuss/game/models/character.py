@@ -24,6 +24,7 @@ class CharacterProperties(YAMLWizard):
     attack_distance: float = None
     attack_time_until_damage: float = None
     hp_max: int = 0
+    chase_distance: float = 0
 
 
 @dataclass
@@ -154,7 +155,10 @@ class NPC(Character):
     def ai(self, dt: float, player: Character, world_callback: WorldCallback):
         if not self.alive:
             return
-        self.movement_direction = Direction.direction_to(self.position, player.position)
+        if self.position.get_dist_sqrd(player.position) < self.chase_distance**2:
+            self.movement_direction = Direction.direction_to(self.position, player.position)
+        else:
+            self.movement_direction = None
         if (
             player.position.get_dist_sqrd(self.position) < self.attack_distance**2
             and not self.attacking
