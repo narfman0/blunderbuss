@@ -39,7 +39,15 @@ class World:
     ):
         self.player.movement_direction = player_movement_direction
         self.player.update(dt)
+        if self.player.should_process_attack_damage:
+            self.process_attack_damage(self.player, self.enemies)
         for enemy in self.enemies:
             enemy.ai(dt, self.player, world_callback)
             enemy.update(dt)
+            if enemy.should_process_attack_damage:
+                self.process_attack_damage(enemy, [self.player])
         self.space.step(dt)
+
+    def process_attack_damage(self, attacker: Character, enemies: list[Character]):
+        attacker.should_process_attack_damage = False
+        print("TODO trigger attack dmg here")

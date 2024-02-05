@@ -26,7 +26,7 @@ CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
 
 class ActionEnum(Enum):
     DASH = 1
-    FAST_ATTACK = 2
+    ATTACK = 2
     CHARACTER_SWAP = 3
 
 
@@ -68,7 +68,7 @@ class LevelScreen(Screen, WorldCallback):
             if not self.world.player.swapping:
                 self.world.player.swap()
                 self.update_player_sprite()
-        if ActionEnum.FAST_ATTACK in player_actions:
+        if ActionEnum.ATTACK in player_actions:
             if not self.world.player.attacking:
                 self.world.player.attack()
                 self.player_struct.sprite.active_animation_name = "attack"
@@ -142,7 +142,7 @@ class LevelScreen(Screen, WorldCallback):
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
 
-    def ai_fast_attack_callback(self, npc: NPC):
+    def ai_attack_callback(self, npc: NPC):
         for character_struct in self.character_structs:
             if character_struct.character == npc:
                 character_struct.sprite.active_animation_name = "attack"
@@ -202,10 +202,10 @@ class LevelScreen(Screen, WorldCallback):
                 elif event.key == pygame.K_e or event.key == pygame.K_q:
                     actions.append(ActionEnum.CHARACTER_SWAP)
                 elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
-                    actions.append(ActionEnum.FAST_ATTACK)
+                    actions.append(ActionEnum.ATTACK)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
-                    actions.append(ActionEnum.FAST_ATTACK)
+                    actions.append(ActionEnum.ATTACK)
         return actions
 
     def update_player_sprite(self):

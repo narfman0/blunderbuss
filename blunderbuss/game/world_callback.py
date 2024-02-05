@@ -1,3 +1,3 @@
 class WorldCallback:
-    def ai_fast_attack_callback(self, npc):
+    def ai_attack_callback(self, npc):
         pass
