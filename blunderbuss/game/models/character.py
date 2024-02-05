@@ -156,7 +156,9 @@ class NPC(Character):
         if not self.alive:
             return
         if self.position.get_dist_sqrd(player.position) < self.chase_distance**2:
-            self.movement_direction = Direction.direction_to(self.position, player.position)
+            self.movement_direction = Direction.direction_to(
+                self.position, player.position
+            )
         else:
             self.movement_direction = None
         if (

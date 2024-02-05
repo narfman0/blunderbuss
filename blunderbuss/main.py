@@ -1,8 +1,7 @@
 import logging
-
+from pstats import SortKey
 import pygame
 
-from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world import World
 from blunderbuss.settings import *
 from blunderbuss.ui.screen import ScreenManager
@@ -10,34 +9,6 @@ from blunderbuss.ui.level_screen import LevelScreen
 from blunderbuss.util.logging import initialize_logging
 
 LOGGER = logging.getLogger(__name__)
-
-
-def read_player_direction():
-    keys = pygame.key.get_pressed()
-    right = keys[pygame.K_RIGHT] or keys[pygame.K_d]
-    left = keys[pygame.K_LEFT] or keys[pygame.K_a]
-    up = keys[pygame.K_UP] or keys[pygame.K_w]
-    down = keys[pygame.K_DOWN] or keys[pygame.K_s]
-    direction = None
-    if down:
-        if right:
-            direction = Direction.SE
-        elif left:
-            direction = Direction.SW
-        else:
-            direction = Direction.S
-    elif up:
-        if right:
-            direction = Direction.NE
-        elif left:
-            direction = Direction.NW
-        else:
-            direction = Direction.N
-    elif left:
-        direction = Direction.W
-    elif right:
-        direction = Direction.E
-    return direction
 
 
 def main():
@@ -52,6 +23,11 @@ def main():
     screen_manager = ScreenManager()
     screen_manager.push(LevelScreen(screen_manager, world))
 
+    if ENABLE_PROFILING:
+        import cProfile, pstats, io
+
+        pr = cProfile.Profile()
+        pr.enable()
     while running:
         dt = clock.tick(FPS) / 1000.0
         events = []
@@ -68,6 +44,14 @@ def main():
         screen_manager.current.draw(surface)
         pygame.display.update()
 
+    if ENABLE_PROFILING:
+        pr.disable()
+        s = io.StringIO()
+        sortby = SortKey.CUMULATIVE
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+        with open("pstats.log", "w+") as f:
+            f.write(s.getvalue())
     pygame.quit()
 
 
