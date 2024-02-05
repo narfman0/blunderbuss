@@ -69,12 +69,16 @@ class LevelScreen(Screen, WorldCallback):
                 self.world.player.swap()
                 self.update_player_sprite()
         if ActionEnum.ATTACK in player_actions:
-            if not self.world.player.attacking:
+            if self.world.player.alive and not self.world.player.attacking:
                 self.world.player.attack()
                 self.player_struct.sprite.active_animation_name = "attack"
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
-        if self.world.player.character_type != self.player_struct.sprite.sprite_name:
+        if (
+            self.world.player.alive
+            and self.world.player.character_type
+            != self.player_struct.sprite.sprite_name
+        ):
             # ideally we could pass a callback here but :shrugs:
             self.update_player_sprite()
         self.world.player.facing_direction = player_move_direction
@@ -82,17 +86,18 @@ class LevelScreen(Screen, WorldCallback):
         for character_struct in self.character_structs:
             character = character_struct.character
             sprite = character_struct.sprite
-            if not character.attacking:
-                if character.facing_direction:
-                    if (
-                        character.facing_direction
-                        != character_struct.last_movement_direction
-                    ):
-                        sprite.move(character.facing_direction.to_isometric())
-                    sprite.active_animation_name = "run"
-                else:
-                    sprite.active_animation_name = "idle"
-            character_struct.last_movement_direction = character.facing_direction
+            if character.alive:
+                if not character.attacking:
+                    if character.facing_direction:
+                        if (
+                            character.facing_direction
+                            != character_struct.last_movement_direction
+                        ):
+                            sprite.move(character.facing_direction.to_isometric())
+                        sprite.active_animation_name = "run"
+                    else:
+                        sprite.active_animation_name = "idle"
+                character_struct.last_movement_direction = character.facing_direction
             x, y = self.calculate_draw_coordinates(
                 character.position.x, character.position.y, None, sprite.image
             )
@@ -203,6 +208,9 @@ class LevelScreen(Screen, WorldCallback):
                     actions.append(ActionEnum.CHARACTER_SWAP)
                 elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     actions.append(ActionEnum.ATTACK)
+                elif event.key == pygame.K_F2:
+                    self.world.player.hp += 3
+                    print(f"Player now has {self.world.player.hp} hp")
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     actions.append(ActionEnum.ATTACK)

@@ -23,6 +23,7 @@ class CharacterProperties(YAMLWizard):
     attack_duration: float = None
     attack_distance: float = None
     attack_time_until_damage: float = None
+    hp_max: int = 0
 
 
 @dataclass
@@ -40,17 +41,39 @@ class Character(CharacterProperties):
     attack_damage_time_remaining: float = 0
     should_process_attack_damage: bool = False
     character_type: str = None
+    hp: int = 0
 
     def __init__(self, position: tuple[float, float], character_type: str):
         self.character_type = character_type
         self.uuid = generate_uuid()
         self.apply_character_properties()
+        self.hp = self.hp_max
         self.body = pymunk.Body()
         self.body.position = position
         self.poly = pymunk.Circle(self.body, self.radius)
         self.poly.mass = self.mass
 
     def update(self, dt: float):
+        if self.alive and self.movement_direction:
+            self.facing_direction = self.movement_direction
+            dash_scalar = self.dash_scalar if self.dashing else 1.0
+            dpos = (
+                self.movement_direction.to_vector() * self.run_force * dash_scalar * dt
+            )
+            self.body.apply_force_at_local_point(force=(dpos.x, dpos.y))
+            if self.body.velocity.length > self.max_velocity * dash_scalar:
+                self.body.velocity = self.body.velocity.scale_to_length(
+                    self.max_velocity * dash_scalar
+                )
+        else:
+            if self.body.velocity.get_length_sqrd() > self.running_stop_threshold:
+                self.body.velocity = self.body.velocity.scale_to_length(
+                    0.7 * self.body.velocity.length
+                )
+            else:
+                self.body.velocity = (0, 0)
+        if not self.alive:
+            return
         if self.dashing:
             self.dash_time_remaining -= dt
             if self.dash_time_remaining <= 0:
@@ -71,25 +94,6 @@ class Character(CharacterProperties):
                     self.should_process_attack_damage = True
             if self.attack_time_remaining <= 0:
                 self.attacking = False
-
-        if self.movement_direction:
-            self.facing_direction = self.movement_direction
-            dash_scalar = self.dash_scalar if self.dashing else 1.0
-            dpos = (
-                self.movement_direction.to_vector() * self.run_force * dash_scalar * dt
-            )
-            self.body.apply_force_at_local_point(force=(dpos.x, dpos.y))
-            if self.body.velocity.length > self.max_velocity * dash_scalar:
-                self.body.velocity = self.body.velocity.scale_to_length(
-                    self.max_velocity * dash_scalar
-                )
-        else:
-            if self.body.velocity.get_length_sqrd() > self.running_stop_threshold:
-                self.body.velocity = self.body.velocity.scale_to_length(
-                    0.7 * self.body.velocity.length
-                )
-            else:
-                self.body.velocity = (0, 0)
 
     def attack(self):
         if not self.attacking:
@@ -112,6 +116,10 @@ class Character(CharacterProperties):
     def position(self) -> pymunk.Vec2d:
         return self.body.position
 
+    @property
+    def alive(self) -> bool:
+        return self.hp > 0
+
 
 class Player(Character):
     swapping: bool = False
@@ -120,7 +128,7 @@ class Player(Character):
 
     def update(self, dt: float):
         super().update(dt)
-        if self.swapping:
+        if self.alive and self.swapping:
             self.swap_time_remaining -= dt
             if self.swap_time_remaining <= 0:
                 self.swap_time_remaining = 0
@@ -130,7 +138,7 @@ class Player(Character):
                 self.apply_character_properties()
 
     def swap(self):
-        if self.swapping:
+        if not self.alive or self.swapping:
             return
         if self.character_type == "samurai":
             self.swap_character_type = "droid_assassin"
@@ -144,6 +152,8 @@ class Player(Character):
 
 class NPC(Character):
     def ai(self, dt: float, player: Character, world_callback: WorldCallback):
+        if not self.alive:
+            return
         self.movement_direction = Direction.direction_to(self.position, player.position)
         if (
             player.position.get_dist_sqrd(self.position) < self.attack_distance**2

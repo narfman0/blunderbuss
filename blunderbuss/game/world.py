@@ -50,4 +50,11 @@ class World:
 
     def process_attack_damage(self, attacker: Character, enemies: list[Character]):
         attacker.should_process_attack_damage = False
-        print("TODO trigger attack dmg here")
+        for enemy in enemies:
+            if (
+                attacker.position.get_distance(enemy.position) - attacker.radius - enemy.radius
+                < attacker.attack_distance
+            ):
+                enemy.hp -= 1
+                print(f"Attack successful, enemy has {enemy.hp} hp")
+                print(f"TODO trigger a death to switch animation in LevelScreen")
