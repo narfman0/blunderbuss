@@ -357,3 +357,80 @@ attack:
     - droid_assassin27.png
     - droid_assassin28.png
     - droid_assassin29.png
+death:
+  NE:
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  E:
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  SE:
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  S:
+    flipped: True
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  SW:
+    flipped: True
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  W:
+    flipped: True
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  NW:
+    flipped: True
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png
+  N:
+    images:
+    - droid_assassin38.png 
+    - droid_assassin39.png
+    - droid_assassin40.png
+    - droid_assassin41.png
+    - droid_assassin42.png
+    - droid_assassin43.png
+    - droid_assassin44.png

@@ -277,3 +277,117 @@ attack:
     - shadow_guardian25.png 
     - shadow_guardian26.png 
     - shadow_guardian27.png 
+death:
+  NE:
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  E:
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  SE:
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  S:
+    flipped: True
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  SW:
+    flipped: True
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  W:
+    flipped: True
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  NW:
+    flipped: True
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png 
+  N:
+    images:
+    - shadow_guardian30.png 
+    - shadow_guardian31.png 
+    - shadow_guardian32.png 
+    - shadow_guardian33.png 
+    - shadow_guardian34.png 
+    - shadow_guardian35.png 
+    - shadow_guardian36.png
+hit:
+  NE:
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  E:
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  SE:
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  S:
+    flipped: True
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  SW:
+    flipped: True
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  W:
+    flipped: True
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  NW:
+    flipped: True
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 
+  N:
+    images:
+    - shadow_guardian28.png 
+    - shadow_guardian29.png 

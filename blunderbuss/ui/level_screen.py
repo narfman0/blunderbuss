@@ -71,7 +71,7 @@ class LevelScreen(Screen, WorldCallback):
         if ActionEnum.ATTACK in player_actions:
             if self.world.player.alive and not self.world.player.attacking:
                 self.world.player.attack()
-                self.player_struct.sprite.active_animation_name = "attack"
+                self.player_struct.sprite.change_animation("attack")
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
         if (
@@ -94,10 +94,13 @@ class LevelScreen(Screen, WorldCallback):
                             != character_struct.last_movement_direction
                         ):
                             sprite.move(character.facing_direction.to_isometric())
-                        sprite.active_animation_name = "run"
+                        sprite.change_animation("run")
                     else:
-                        sprite.active_animation_name = "idle"
+                        sprite.change_animation("idle")
                 character_struct.last_movement_direction = character.facing_direction
+            else:
+                if sprite.sprite_name != "death":
+                    sprite.change_animation("death", loop=False)
             x, y = self.calculate_draw_coordinates(
                 character.position.x, character.position.y, None, sprite.image
             )
@@ -150,7 +153,7 @@ class LevelScreen(Screen, WorldCallback):
     def ai_attack_callback(self, npc: NPC):
         for character_struct in self.character_structs:
             if character_struct.character == npc:
-                character_struct.sprite.active_animation_name = "attack"
+                character_struct.sprite.change_animation("attack")
                 character_struct.sprite.move(npc.facing_direction)
 
     def calculate_draw_coordinates(

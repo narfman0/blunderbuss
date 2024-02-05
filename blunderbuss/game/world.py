@@ -52,9 +52,10 @@ class World:
         attacker.should_process_attack_damage = False
         for enemy in enemies:
             if (
-                attacker.position.get_distance(enemy.position) - attacker.radius - enemy.radius
+                attacker.position.get_distance(enemy.position)
+                - attacker.radius
+                - enemy.radius
                 < attacker.attack_distance
             ):
                 enemy.hp -= 1
                 print(f"Attack successful, enemy has {enemy.hp} hp")
-                print(f"TODO trigger a death to switch animation in LevelScreen")

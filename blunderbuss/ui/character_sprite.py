@@ -12,6 +12,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         super(CharacterSprite, self).__init__()
         self.index = 0
         self.moving = False
+        self.loop = True
         self.subframe = 0
         self.sprite_name = sprite_name
         self.offset = offset
@@ -66,16 +67,25 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.moving = False
         self.index = 0
 
+    def change_animation(self, animation_name: str, loop: bool = True):
+        self.loop = loop
+        if self.active_animation_name == animation_name:
+            return
+        self.active_animation_name = animation_name
+        self.subframe = 0
+        self.index = 0
+
     def update(self):
         if self.subframe == CharacterSprite.SUBFRAMES_PER_FRAME:
             self.index += 1
             self.subframe = 0
+            if self.index >= len(self.active_images):
+                if self.loop:
+                    self.index = 0
+                else:
+                    self.index = len(self.active_images) - 1
         else:
             self.subframe += 1
-
-        if self.index >= len(self.active_images):
-            self.index = 0
-
         self.image = self.active_images[self.index]
 
     def set_position(self, x, y):
