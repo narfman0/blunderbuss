@@ -22,6 +22,7 @@ class CharacterProperties(YAMLWizard):
     radius: float = None
     fast_attack_duration: float = None
     fast_attack_distance: float = None
+    fast_attack_time_until_damage: float = None
 
 
 @dataclass
@@ -36,6 +37,7 @@ class Character(CharacterProperties):
     dash_cooldown_remaining: float = 0
     attacking: bool = False
     attack_time_remaining: float = 0
+    attack_time_until_damage: float = 0
     character_type: str = None
 
     def __init__(self, position: tuple[float, float], character_type: str):
@@ -61,6 +63,11 @@ class Character(CharacterProperties):
 
         if self.attacking:
             self.attack_time_remaining -= dt
+            if self.attack_time_until_damage > 0:
+                self.attack_time_until_damage -= dt
+                if self.attack_time_until_damage <= 0:
+                    self.attack_time_until_damage = 0
+                    print("TODO trigger attack dmg here")
             if self.attack_time_remaining <= 0:
                 self.attacking = False
 
@@ -87,6 +94,7 @@ class Character(CharacterProperties):
         if not self.attacking:
             self.attacking = True
             self.attack_time_remaining = self.fast_attack_duration
+            self.attack_time_until_damage = self.fast_attack_time_until_damage
             self.facing_direction = self.movement_direction
 
     def dash(self):

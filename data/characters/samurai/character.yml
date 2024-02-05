@@ -8,3 +8,4 @@ max_velocity: 5
 radius: 0.5
 fast_attack_distance: 1.5
 fast_attack_duration: 1.2
+fast_attack_time_until_damage: 1.0
