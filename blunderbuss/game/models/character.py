@@ -54,6 +54,16 @@ class Character(CharacterProperties):
         self.poly = pymunk.Circle(self.body, self.radius)
         self.poly.mass = self.mass
 
+    def handle_damage_received(self, dmg: int):
+        self.hp = max(0, self.hp - dmg)
+        if not self.alive:
+            self.body._set_type(pymunk.Body.STATIC)
+
+    def handle_healing_received(self, amount: int):
+        self.hp = min(self.hp_max, self.hp + amount)
+        if self.alive:
+            self.body._set_type(pymunk.Body.DYNAMIC)
+
     def update(self, dt: float):
         if self.alive and self.movement_direction:
             self.facing_direction = self.movement_direction

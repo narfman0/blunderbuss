@@ -212,7 +212,7 @@ class LevelScreen(Screen, WorldCallback):
                 elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
                     actions.append(ActionEnum.ATTACK)
                 elif event.key == pygame.K_F2:
-                    self.world.player.hp += 3
+                    self.world.player.handle_healing_received(1)
                     print(f"Player now has {self.world.player.hp} hp")
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:

@@ -57,5 +57,5 @@ class World:
                 - enemy.radius
                 < attacker.attack_distance
             ):
-                enemy.hp -= 1
+                enemy.handle_damage_received(1)
                 print(f"Attack successful, enemy has {enemy.hp} hp")
