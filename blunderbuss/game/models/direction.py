@@ -1,7 +1,7 @@
 from enum import Enum
 from math import atan2, pi
 
-from pygame import Vector2
+from pymunk import Vec2d
 
 
 class Direction(Enum):
@@ -14,18 +14,18 @@ class Direction(Enum):
     W = 7
     NW = 8
 
-    def to_vector(self) -> Vector2:
+    def to_vector(self) -> Vec2d:
         # lrucacheable!
         return {
-            Direction.N: Vector2(0, -1),
-            Direction.NE: Vector2(1, -1),
-            Direction.E: Vector2(1, 0),
-            Direction.SE: Vector2(1, 1),
-            Direction.S: Vector2(0, 1),
-            Direction.SW: Vector2(-1, 1),
-            Direction.W: Vector2(-1, 0),
-            Direction.NW: Vector2(-1, -1),
-        }[self].normalize()
+            Direction.N: Vec2d(0, -1),
+            Direction.NE: Vec2d(1, -1),
+            Direction.E: Vec2d(1, 0),
+            Direction.SE: Vec2d(1, 1),
+            Direction.S: Vec2d(0, 1),
+            Direction.SW: Vec2d(-1, 1),
+            Direction.W: Vec2d(-1, 0),
+            Direction.NW: Vec2d(-1, -1),
+        }[self].normalized()
 
     def to_isometric(self):
         return {
@@ -40,7 +40,7 @@ class Direction(Enum):
         }[self]
 
     @classmethod
-    def direction_to(cls, origin: Vector2, target: Vector2):
+    def direction_to(cls, origin: Vec2d, target: Vec2d):
         """Get direction to position b from position a"""
         angle = atan2(target.y - origin.y, target.x - origin.x)
         angle += pi / 8  # this makes things a bit more concise

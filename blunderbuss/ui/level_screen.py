@@ -4,7 +4,6 @@ from enum import Enum
 
 import pygame
 from pygame.event import Event
-from pygame.math import Vector2
 
 from blunderbuss.util.math import cartesian_to_isometric
 from blunderbuss.ui.character_sprite import CharacterSprite
