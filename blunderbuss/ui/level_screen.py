@@ -122,6 +122,10 @@ class LevelScreen(Screen, WorldCallback):
             player_tile_y + self.tile_y_draw_distance,
         )
         renderables = create_renderable_list()
+        camx, camy = cartesian_to_isometric(
+            self.world.player.position.x * self.world.map.tile_width // 2,
+            self.world.player.position.y * self.world.map.tile_width // 2,
+        )
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
@@ -135,7 +139,7 @@ class LevelScreen(Screen, WorldCallback):
                         renderable = BlittableRenderable(
                             renderables_generate_key(layer, bottom_y),
                             blit_image,
-                            (blit_x, blit_y),
+                            (blit_x - camx, blit_y - camy),
                         )
                         renderables.add(renderable)
         for character_struct in self.character_structs:
@@ -162,12 +166,11 @@ class LevelScreen(Screen, WorldCallback):
         layer: int | None,
         image: pygame.Surface,
     ):
-        camera_pos = self.world.player.body.position
         x_offset, y_offset = (
             self.world.map.get_layer_offsets(layer) if layer is not None else (0, 0)
         )
-        cartesian_x = (x - camera_pos.x) * self.world.map.tile_width // 2
-        cartesian_y = (y - camera_pos.y) * self.world.map.tile_width // 2
+        cartesian_x = x * self.world.map.tile_width // 2
+        cartesian_y = y * self.world.map.tile_width // 2
         iso_x, iso_y = cartesian_to_isometric(cartesian_x, cartesian_y)
         x = iso_x + CAMERA_OFFSET_X - image.get_width() // 2
         y = iso_y + CAMERA_OFFSET_Y - image.get_height() // 2
