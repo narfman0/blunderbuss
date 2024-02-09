@@ -169,9 +169,9 @@ class LevelScreen(Screen, WorldCallback):
         )
         cartesian_x = (x - camera_pos.x) * self.world.map.tile_width // 2
         cartesian_y = (y - camera_pos.y) * self.world.map.tile_width // 2
-        isometric_coords = cartesian_to_isometric(Vector2(cartesian_x, cartesian_y))
-        x = isometric_coords.x + CAMERA_OFFSET_X - image.get_width() // 2
-        y = isometric_coords.y + CAMERA_OFFSET_Y - image.get_height() // 2
+        iso_x, iso_y = cartesian_to_isometric(cartesian_x, cartesian_y)
+        x = iso_x + CAMERA_OFFSET_X - image.get_width() // 2
+        y = iso_y + CAMERA_OFFSET_Y - image.get_height() // 2
         return (x + x_offset, y + y_offset)
 
     def read_input_player_move_direction(self):

@@ -38,5 +38,5 @@ def renderables_generate_key(layer: int, bottom_y: float):
     return (layer << 16) + int(bottom_y)
 
 
-def create_renderable_list():
-    return SortedKeyList(key=renderables_key)
+def create_renderable_list(iterable=None):
+    return SortedKeyList(iterable, key=renderables_key)
