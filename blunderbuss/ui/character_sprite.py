@@ -6,18 +6,18 @@ from blunderbuss.settings import FPS
 
 
 class CharacterSprite(pygame.sprite.Sprite):
-    SUBFRAMES_PER_FRAME = FPS // 10
+    FRAME_DURATION = 0.1
 
     def __init__(self, sprite_name, scale: float = 1, offset=(0, 0)):
         super(CharacterSprite, self).__init__()
         self.index = 0
         self.moving = False
         self.loop = True
-        self.subframe = 0
         self.sprite_name = sprite_name
         self.offset = offset
         self.active_animation_name = "idle"
         self.active_direction = Direction.S
+        self.current_frame_time_remaining = self.FRAME_DURATION
 
         with open(f"data/characters/{sprite_name}/animations.yml") as f:
             animations_yml = yaml.safe_load(f)
@@ -71,21 +71,20 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.loop = loop
         if self.active_animation_name == animation_name:
             return
-        self.active_animation_name = animation_name
-        self.subframe = 0
         self.index = 0
+        self.active_animation_name = animation_name
+        self.current_frame_time_remaining = self.FRAME_DURATION
 
-    def update(self):
-        if self.subframe == CharacterSprite.SUBFRAMES_PER_FRAME:
+    def update(self, dt: float):
+        self.current_frame_time_remaining -= dt
+        while self.current_frame_time_remaining <= 0:
+            self.current_frame_time_remaining += self.FRAME_DURATION
             self.index += 1
-            self.subframe = 0
             if self.index >= len(self.active_images):
                 if self.loop:
                     self.index = 0
                 else:
                     self.index = len(self.active_images) - 1
-        else:
-            self.subframe += 1
         self.image = self.active_images[self.index]
 
     def set_position(self, x, y):

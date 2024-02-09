@@ -107,7 +107,7 @@ class LevelScreen(Screen, WorldCallback):
             sprite.set_position(x, y)
 
         for character_struct in self.character_structs:
-            character_struct.sprite_group.update()
+            character_struct.sprite_group.update(dt)
 
     def draw(self, dest_surface: pygame.Surface):
         player_tile_x = int(self.world.player.position.x)
