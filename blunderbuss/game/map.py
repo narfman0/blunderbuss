@@ -63,3 +63,8 @@ class Map:
     @property
     def tile_width(self):
         return self._tmxdata.tilewidth
+
+    @property
+    @lru_cache(maxsize=1)
+    def tile_half_width(self):
+        return self._tmxdata.tilewidth // 2

@@ -74,8 +74,8 @@ class LevelScreen(Screen, WorldCallback):
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
         self.cam_x, self.cam_y = cartesian_to_isometric(
-            self.world.player.position.x * self.world.map.tile_width // 2,
-            self.world.player.position.y * self.world.map.tile_width // 2,
+            self.world.player.position.x * self.world.map.tile_half_width,
+            self.world.player.position.y * self.world.map.tile_half_width,
         )
         if (
             self.world.player.alive
@@ -169,8 +169,8 @@ class LevelScreen(Screen, WorldCallback):
         x_offset, y_offset = (
             self.world.map.get_layer_offsets(layer) if layer is not None else (0, 0)
         )
-        cartesian_x = x * self.world.map.tile_width // 2
-        cartesian_y = y * self.world.map.tile_width // 2
+        cartesian_x = x * self.world.map.tile_half_width
+        cartesian_y = y * self.world.map.tile_half_width
         iso_x, iso_y = cartesian_to_isometric(cartesian_x, cartesian_y)
         x = iso_x + CAMERA_OFFSET_X - image.get_width() // 2
         y = iso_y + CAMERA_OFFSET_Y - image.get_height() // 2
