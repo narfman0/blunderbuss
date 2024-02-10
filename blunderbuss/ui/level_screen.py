@@ -73,6 +73,10 @@ class LevelScreen(Screen, WorldCallback):
                 self.player_struct.sprite.change_animation("attack")
         player_move_direction = self.read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
+        self.cam_x, self.cam_y = cartesian_to_isometric(
+            self.world.player.position.x * self.world.map.tile_width // 2,
+            self.world.player.position.y * self.world.map.tile_width // 2,
+        )
         if (
             self.world.player.alive
             and self.world.player.character_type
@@ -81,10 +85,6 @@ class LevelScreen(Screen, WorldCallback):
             # ideally we could pass a callback here but :shrugs:
             self.update_player_sprite()
         self.world.player.facing_direction = player_move_direction
-        camx, camy = cartesian_to_isometric(
-            self.world.player.position.x * self.world.map.tile_width // 2,
-            self.world.player.position.y * self.world.map.tile_width // 2,
-        )
 
         for character_struct in self.character_structs:
             character = character_struct.character
@@ -107,7 +107,7 @@ class LevelScreen(Screen, WorldCallback):
             x, y = self.calculate_draw_coordinates(
                 character.position.x, character.position.y, None, sprite.image
             )
-            sprite.set_position(x - camx, y - camy)
+            sprite.set_position(x - self.cam_x, y - self.cam_y)
 
         for character_struct in self.character_structs:
             character_struct.sprite_group.update(dt)
@@ -126,10 +126,6 @@ class LevelScreen(Screen, WorldCallback):
             player_tile_y + self.tile_y_draw_distance,
         )
         renderables = create_renderable_list()
-        camx, camy = cartesian_to_isometric(
-            self.world.player.position.x * self.world.map.tile_width // 2,
-            self.world.player.position.y * self.world.map.tile_width // 2,
-        )
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for layer in range(self.world.map.get_tile_layer_count()):
             for x in range(tile_x_begin, tile_x_end):
@@ -139,11 +135,11 @@ class LevelScreen(Screen, WorldCallback):
                         blit_x, blit_y = self.calculate_draw_coordinates(
                             x, y, layer, blit_image
                         )
-                        bottom_y = blit_y - camy + blit_image.get_height()
+                        bottom_y = blit_y - self.cam_y + blit_image.get_height()
                         renderable = BlittableRenderable(
                             renderables_generate_key(layer, bottom_y),
                             blit_image,
-                            (blit_x - camx, blit_y - camy),
+                            (blit_x - self.cam_x, blit_y - self.cam_y),
                         )
                         renderables.add(renderable)
         for character_struct in self.character_structs:
