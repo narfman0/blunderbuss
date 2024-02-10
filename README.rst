@@ -9,12 +9,12 @@ space ARPG!
 TODO
 ----
 
-Need:
+v1:
 
 * Enemies
 * Final boss
 
-Want:
+v2:
 
 * Levels
 * Music/sfx
