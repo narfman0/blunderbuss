@@ -12,7 +12,6 @@ TODO
 Need:
 
 * Enemies
-* Fighting
 * Final boss
 
 Want:
