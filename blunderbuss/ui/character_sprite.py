@@ -16,7 +16,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.sprite_name = sprite_name
         self.offset = offset
         self.active_animation_name = "idle"
-        self.active_direction = Direction.S
+        self.direction = Direction.S
         self.current_frame_time_remaining = self.FRAME_DURATION
 
         with open(f"data/characters/{sprite_name}/animations.yml") as f:
@@ -60,7 +60,7 @@ class CharacterSprite(pygame.sprite.Sprite):
 
     def move(self, direction):
         self.moving = True
-        self.active_direction = direction
+        self.direction = direction
         self.index = 0
 
     def stop(self):
@@ -93,4 +93,4 @@ class CharacterSprite(pygame.sprite.Sprite):
 
     @property
     def active_images(self) -> list[pygame.Surface]:
-        return self.images[self.active_animation_name][self.active_direction]
+        return self.images[self.active_animation_name][self.direction]
