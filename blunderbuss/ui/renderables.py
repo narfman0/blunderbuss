@@ -30,6 +30,16 @@ class SpriteRenderable(Renderable):
         self.sprite_group.draw(surface)
 
 
+@dataclass
+class MapRenderable:
+    layer: int
+    blit_image: Surface
+    blit_coords: tuple[float, float]
+
+    def draw(self, surface: Surface):
+        surface.blit(self.blit_image, self.blit_coords)
+
+
 def renderables_key(a: Renderable):
     return a.key
 
