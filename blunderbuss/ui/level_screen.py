@@ -81,6 +81,10 @@ class LevelScreen(Screen, WorldCallback):
             # ideally we could pass a callback here but :shrugs:
             self.update_player_sprite()
         self.world.player.facing_direction = player_move_direction
+        camx, camy = cartesian_to_isometric(
+            self.world.player.position.x * self.world.map.tile_width // 2,
+            self.world.player.position.y * self.world.map.tile_width // 2,
+        )
 
         for character_struct in self.character_structs:
             character = character_struct.character
@@ -103,7 +107,7 @@ class LevelScreen(Screen, WorldCallback):
             x, y = self.calculate_draw_coordinates(
                 character.position.x, character.position.y, None, sprite.image
             )
-            sprite.set_position(x, y)
+            sprite.set_position(x - camx, y - camy)
 
         for character_struct in self.character_structs:
             character_struct.sprite_group.update(dt)
@@ -135,7 +139,7 @@ class LevelScreen(Screen, WorldCallback):
                         blit_x, blit_y = self.calculate_draw_coordinates(
                             x, y, layer, blit_image
                         )
-                        bottom_y = blit_y + blit_image.get_height()
+                        bottom_y = blit_y - camy + blit_image.get_height()
                         renderable = BlittableRenderable(
                             renderables_generate_key(layer, bottom_y),
                             blit_image,
