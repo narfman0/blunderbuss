@@ -57,5 +57,6 @@ class World:
                 - enemy.radius
                 < attacker.attack_distance
             ):
+                # TODO: ensure enemy is correct direction
                 enemy.handle_damage_received(1)
                 print(f"Attack successful, enemy has {enemy.hp} hp")

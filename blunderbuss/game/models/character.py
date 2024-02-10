@@ -165,15 +165,14 @@ class NPC(Character):
     def ai(self, dt: float, player: Character, world_callback: WorldCallback):
         if not self.alive:
             return
-        if self.position.get_dist_sqrd(player.position) < self.chase_distance**2:
+        self.movement_direction = None
+        if not player.alive:
+            return
+        player_dst_sqrd = self.position.get_dist_sqrd(player.position)
+        if player_dst_sqrd < self.chase_distance**2:
             self.movement_direction = Direction.direction_to(
                 self.position, player.position
             )
-        else:
-            self.movement_direction = None
-        if (
-            player.position.get_dist_sqrd(self.position) < self.attack_distance**2
-            and not self.attacking
-        ):
+        if player_dst_sqrd < self.attack_distance**2 and not self.attacking:
             self.attack()
             world_callback.ai_attack_callback(self)
