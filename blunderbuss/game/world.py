@@ -51,12 +51,17 @@ class World:
     def process_attack_damage(self, attacker: Character, enemies: list[Character]):
         attacker.should_process_attack_damage = False
         for enemy in enemies:
-            if (
+            if not (
                 attacker.position.get_distance(enemy.position)
                 - attacker.radius
                 - enemy.radius
                 < attacker.attack_distance
             ):
-                # TODO: ensure enemy is correct direction
-                enemy.handle_damage_received(1)
-                print(f"Attack successful, enemy has {enemy.hp} hp")
+                continue
+            target_direction = Direction.direction_to(
+                attacker.position, enemy.position
+            )
+            if not target_direction == attacker.facing_direction:
+                continue
+            enemy.handle_damage_received(1)
+            print(f"Attack successful, enemy has {enemy.hp} hp")
