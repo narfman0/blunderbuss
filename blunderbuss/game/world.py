@@ -17,7 +17,7 @@ class World:
         # initialize player
         tile_x, tile_y = self.map.get_start_tile()
         self.player = Player(
-            position=(0.5 + tile_x, 0.5 + tile_y), character_type="samurai"
+            position=(0.5 + tile_x, 0.5 + tile_y), character_type="pigsassin"
         )
         self.space.add(self.player.body, self.player.poly)
 

@@ -151,10 +151,10 @@ class Player(Character):
     def swap(self):
         if not self.alive or self.swapping:
             return
-        if self.character_type == "samurai":
+        if self.character_type == "pigsassin":
             self.swap_character_type = "droid_assassin"
         elif self.character_type == "droid_assassin":
-            self.swap_character_type = "samurai"
+            self.swap_character_type = "pigsassin"
         else:
             print(f"Unknown character type {self.character_type}")
         self.swap_time_remaining = SWAP_DURATION
