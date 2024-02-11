@@ -17,7 +17,7 @@ class CharacterProperties(YAMLWizard):
     dash_duration: float = None
     dash_scalar: float = None
     run_force: float = 1000
-    running_stop_threshold: float = None
+    running_stop_threshold: float = 1.0
     max_velocity: float = 1
     radius: float = 0.5
     attack_duration: float = None
