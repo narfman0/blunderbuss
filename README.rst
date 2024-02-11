@@ -11,7 +11,8 @@ TODO
 
 v1:
 
-* Enemies
+* Projectile enemy
+* Rooms with mob spawn logic
 * Final boss
 
 v2:
