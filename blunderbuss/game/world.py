@@ -9,6 +9,7 @@ from blunderbuss.game.world_callback import WorldCallback
 
 class World:
     def __init__(self, level_name="1"):
+        self.invincible: bool = False
         self.space = pymunk.Space()
         self.level = Level.from_yaml_file(f"data/levels/{level_name}.yml")
         self.map = Map(self.level.tmx_path)
@@ -61,5 +62,8 @@ class World:
             target_direction = Direction.direction_to(attacker.position, enemy.position)
             if not target_direction == attacker.facing_direction:
                 continue
-            enemy.handle_damage_received(1)
-            print(f"Attack successful, enemy has {enemy.hp} hp")
+            if self.player == enemy and self.invincible:
+                print("Player invincible! Damage avoided.")
+            else:
+                enemy.handle_damage_received(1)
+                print(f"Attack successful, enemy has {enemy.hp} hp")
