@@ -12,19 +12,19 @@ SWAP_DURATION = 0.1
 
 @dataclass
 class CharacterProperties(YAMLWizard):
-    mass: float = None
+    mass: float = 10
     dash_cooldown: float = None
     dash_duration: float = None
     dash_scalar: float = None
-    run_force: float = None
+    run_force: float = 1000
     running_stop_threshold: float = None
-    max_velocity: float = None
-    radius: float = None
+    max_velocity: float = 1
+    radius: float = 0.5
     attack_duration: float = None
     attack_distance: float = None
     attack_time_until_damage: float = None
-    hp_max: int = 0
-    chase_distance: float = 0
+    hp_max: int = 1
+    chase_distance: float = 15
 
 
 @dataclass
@@ -42,7 +42,7 @@ class Character(CharacterProperties):
     attack_damage_time_remaining: float = 0
     should_process_attack_damage: bool = False
     character_type: str = None
-    hp: int = 0
+    hp: int = 1
 
     def __init__(self, position: tuple[float, float], character_type: str):
         self.character_type = character_type
@@ -111,7 +111,8 @@ class Character(CharacterProperties):
             self.attacking = True
             self.attack_time_remaining = self.attack_duration
             self.attack_damage_time_remaining = self.attack_time_until_damage
-            self.facing_direction = self.movement_direction
+            if self.movement_direction: # maybe standing still
+                self.facing_direction = self.movement_direction
 
     def dash(self):
         if not self.dashing and self.dash_cooldown_remaining <= 0:
