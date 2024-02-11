@@ -58,9 +58,7 @@ class World:
                 < attacker.attack_distance
             ):
                 continue
-            target_direction = Direction.direction_to(
-                attacker.position, enemy.position
-            )
+            target_direction = Direction.direction_to(attacker.position, enemy.position)
             if not target_direction == attacker.facing_direction:
                 continue
             enemy.handle_damage_received(1)

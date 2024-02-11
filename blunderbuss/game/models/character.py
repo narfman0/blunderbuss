@@ -111,7 +111,7 @@ class Character(CharacterProperties):
             self.attacking = True
             self.attack_time_remaining = self.attack_duration
             self.attack_damage_time_remaining = self.attack_time_until_damage
-            if self.movement_direction: # maybe standing still
+            if self.movement_direction:  # maybe standing still
                 self.facing_direction = self.movement_direction
 
     def dash(self):
