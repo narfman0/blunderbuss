@@ -53,6 +53,16 @@ class CharacterSprite(pygame.sprite.Sprite):
                         path_image_map[path] = image
                     animation_direction_images.append(image)
                 self.images[animation_name][direction] = animation_direction_images
+            # let's make it easy to make animation yml, and allow ourselves just to define once for east.
+            for direction in [Direction.N, Direction.NE, Direction.SE]:
+                if direction not in self.images[animation_name]:
+                    self.images[animation_name][direction] = self.images[animation_name][Direction.E]
+            if Direction.W not in self.images[animation_name]:
+                east_images = list(self.images[animation_name][Direction.E])
+                west_images = [pygame.transform.flip(img, flip_x=True, flip_y=False) for img in east_images]
+                for direction in [Direction.S, Direction.SW, Direction.W, Direction.NW]:
+                    if direction not in self.images[animation_name]:
+                        self.images[animation_name][direction] = west_images
 
         self.image = self.active_images[self.index]
         width, height = self.image.get_size()
