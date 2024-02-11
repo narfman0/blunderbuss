@@ -56,10 +56,15 @@ class CharacterSprite(pygame.sprite.Sprite):
             # let's make it easy to make animation yml, and allow ourselves just to define once for east.
             for direction in [Direction.N, Direction.NE, Direction.SE]:
                 if direction not in self.images[animation_name]:
-                    self.images[animation_name][direction] = self.images[animation_name][Direction.E]
+                    self.images[animation_name][direction] = self.images[
+                        animation_name
+                    ][Direction.E]
             if Direction.W not in self.images[animation_name]:
                 east_images = list(self.images[animation_name][Direction.E])
-                west_images = [pygame.transform.flip(img, flip_x=True, flip_y=False) for img in east_images]
+                west_images = [
+                    pygame.transform.flip(img, flip_x=True, flip_y=False)
+                    for img in east_images
+                ]
                 for direction in [Direction.S, Direction.SW, Direction.W, Direction.NW]:
                     if direction not in self.images[animation_name]:
                         self.images[animation_name][direction] = west_images

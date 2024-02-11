@@ -41,6 +41,7 @@ class LevelScreen(Screen, WorldCallback):
     def __init__(self, screen_manager: ScreenManager, world: World):
         self.screen_manager = screen_manager
         self.world = world
+        self.projectile_image_dict = {}
         self.player_struct = CharacterStruct(
             self.world.player,
             None,
@@ -95,6 +96,22 @@ class LevelScreen(Screen, WorldCallback):
             renderable = BlittableRenderable(
                 renderables_generate_key(map_renderable.layer, bottom_y),
                 map_renderable.blit_image,
+                (blit_x - self.cam_x, blit_y - self.cam_y),
+            )
+            renderables.add(renderable)
+        for projectile in self.world.projectiles:
+            image = self.projectile_image_dict.get(projectile.attack_profile_name)
+            if image is None:
+                path = f"data/projectiles/{projectile.attack_profile_name}.png"
+                image = pygame.image.load(path).convert_alpha()
+                self.projectile_image_dict[projectile.attack_profile_name] = image
+            blit_x, blit_y = self.calculate_draw_coordinates(
+                projectile.x, projectile.y, None, image
+            )
+            bottom_y = blit_y - self.cam_y + image.get_height()
+            renderable = BlittableRenderable(
+                renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y),
+                image,
                 (blit_x - self.cam_x, blit_y - self.cam_y),
             )
             renderables.add(renderable)

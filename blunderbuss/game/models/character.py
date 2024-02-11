@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from enum import Enum
 from uuid import UUID, uuid4 as generate_uuid
 
 import pymunk
@@ -8,6 +9,11 @@ from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
 
 SWAP_DURATION = 0.1
+
+
+class AttackType(Enum):
+    MELEE = 1
+    RANGED = 2
 
 
 @dataclass
@@ -23,6 +29,8 @@ class CharacterProperties(YAMLWizard):
     attack_duration: float = None
     attack_distance: float = None
     attack_time_until_damage: float = None
+    attack_type: AttackType = AttackType.MELEE
+    attack_profile_name: str = None
     hp_max: int = 1
     chase_distance: float = 15
 
@@ -40,7 +48,7 @@ class Character(CharacterProperties):
     attacking: bool = False
     attack_time_remaining: float = 0
     attack_damage_time_remaining: float = 0
-    should_process_attack_damage: bool = False
+    should_process_attack: bool = False
     character_type: str = None
     hp: int = 1
 
@@ -102,7 +110,7 @@ class Character(CharacterProperties):
                 self.attack_damage_time_remaining -= dt
                 if self.attack_damage_time_remaining <= 0:
                     self.attack_damage_time_remaining = 0
-                    self.should_process_attack_damage = True
+                    self.should_process_attack = True
             if self.attack_time_remaining <= 0:
                 self.attacking = False
 

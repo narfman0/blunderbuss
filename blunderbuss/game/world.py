@@ -1,15 +1,19 @@
 import pymunk
 
 from blunderbuss.game.models.level import Level
+from blunderbuss.game.models.projectile import Projectile
 from blunderbuss.game.map import Map
-from blunderbuss.game.models.character import Character, NPC, Player
+from blunderbuss.game.models.character import AttackType, Character, NPC, Player
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
+
+PROJECTILE_SPEED = 2.0
 
 
 class World:
     def __init__(self, level_name="1"):
         self.invincible: bool = False
+        self.projectiles: list[Projectile] = []
         self.space = pymunk.Space()
         self.level = Level.from_yaml_file(f"data/levels/{level_name}.yml")
         self.map = Map(self.level.tmx_path)
@@ -40,17 +44,35 @@ class World:
     ):
         self.player.movement_direction = player_movement_direction
         self.player.update(dt)
-        if self.player.should_process_attack_damage:
+        if self.player.should_process_attack:
             self.process_attack_damage(self.player, self.enemies)
         for enemy in self.enemies:
             enemy.ai(dt, self.player, world_callback)
             enemy.update(dt)
-            if enemy.should_process_attack_damage:
-                self.process_attack_damage(enemy, [self.player])
+            if enemy.should_process_attack:
+                if enemy.attack_type == AttackType.MELEE:
+                    self.process_attack_damage(enemy, [self.player])
+                elif enemy.attack_type == AttackType.RANGED:
+                    velocity = enemy.facing_direction.to_vector().scale_to_length(
+                        PROJECTILE_SPEED
+                    )
+                    projectile = Projectile(
+                        x=enemy.position.x,
+                        y=enemy.position.y,
+                        dx=velocity.x,
+                        dy=velocity.y,
+                        origin=enemy,
+                        attack_profile_name=enemy.attack_profile_name,
+                    )
+                    self.projectiles.append(projectile)
+                    enemy.should_process_attack = False
+        for projectile in self.projectiles:
+            # TODO implement collisions (walls, characters)
+            projectile.update(dt)
         self.space.step(dt)
 
     def process_attack_damage(self, attacker: Character, enemies: list[Character]):
-        attacker.should_process_attack_damage = False
+        attacker.should_process_attack = False
         for enemy in enemies:
             if not (
                 attacker.position.get_distance(enemy.position)
