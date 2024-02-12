@@ -11,7 +11,7 @@ TODO
 
 v1:
 
-* Projectile enemy
+* Implement hitboxes for attacks
 * Rooms with mob spawn logic
 * Final boss
 
