@@ -172,6 +172,10 @@ class Player(Character):
         self.swap_time_remaining = SWAP_DURATION
         self.swapping = True
 
+    def dash(self):
+        if not self.swapping:
+            super().dash()
+
 
 class NPC(Character):
     def ai(self, dt: float, player: Character, world_callback: WorldCallback):
