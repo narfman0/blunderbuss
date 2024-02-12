@@ -51,6 +51,7 @@ class Character(CharacterProperties):
     should_process_attack: bool = False
     character_type: str = None
     hp: int = 1
+    invincible: bool = False
 
     def __init__(self, position: tuple[float, float], character_type: str):
         self.character_type = character_type
@@ -58,14 +59,16 @@ class Character(CharacterProperties):
         self.apply_character_properties()
         self.hp = self.hp_max
         self.body = pymunk.Body()
+        self.body.character = self
         self.body.position = position
         self.poly = pymunk.Circle(self.body, self.radius)
         self.poly.mass = self.mass
 
     def handle_damage_received(self, dmg: int):
-        self.hp = max(0, self.hp - dmg)
-        if not self.alive:
-            self.body._set_type(pymunk.Body.STATIC)
+        if not self.invincible:
+            self.hp = max(0, self.hp - dmg)
+            if not self.alive:
+                self.body._set_type(pymunk.Body.STATIC)
 
     def handle_healing_received(self, amount: int):
         self.hp = min(self.hp_max, self.hp + amount)

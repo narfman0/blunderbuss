@@ -233,8 +233,8 @@ class LevelScreen(Screen, WorldCallback):
                     self.world.player.handle_healing_received(1)
                     print(f"Player now has {self.world.player.hp} hp")
                 elif event.key == pygame.K_F3:
-                    self.world.invincible = not self.world.invincible
-                    print(f"Player invincibility {self.world.invincible}")
+                    self.world.player.invincible = not self.world.player.invincible
+                    print(f"Player invincibility set to {self.world.player.invincible}")
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if pygame.mouse.get_pressed()[0]:
                     actions.append(ActionEnum.ATTACK)

@@ -12,7 +12,6 @@ PROJECTILE_SPEED = 2.0
 
 class World:
     def __init__(self, level_name="1"):
-        self.invincible: bool = False
         self.projectiles: list[Projectile] = []
         self.space = pymunk.Space()
         self.level = Level.from_yaml_file(f"data/levels/{level_name}.yml")
@@ -66,10 +65,27 @@ class World:
                     )
                     self.projectiles.append(projectile)
                     enemy.should_process_attack = False
-        for projectile in self.projectiles:
-            # TODO implement collisions (walls, characters)
-            projectile.update(dt)
+        self.update_projectiles(dt)
         self.space.step(dt)
+
+    def update_projectiles(self, dt: float):
+        for projectile in self.projectiles:
+            projectile.update(dt)
+            should_remove = False
+            for query_info in self.space.shape_query(projectile.shape):
+                if hasattr(query_info.shape.body, "character"):
+                    character = query_info.shape.body.character
+                    # let's avoid friendly fire. eventually it'd be cool to have factions.
+                    player_involved = (
+                        projectile.origin == self.player or character == self.player
+                    )
+                    if player_involved and projectile.origin != character:
+                        character.handle_damage_received(1)
+                        should_remove = True
+                else:
+                    should_remove = True
+            if should_remove:
+                self.projectiles.remove(projectile)
 
     def process_attack_damage(self, attacker: Character, enemies: list[Character]):
         attacker.should_process_attack = False
@@ -84,8 +100,4 @@ class World:
             target_direction = Direction.direction_to(attacker.position, enemy.position)
             if not target_direction == attacker.facing_direction:
                 continue
-            if self.player == enemy and self.invincible:
-                print("Player invincible! Damage avoided.")
-            else:
-                enemy.handle_damage_received(1)
-                print(f"Attack successful, enemy has {enemy.hp} hp")
+            enemy.handle_damage_received(1)
