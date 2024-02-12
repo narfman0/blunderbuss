@@ -11,16 +11,26 @@ TODO
 
 v1:
 
-* Implement hitboxes for attacks
-* Rooms with mob spawn logic
+* Combat (e.g. hitboxes)
+* Offset projectile emitters
+* Three rooms
 * Final boss
 
 v2:
 
-* Levels
-* Music/sfx
+* One character all abilities
+* Music/SFX
 * Cutscenes
-* Better AI
+
+v3:
+* Three levels/complete "story"
+* Enhanced AI
+* Three characters, all abilities
+
+Currently out of scope:
+
+* Lighting
+* Camera effects
 * Leveling
 
 License
