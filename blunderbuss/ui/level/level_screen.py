@@ -58,6 +58,24 @@ class LevelScreen(Screen, WorldCallback):
 
     def update(self, dt: float, events: list[Event]):
         player_actions = read_input_player_actions(events)
+        self.handle_player_actions(player_actions)
+        player_move_direction = read_input_player_move_direction()
+        self.world.update(dt, player_move_direction, self)
+        self.cam_x, self.cam_y = cartesian_to_isometric(
+            self.world.player.position.x * self.world.map.tile_half_width,
+            self.world.player.position.y * self.world.map.tile_half_width,
+        )
+        if (
+            self.world.player.alive
+            and self.world.player.character_type
+            != self.player_struct.sprite.sprite_name
+        ):
+            # ideally we could pass a callback here but :shrugs:
+            self.update_player_sprite()
+        self.world.player.facing_direction = player_move_direction
+        self.update_character_structs(dt)
+
+    def handle_player_actions(self, player_actions: list[ActionEnum]):
         if ActionEnum.DASH in player_actions:
             if not self.world.player.dashing:
                 self.world.player.dash()
@@ -75,21 +93,6 @@ class LevelScreen(Screen, WorldCallback):
         if ActionEnum.PLAYER_INVICIBILITY in player_actions:
             self.world.player.invincible = not self.world.player.invincible
             print(f"Player invincibility set to {self.world.player.invincible}")
-        player_move_direction = read_input_player_move_direction()
-        self.world.update(dt, player_move_direction, self)
-        self.cam_x, self.cam_y = cartesian_to_isometric(
-            self.world.player.position.x * self.world.map.tile_half_width,
-            self.world.player.position.y * self.world.map.tile_half_width,
-        )
-        if (
-            self.world.player.alive
-            and self.world.player.character_type
-            != self.player_struct.sprite.sprite_name
-        ):
-            # ideally we could pass a callback here but :shrugs:
-            self.update_player_sprite()
-        self.world.player.facing_direction = player_move_direction
-        self.update_character_structs(dt)
 
     def draw(self, dest_surface: pygame.Surface):
         renderables = create_renderable_list()
