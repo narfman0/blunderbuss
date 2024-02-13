@@ -1,38 +1,10 @@
 from dataclasses import dataclass, field
-from enum import Enum
 from uuid import UUID, uuid4 as generate_uuid
 
 import pymunk
-from dataclass_wizard import YAMLWizard
 
+from blunderbuss.game.models.character import CharacterProperties
 from blunderbuss.game.models.direction import Direction
-from blunderbuss.game.world_callback import WorldCallback
-
-SWAP_DURATION = 0.1
-
-
-class AttackType(Enum):
-    MELEE = 1
-    RANGED = 2
-
-
-@dataclass
-class CharacterProperties(YAMLWizard):
-    mass: float = 10
-    dash_cooldown: float = None
-    dash_duration: float = None
-    dash_scalar: float = None
-    run_force: float = 1000
-    running_stop_threshold: float = 1.0
-    max_velocity: float = 1
-    radius: float = 0.5
-    attack_duration: float = None
-    attack_distance: float = None
-    attack_time_until_damage: float = None
-    attack_type: AttackType = AttackType.MELEE
-    attack_profile_name: str = None
-    hp_max: int = 1
-    chase_distance: float = 15
 
 
 @dataclass
@@ -142,53 +114,3 @@ class Character(CharacterProperties):
     @property
     def alive(self) -> bool:
         return self.hp > 0
-
-
-class Player(Character):
-    swapping: bool = False
-    swap_time_remaining: float = 0
-    swap_character_type: str = None
-
-    def update(self, dt: float):
-        super().update(dt)
-        if self.alive and self.swapping:
-            self.swap_time_remaining -= dt
-            if self.swap_time_remaining <= 0:
-                self.swap_time_remaining = 0
-                self.swapping = False
-                self.character_type = self.swap_character_type
-                self.swap_character_type = None
-                self.apply_character_properties()
-
-    def swap(self):
-        if not self.alive or self.swapping:
-            return
-        if self.character_type == "pigsassin":
-            self.swap_character_type = "droid_assassin"
-        elif self.character_type == "droid_assassin":
-            self.swap_character_type = "pigsassin"
-        else:
-            print(f"Unknown character type {self.character_type}")
-        self.swap_time_remaining = SWAP_DURATION
-        self.swapping = True
-
-    def dash(self):
-        if not self.swapping:
-            super().dash()
-
-
-class NPC(Character):
-    def ai(self, dt: float, player: Character, world_callback: WorldCallback):
-        if not self.alive:
-            return
-        self.movement_direction = None
-        if not player.alive:
-            return
-        player_dst_sqrd = self.position.get_dist_sqrd(player.position)
-        if player_dst_sqrd < self.chase_distance**2:
-            self.movement_direction = Direction.direction_to(
-                self.position, player.position
-            )
-        if player_dst_sqrd < self.attack_distance**2 and not self.attacking:
-            self.attack()
-            world_callback.ai_attack_callback(self)

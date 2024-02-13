@@ -3,7 +3,8 @@ import pymunk
 from blunderbuss.game.models.level import Level
 from blunderbuss.game.models.projectile import Projectile
 from blunderbuss.game.map import Map
-from blunderbuss.game.models.character import AttackType, Character, NPC, Player
+from blunderbuss.game.models.attack_type import AttackType
+from blunderbuss.game.models.character import Character, NPC, Player
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
 
