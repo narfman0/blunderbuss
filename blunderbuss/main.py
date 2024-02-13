@@ -5,7 +5,7 @@ import pygame
 from blunderbuss.game.world import World
 from blunderbuss.settings import *
 from blunderbuss.ui.screen import ScreenManager
-from blunderbuss.ui.level_screen import LevelScreen
+from blunderbuss.ui.level.level_screen import LevelScreen
 from blunderbuss.util.logging import initialize_logging
 
 LOGGER = logging.getLogger(__name__)

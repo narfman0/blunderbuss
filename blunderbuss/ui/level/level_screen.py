@@ -1,11 +1,15 @@
 import logging
 from dataclasses import dataclass
-from enum import Enum
 
 import pygame
 from pygame.event import Event
 
 from blunderbuss.util.math import cartesian_to_isometric
+from blunderbuss.ui.level.input import (
+    ActionEnum,
+    read_input_player_move_direction,
+    read_input_player_actions,
+)
 from blunderbuss.ui.character_sprite import CharacterSprite
 from blunderbuss.ui.renderables import *
 from blunderbuss.ui.screen import Screen, ScreenManager
@@ -21,12 +25,6 @@ SCREEN_WIDTH = WIDTH // SCREEN_SCALE
 SCREEN_HEIGHT = HEIGHT // SCREEN_SCALE
 CAMERA_OFFSET_X = SCREEN_WIDTH // 2
 CAMERA_OFFSET_Y = SCREEN_HEIGHT // 2
-
-
-class ActionEnum(Enum):
-    DASH = 1
-    ATTACK = 2
-    CHARACTER_SWAP = 3
 
 
 @dataclass
@@ -59,7 +57,7 @@ class LevelScreen(Screen, WorldCallback):
         self.map_renderables = list(self.generate_map_renderables())
 
     def update(self, dt: float, events: list[Event]):
-        player_actions = self.read_input_player_actions(events)
+        player_actions = read_input_player_actions(events)
         if ActionEnum.DASH in player_actions:
             if not self.world.player.dashing:
                 self.world.player.dash()
@@ -71,7 +69,13 @@ class LevelScreen(Screen, WorldCallback):
             if self.world.player.alive and not self.world.player.attacking:
                 self.world.player.attack()
                 self.player_struct.sprite.change_animation("attack")
-        player_move_direction = self.read_input_player_move_direction()
+        if ActionEnum.PLAYER_HEAL in player_actions:
+            self.world.player.handle_healing_received(1)
+            print(f"Player now has {self.world.player.hp} hp")
+        if ActionEnum.PLAYER_INVICIBILITY in player_actions:
+            self.world.player.invincible = not self.world.player.invincible
+            print(f"Player invincibility set to {self.world.player.invincible}")
+        player_move_direction = read_input_player_move_direction()
         self.world.update(dt, player_move_direction, self)
         self.cam_x, self.cam_y = cartesian_to_isometric(
             self.world.player.position.x * self.world.map.tile_half_width,
@@ -191,54 +195,6 @@ class LevelScreen(Screen, WorldCallback):
         x = iso_x + CAMERA_OFFSET_X - image.get_width() // 2
         y = iso_y + CAMERA_OFFSET_Y - image.get_height() // 2
         return (x + x_offset, y + y_offset)
-
-    def read_input_player_move_direction(self):
-        keys = pygame.key.get_pressed()
-        right = keys[pygame.K_RIGHT] or keys[pygame.K_d]
-        left = keys[pygame.K_LEFT] or keys[pygame.K_a]
-        up = keys[pygame.K_UP] or keys[pygame.K_w]
-        down = keys[pygame.K_DOWN] or keys[pygame.K_s]
-        direction = None
-        if down:
-            if right:
-                direction = Direction.E
-            elif left:
-                direction = Direction.S
-            else:
-                direction = Direction.SE
-        elif up:
-            if right:
-                direction = Direction.N
-            elif left:
-                direction = Direction.W
-            else:
-                direction = Direction.NW
-        elif left:
-            direction = Direction.SW
-        elif right:
-            direction = Direction.NE
-        return direction
-
-    def read_input_player_actions(self, events: list[Event]) -> list[ActionEnum]:
-        actions = []
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    actions.append(ActionEnum.DASH)
-                elif event.key == pygame.K_e or event.key == pygame.K_q:
-                    actions.append(ActionEnum.CHARACTER_SWAP)
-                elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
-                    actions.append(ActionEnum.ATTACK)
-                elif event.key == pygame.K_F2:
-                    self.world.player.handle_healing_received(1)
-                    print(f"Player now has {self.world.player.hp} hp")
-                elif event.key == pygame.K_F3:
-                    self.world.player.invincible = not self.world.player.invincible
-                    print(f"Player invincibility set to {self.world.player.invincible}")
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pressed()[0]:
-                    actions.append(ActionEnum.ATTACK)
-        return actions
 
     def update_player_sprite(self):
         sprite = CharacterSprite(self.world.player.character_type)
