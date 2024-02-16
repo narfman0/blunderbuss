@@ -11,13 +11,14 @@ TODO
 
 v1:
 
-* Combat (e.g. hitboxes)
 * Offset projectile emitters
+* Better Sprite sorting
 * Three rooms
 * Final boss
 
 v2:
 
+* Polished levels/scenes
 * One character all abilities
 * Music/SFX
 * Cutscenes
