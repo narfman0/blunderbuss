@@ -4,6 +4,8 @@ from blunderbuss.game.world_callback import WorldCallback
 
 
 class NPC(Character):
+    body_removal_processed: bool = False
+
     def ai(self, dt: float, player: Character, world_callback: WorldCallback):
         if not self.alive:
             return

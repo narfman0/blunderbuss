@@ -36,7 +36,9 @@ class Character(CharacterProperties):
         self.body.position = position
         self.shape = pymunk.Circle(self.body, self.radius)
         self.shape.mass = self.mass
-        self.hitbox_shape = pymunk.Segment(self.body, (0, 0), (self.attack_distance, 0), radius=1)
+        self.hitbox_shape = pymunk.Segment(
+            self.body, (0, 0), (self.attack_distance, 0), radius=1
+        )
         self.hitbox_shape.sensor = True
 
     def handle_damage_received(self, dmg: int):

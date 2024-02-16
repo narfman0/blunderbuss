@@ -49,6 +49,9 @@ class World:
         for enemy in self.enemies:
             enemy.ai(dt, self.player, world_callback)
             enemy.update(dt)
+            if not enemy.alive and not enemy.body_removal_processed:
+                enemy.body_removal_processed = True
+                self.space.remove(enemy.body, enemy.shape, enemy.hitbox_shape)
             if enemy.should_process_attack:
                 if enemy.attack_type == AttackType.MELEE:
                     self.process_attack_damage(enemy, [self.player])

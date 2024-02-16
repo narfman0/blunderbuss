@@ -36,6 +36,9 @@ pyinstaller: clean
 	7z a blunderbuss.zip dist/*
 	7z rn blunderbuss.zip dist blunderbuss
 
+run-black:
+	black blunderbuss
+
 run-test:
 	pytest --cov=blunderbuss --cov-report term-missing tests/
 
@@ -44,6 +47,7 @@ run-main:
 
 release: run-test release-test release-prod clean
 
+b: run-black
 m: run-main
 main: init m
 t: run-test
