@@ -8,3 +8,5 @@ class AttackProfile(YAMLWizard):
     image_path: str
     speed: float
     radius: float
+    render_emit_offset_x: float = 0
+    render_emit_offset_y: float = 0
