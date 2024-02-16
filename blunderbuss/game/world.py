@@ -24,7 +24,7 @@ class World:
         self.player = Player(
             position=(0.5 + tile_x, 0.5 + tile_y), character_type="pigsassin"
         )
-        self.space.add(self.player.body, self.player.poly)
+        self.space.add(self.player.body, self.player.shape, self.player.hitbox_shape)
 
         # initialize enemies
         self.enemies: list[NPC] = []
@@ -34,7 +34,7 @@ class World:
                 character_type=level_enemy.character_type,
             )
             self.enemies.append(enemy)
-            self.space.add(enemy.body, enemy.poly)
+            self.space.add(enemy.body, enemy.shape, enemy.hitbox_shape)
 
     def update(
         self,
@@ -91,14 +91,5 @@ class World:
     def process_attack_damage(self, attacker: Character, enemies: list[Character]):
         attacker.should_process_attack = False
         for enemy in enemies:
-            if not (
-                attacker.position.get_distance(enemy.position)
-                - attacker.radius
-                - enemy.radius
-                < attacker.attack_distance
-            ):
-                continue
-            target_direction = Direction.direction_to(attacker.position, enemy.position)
-            if not target_direction == attacker.facing_direction:
-                continue
-            enemy.handle_damage_received(1)
+            if attacker.hitbox_shape.shapes_collide(enemy.shape).points:
+                enemy.handle_damage_received(1)

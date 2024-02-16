@@ -12,8 +12,9 @@ class Character(CharacterProperties):
     uuid: UUID = field(default_factory=generate_uuid)
     facing_direction: Direction = Direction.S
     movement_direction: Direction = None
-    poly: pymunk.Poly = None
+    shape: pymunk.Shape = None
     body: pymunk.Body = None
+    hitbox_shape: pymunk.Shape = None
     dashing: bool = False
     dash_time_remaining: float = 0
     dash_cooldown_remaining: float = 0
@@ -33,8 +34,10 @@ class Character(CharacterProperties):
         self.body = pymunk.Body()
         self.body.character = self
         self.body.position = position
-        self.poly = pymunk.Circle(self.body, self.radius)
-        self.poly.mass = self.mass
+        self.shape = pymunk.Circle(self.body, self.radius)
+        self.shape.mass = self.mass
+        self.hitbox_shape = pymunk.Segment(self.body, (0, 0), (self.attack_distance, 0), radius=1)
+        self.hitbox_shape.sensor = True
 
     def handle_damage_received(self, dmg: int):
         if not self.invincible:
@@ -50,11 +53,14 @@ class Character(CharacterProperties):
     def update(self, dt: float):
         if self.alive and self.movement_direction and not self.attacking:
             self.facing_direction = self.movement_direction
+            self.body.angle = self.facing_direction.angle
             dash_scalar = self.dash_scalar if self.dashing else 1.0
             dpos = (
                 self.movement_direction.to_vector() * self.run_force * dash_scalar * dt
             )
-            self.body.apply_force_at_local_point(force=(dpos.x, dpos.y))
+            self.body.apply_force_at_world_point(
+                force=(dpos.x, dpos.y), point=(self.position.x, self.position.y)
+            )
             if self.body.velocity.length > self.max_velocity * dash_scalar:
                 self.body.velocity = self.body.velocity.scale_to_length(
                     self.max_velocity * dash_scalar

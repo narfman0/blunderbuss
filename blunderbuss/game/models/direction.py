@@ -63,3 +63,8 @@ class Direction(Enum):
             else:
                 result = Direction.W
         return result
+
+    @property
+    def angle(self) -> float:
+        vectorized = self.to_vector()
+        return atan2(vectorized.y, vectorized.x)
