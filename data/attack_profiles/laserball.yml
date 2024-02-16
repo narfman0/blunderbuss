@@ -1,0 +1,4 @@
+name: laserball
+image_path: laserball
+speed: 2.5
+radius: 0.25

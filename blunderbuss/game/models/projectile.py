@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from pymunk import Body, Circle
 
+from blunderbuss.game.models.attack_profile import AttackProfile
 from blunderbuss.game.models.character import Character
 
 
@@ -12,14 +13,14 @@ class Projectile:
     dx: float
     dy: float
     origin: Character
-    attack_profile_name: str
+    attack_profile: AttackProfile
     body: Body = None
     shape: Circle = None
 
     def __post_init__(self):
         self.body = Body()
         self.body.position = (self.x, self.y)
-        self.shape = Circle(body=self.body, radius=0.5)
+        self.shape = Circle(body=self.body, radius=self.attack_profile.radius)
 
     def update(self, dt: float):
         self.x += dt * self.dx

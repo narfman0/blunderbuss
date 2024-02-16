@@ -3,17 +3,17 @@ import pymunk
 from blunderbuss.game.models.level import Level
 from blunderbuss.game.models.projectile import Projectile
 from blunderbuss.game.map import Map
+from blunderbuss.game.models.attack_profile import AttackProfile
 from blunderbuss.game.models.attack_type import AttackType
 from blunderbuss.game.models.character import Character, NPC, Player
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
 
-PROJECTILE_SPEED = 2.0
-
 
 class World:
     def __init__(self, level_name="1"):
         self.projectiles: list[Projectile] = []
+        self.attack_profiles: dict[str, AttackProfile] = {}
         self.space = pymunk.Space()
         self.level = Level.from_yaml_file(f"data/levels/{level_name}.yml")
         self.map = Map(self.level.tmx_path)
@@ -56,16 +56,24 @@ class World:
                 if enemy.attack_type == AttackType.MELEE:
                     self.process_attack_damage(enemy, [self.player])
                 elif enemy.attack_type == AttackType.RANGED:
-                    velocity = enemy.facing_direction.to_vector().scale_to_length(
-                        PROJECTILE_SPEED
+                    attack_profile = self.attack_profiles.get(enemy.attack_profile_name)
+                    if not attack_profile:
+                        attack_profile = AttackProfile.from_yaml_file(
+                            f"data/attack_profiles/{enemy.attack_profile_name}.yml"
+                        )
+                        self.attack_profiles[enemy.attack_profile_name] = attack_profile
+                    speed = (
+                        enemy.facing_direction.to_vector().scale_to_length(
+                            attack_profile.speed
+                        )
                     )
                     projectile = Projectile(
                         x=enemy.position.x,
                         y=enemy.position.y,
-                        dx=velocity.x,
-                        dy=velocity.y,
+                        dx=speed.x,
+                        dy=speed.y,
                         origin=enemy,
-                        attack_profile_name=enemy.attack_profile_name,
+                        attack_profile=attack_profile,
                     )
                     self.projectiles.append(projectile)
                     enemy.should_process_attack = False
