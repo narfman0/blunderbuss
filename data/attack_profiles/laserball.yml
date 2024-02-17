@@ -2,5 +2,5 @@ name: laserball
 image_path: laserball
 speed: 2.5
 radius: 0.25
-render_emit_offset_x: 0
-render_emit_offset_y: -26
+emitter_offset_x: 0
+emitter_offset_y: -26

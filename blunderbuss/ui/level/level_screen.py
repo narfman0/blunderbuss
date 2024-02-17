@@ -115,8 +115,8 @@ class LevelScreen(Screen, WorldCallback):
             blit_x, blit_y = self.calculate_draw_coordinates(
                 projectile.x, projectile.y, None, image
             )
-            blit_x += projectile.attack_profile.render_emit_offset_x
-            blit_y += projectile.attack_profile.render_emit_offset_y
+            blit_x += projectile.attack_profile.emitter_offset_x
+            blit_y += projectile.attack_profile.emitter_offset_y
             bottom_y = blit_y - self.cam_y + image.get_height()
             renderable = BlittableRenderable(
                 renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y),
