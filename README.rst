@@ -11,7 +11,6 @@ TODO
 
 v1:
 
-* Offset projectile emitters
 * Better Sprite sorting
 * Three rooms
 * Final boss
