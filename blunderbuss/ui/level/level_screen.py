@@ -106,23 +106,7 @@ class LevelScreen(Screen, WorldCallback):
                 (blit_x - self.cam_x, blit_y - self.cam_y),
             )
             renderables.add(renderable)
-        for projectile in self.world.projectiles:
-            image = self.projectile_image_dict.get(projectile.attack_profile.image_path)
-            if image is None:
-                path = f"data/projectiles/{projectile.attack_profile.image_path}.png"
-                image = pygame.image.load(path).convert_alpha()
-                self.projectile_image_dict[projectile.attack_profile.image_path] = image
-            blit_x, blit_y = self.calculate_draw_coordinates(
-                projectile.x, projectile.y, None, image
-            )
-            blit_x += projectile.attack_profile.emitter_offset_x
-            blit_y += projectile.attack_profile.emitter_offset_y
-            bottom_y = blit_y - self.cam_y + image.get_height()
-            renderable = BlittableRenderable(
-                renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y),
-                image,
-                (blit_x - self.cam_x, blit_y - self.cam_y),
-            )
+        for renderable in self.generate_projectile_renderables():
             renderables.add(renderable)
         for character_struct in self.character_structs:
             img_height = character_struct.sprite.image.get_height()
@@ -134,6 +118,23 @@ class LevelScreen(Screen, WorldCallback):
         pygame.transform.scale_by(
             surface, dest_surface=dest_surface, factor=SCREEN_SCALE
         )
+
+    def generate_projectile_renderables(self):
+        for projectile in self.world.projectiles:
+            image = self.projectile_image_dict.get(projectile.attack_profile.image_path)
+            if image is None:
+                path = f"data/projectiles/{projectile.attack_profile.image_path}.png"
+                image = pygame.image.load(path).convert_alpha()
+                self.projectile_image_dict[projectile.attack_profile.image_path] = image
+            blit_x, blit_y = self.calculate_draw_coordinates(
+                projectile.x, projectile.y, None, image
+            )
+            bottom_y = blit_y - self.cam_y + image.get_height()
+            yield BlittableRenderable(
+                renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y),
+                image,
+                (blit_x - self.cam_x, blit_y - self.cam_y),
+            )
 
     def update_character_structs(self, dt: float):
         for character_struct in self.character_structs:
