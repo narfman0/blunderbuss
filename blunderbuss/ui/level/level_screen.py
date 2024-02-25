@@ -109,7 +109,7 @@ class LevelScreen(Screen, WorldCallback):
             renderables.add(renderable)
         for character_struct in self.character_structs:
             img_height = character_struct.sprite.image.get_height()
-            bottom_y = character_struct.sprite.rect.top + img_height // 2
+            bottom_y = 8 + character_struct.sprite.rect.top + img_height // 2
             key = renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y)
             renderables.add(SpriteRenderable(key, character_struct.sprite_group))
             
