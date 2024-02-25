@@ -98,11 +98,14 @@ class LevelScreen(Screen, WorldCallback):
         renderables = create_renderable_list()
         for map_renderable in self.map_renderables:
             blit_x, blit_y = map_renderable.blit_coords
-            bottom_y = blit_y - self.cam_y + map_renderable.blit_image.get_height()
+            x_offset, y_offset = self.world.map.get_layer_offsets(map_renderable.layer)
+            bottom_y = (
+                blit_y + y_offset - self.cam_y + map_renderable.blit_image.get_height()
+            )
             renderable = BlittableRenderable(
                 renderables_generate_key(map_renderable.layer, bottom_y),
                 map_renderable.blit_image,
-                (blit_x - self.cam_x, blit_y - self.cam_y),
+                (blit_x + x_offset - self.cam_x, blit_y + y_offset - self.cam_y),
             )
             renderables.add(renderable)
         for renderable in self.generate_projectile_renderables():
@@ -112,7 +115,7 @@ class LevelScreen(Screen, WorldCallback):
             bottom_y = 8 + character_struct.sprite.rect.top + img_height // 2
             key = renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y)
             renderables.add(SpriteRenderable(key, character_struct.sprite_group))
-            
+
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for renderable in renderables:
             renderable.draw(surface)
@@ -128,7 +131,7 @@ class LevelScreen(Screen, WorldCallback):
                 image = pygame.image.load(path).convert_alpha()
                 self.projectile_image_dict[projectile.attack_profile.image_path] = image
             blit_x, blit_y = self.calculate_draw_coordinates(
-                projectile.x, projectile.y, None, image
+                projectile.x, projectile.y, image
             )
             bottom_y = blit_y - self.cam_y + image.get_height()
             yield BlittableRenderable(
@@ -157,7 +160,7 @@ class LevelScreen(Screen, WorldCallback):
                 if sprite.sprite_name != "death":
                     sprite.change_animation("death", loop=False)
             x, y = self.calculate_draw_coordinates(
-                character.position.x, character.position.y, None, sprite.image
+                character.position.x, character.position.y, sprite.image
             )
             sprite.set_position(x - self.cam_x, y - self.cam_y)
 
@@ -178,7 +181,7 @@ class LevelScreen(Screen, WorldCallback):
                     blit_image = self.world.map.get_tile_image(x, y, layer)
                     if blit_image:
                         blit_x, blit_y = self.calculate_draw_coordinates(
-                            x, y, layer, blit_image
+                            x, y, blit_image
                         )
                         yield MapRenderable(
                             layer=layer,
@@ -190,18 +193,14 @@ class LevelScreen(Screen, WorldCallback):
         self,
         x: float,
         y: float,
-        layer: int | None,
         image: pygame.Surface,
     ):
-        x_offset, y_offset = (
-            self.world.map.get_layer_offsets(layer) if layer is not None else (0, 0)
-        )
         cartesian_x = x * self.world.map.tile_half_width
         cartesian_y = y * self.world.map.tile_half_width
         iso_x, iso_y = cartesian_to_isometric(cartesian_x, cartesian_y)
         x = iso_x + CAMERA_OFFSET_X - image.get_width() // 2
         y = iso_y + CAMERA_OFFSET_Y - image.get_height() // 2
-        return (x + x_offset, y + y_offset)
+        return (x, y)
 
     def update_player_sprite(self):
         sprite = CharacterSprite(self.world.player.character_type)
