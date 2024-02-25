@@ -54,7 +54,8 @@ class LevelScreen(Screen, WorldCallback):
                 CharacterStruct(enemy, sprite, pygame.sprite.Group(sprite), None)
             )
 
-        self.map_renderables = list(self.generate_map_renderables())
+        self.ground_renderables = list(self.generate_map_renderables(ground=True))
+        self.map_renderables = list(self.generate_map_renderables(ground=False))
 
     def update(self, dt: float, events: list[Event]):
         player_actions = read_input_player_actions(events)
@@ -98,25 +99,28 @@ class LevelScreen(Screen, WorldCallback):
         renderables = create_renderable_list()
         for map_renderable in self.map_renderables:
             blit_x, blit_y = map_renderable.blit_coords
-            x_offset, y_offset = self.world.map.get_layer_offsets(map_renderable.layer)
             bottom_y = (
-                blit_y + y_offset - self.cam_y + map_renderable.blit_image.get_height()
+                blit_y - self.cam_y + map_renderable.blit_image.get_height() - 8
             )
             renderable = BlittableRenderable(
                 renderables_generate_key(map_renderable.layer, bottom_y),
                 map_renderable.blit_image,
-                (blit_x + x_offset - self.cam_x, blit_y + y_offset - self.cam_y),
+                (blit_x - self.cam_x, blit_y - self.cam_y),
             )
             renderables.add(renderable)
         for renderable in self.generate_projectile_renderables():
             renderables.add(renderable)
         for character_struct in self.character_structs:
             img_height = character_struct.sprite.image.get_height()
-            bottom_y = 8 + character_struct.sprite.rect.top + img_height // 2
+            bottom_y = character_struct.sprite.rect.top + img_height // 2
             key = renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y)
             renderables.add(SpriteRenderable(key, character_struct.sprite_group))
 
         surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
+        for ground_renderable in self.ground_renderables:
+            blit_x, blit_y = ground_renderable.blit_coords
+            blit_coords = (blit_x - self.cam_x, blit_y - self.cam_y)
+            surface.blit(ground_renderable.blit_image, blit_coords)
         for renderable in renderables:
             renderable.draw(surface)
         pygame.transform.scale_by(
@@ -173,9 +177,13 @@ class LevelScreen(Screen, WorldCallback):
                 character_struct.sprite.change_animation("attack")
                 character_struct.sprite.move(npc.facing_direction)
 
-    def generate_map_renderables(self):
+    def generate_map_renderables(self, ground: bool):
         """We can statically generate the blit coords once in the beginning, avoiding a bunch of coordinate conversions."""
+        ground_ids = self.world.map.get_ground_layer_ids()
         for layer in range(self.world.map.get_tile_layer_count()):
+            if ground and layer not in ground_ids or not ground and layer in ground_ids:
+                continue
+            x_offset, y_offset = self.world.map.get_layer_offsets(layer)
             for x in range(0, self.world.map.width):
                 for y in range(0, self.world.map.height):
                     blit_image = self.world.map.get_tile_image(x, y, layer)
@@ -186,7 +194,7 @@ class LevelScreen(Screen, WorldCallback):
                         yield MapRenderable(
                             layer=layer,
                             blit_image=blit_image,
-                            blit_coords=(blit_x, blit_y),
+                            blit_coords=(blit_x + x_offset, blit_y + y_offset),
                         )
 
     def calculate_draw_coordinates(

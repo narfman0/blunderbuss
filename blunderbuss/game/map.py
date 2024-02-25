@@ -48,6 +48,12 @@ class Map:
                 return layer.id
         return None
 
+    def get_ground_layer_ids(self) -> int:
+        layer_names = self._tmxdata.properties.get("GroundLayerNames").split(",")
+        return [
+            self._tmxdata.get_layer_by_name(layer_name) for layer_name in layer_names
+        ]
+
     @property
     def width(self):
         return self._tmxdata.width
