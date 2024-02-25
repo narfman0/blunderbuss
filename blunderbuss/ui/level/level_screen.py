@@ -96,7 +96,6 @@ class LevelScreen(Screen, WorldCallback):
 
     def draw(self, dest_surface: pygame.Surface):
         renderables = create_renderable_list()
-        surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for map_renderable in self.map_renderables:
             blit_x, blit_y = map_renderable.blit_coords
             bottom_y = blit_y - self.cam_y + map_renderable.blit_image.get_height()
@@ -113,6 +112,8 @@ class LevelScreen(Screen, WorldCallback):
             bottom_y = character_struct.sprite.rect.top + img_height // 2
             key = renderables_generate_key(self.world.map.get_1f_layer_id(), bottom_y)
             renderables.add(SpriteRenderable(key, character_struct.sprite_group))
+            
+        surface = pygame.Surface(size=(SCREEN_WIDTH, SCREEN_HEIGHT))
         for renderable in renderables:
             renderable.draw(surface)
         pygame.transform.scale_by(
