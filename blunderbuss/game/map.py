@@ -51,7 +51,7 @@ class Map:
     def get_ground_layer_ids(self) -> int:
         layer_names = self._tmxdata.properties.get("GroundLayerNames").split(",")
         return [
-            self._tmxdata.get_layer_by_name(layer_name) for layer_name in layer_names
+            self._tmxdata.get_layer_by_name(layer_name).id for layer_name in layer_names
         ]
 
     @property
