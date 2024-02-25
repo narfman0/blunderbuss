@@ -44,6 +44,7 @@ death:
     - shadow_guardian34.png 
     - shadow_guardian35.png 
     - shadow_guardian36.png 
+    - shadow_guardian37.png 
 hit:
   E:
     images:
