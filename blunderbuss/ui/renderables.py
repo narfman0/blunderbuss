@@ -45,7 +45,7 @@ def renderables_key(a: Renderable):
 
 
 def renderables_generate_key(layer: int, bottom_y: float):
-    return (layer << 16) + int(bottom_y)
+    return (layer * .01) + int(bottom_y)
 
 
 def create_renderable_list():
