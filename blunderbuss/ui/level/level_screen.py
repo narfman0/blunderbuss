@@ -142,12 +142,12 @@ class LevelScreen(Screen, WorldCallback):
             sprite = character_struct.sprite
             if character.alive:
                 if not character.attacking:
-                    if character.facing_direction:
+                    if character.movement_direction:
                         if (
-                            character.facing_direction
+                            character.movement_direction
                             != character_struct.last_movement_direction
                         ):
-                            sprite.move(character.facing_direction.to_isometric())
+                            sprite.move(character.movement_direction.to_isometric())
                         sprite.change_animation("run")
                     else:
                         sprite.change_animation("idle")
