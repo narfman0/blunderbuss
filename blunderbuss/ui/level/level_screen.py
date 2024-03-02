@@ -99,9 +99,7 @@ class LevelScreen(Screen, WorldCallback):
         renderables = create_renderable_list()
         for map_renderable in self.map_renderables:
             blit_x, blit_y = map_renderable.blit_coords
-            bottom_y = (
-                blit_y - self.cam_y + map_renderable.blit_image.get_height() - 8
-            )
+            bottom_y = blit_y - self.cam_y + map_renderable.blit_image.get_height() - 8
             renderable = BlittableRenderable(
                 renderables_generate_key(map_renderable.layer, bottom_y),
                 map_renderable.blit_image,

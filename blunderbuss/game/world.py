@@ -6,6 +6,7 @@ from blunderbuss.game.map import Map
 from blunderbuss.game.models.attack_profile import AttackProfile
 from blunderbuss.game.models.attack_type import AttackType
 from blunderbuss.game.models.character import Character, NPC, Player
+from blunderbuss.game.models.character.factory import create_character
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
 
@@ -29,8 +30,9 @@ class World:
         # initialize enemies
         self.enemies: list[NPC] = []
         for level_enemy in self.level.enemies:
-            enemy = NPC(
-                position=(0.5 + level_enemy.x, 0.5 + level_enemy.y),
+            enemy = create_character(
+                x=0.5 + level_enemy.x,
+                y=0.5 + level_enemy.y,
                 character_type=level_enemy.character_type,
             )
             self.enemies.append(enemy)
