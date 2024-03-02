@@ -13,3 +13,4 @@ class LevelEnemy:
 class Level(YAMLWizard):
     tmx_path: str
     enemies: list[LevelEnemy]
+    plugins: list[str]

@@ -9,6 +9,7 @@ from blunderbuss.game.models.character import Character, NPC, Player
 from blunderbuss.game.models.character.factory import create_character
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.game.world_callback import WorldCallback
+from blunderbuss.util import loader
 
 
 class World:
@@ -19,6 +20,7 @@ class World:
         self.level = Level.from_yaml_file(f"data/levels/{level_name}.yml")
         self.map = Map(self.level.tmx_path)
         self.map.add_map_geometry_to_space(self.space)
+        loader.load_plugins(self.level.plugins)
 
         # initialize player
         tile_x, tile_y = self.map.get_start_tile()
