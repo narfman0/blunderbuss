@@ -23,7 +23,7 @@ class NPC(Character):
 
 
 def register() -> None:
-    """TODO removeme
+    """TODO removeme. circular dependency to default directly in factory.
     This is a generic npc. Ideally we'd have specific implementations but
     everything can be an NPC for now for a reasonable set of default behaviors."""
-    factory.register("npc", NPC)
+    factory.register(factory.DEFAULT_CHARACTER_TYPE, NPC)
