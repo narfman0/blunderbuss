@@ -11,7 +11,7 @@ TODO
 
 v1:
 
-* Better Sprite sorting
+* Refine attack mechanics
 * Three rooms
 * Final boss
 
