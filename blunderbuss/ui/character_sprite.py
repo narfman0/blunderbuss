@@ -4,10 +4,10 @@ import yaml
 from blunderbuss.game.models.direction import Direction
 from blunderbuss.settings import FPS
 
+DEFAULT_FRAME_DURATION = 0.1
+
 
 class CharacterSprite(pygame.sprite.Sprite):
-    FRAME_DURATION = 0.1
-
     def __init__(self, sprite_name, scale: float = 1, offset=(0, 0)):
         super(CharacterSprite, self).__init__()
         self.index = 0
@@ -17,7 +17,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.offset = offset
         self.active_animation_name = "idle"
         self.direction = Direction.S
-        self.current_frame_time_remaining = self.FRAME_DURATION
+        self.current_frame_time_remaining = DEFAULT_FRAME_DURATION
 
         with open(f"data/characters/{sprite_name}/animations.yml") as f:
             animations_yml = yaml.safe_load(f)

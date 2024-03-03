@@ -33,6 +33,7 @@ death:
     - pigsassin49.png
     - pigsassin50.png
 attack:
+  frame_duration: 50 
   E:
     images:
     - pigsassin17.png
